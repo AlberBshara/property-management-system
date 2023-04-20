@@ -1,5 +1,6 @@
 package com.example.pms
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,9 +13,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.pms.ui.theme.PMSTheme
 import com.example.pms.viewmodel.destinations.PmsNavHost
 
+
 class MainActivity : ComponentActivity() {
 
-    private lateinit var navController : NavHostController
+    private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,15 +25,16 @@ class MainActivity : ComponentActivity() {
                 //init the navigation component:
                 navController = rememberNavController()
                 PmsNavHost(navController = navController)
-               Surface(
-                   color= MaterialTheme.colors.background
-               ) {
+                Surface(
+                    color = MaterialTheme.colors.background
+                ) {
 
                 }
 
             }
         }
     }
+
 }
 
 

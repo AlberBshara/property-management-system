@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name"> نظام أدارة الممتلكات</string>
+    <string name="first_name">ألاسم الاول</string>
+    <string name="last_name">أسم العائلة</string>
+    <string name="phone">رقم الموبايل</string>
+    <string name="email">حساب المستخدم</string>
+    <string name="password">كلمة المرور</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="pick_image">أختار صورة</string>
+    <string name="image_optional">صورتك اختيارية ، إذا كنت لا ترغب في مشاركتها ، فانتقل إلى التالي</string>
+    <string name="done">تسجيل الحساب</string>
+
+    <string name="app_name_without_abbreviation">نظام إدارة الممتلكات</string>
+    <string name="welcome">اهلا بعودتك!</string>
+    <string name="create_new_account">إنشاء حساب جديد!</string>
+    <string name="forget_password">نسيت كلمة المرور؟</string>
+    <string name="enter_email">أدخل حساب المستخدم لطلب إعادة ضبط كلمة المرور</string>
+    <string name="reset_link">أرسل رابط إعادة الضبط</string>
+    <string name="login">تسجيل الدخول</string>
+
 
 </resources>

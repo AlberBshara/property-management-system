@@ -1,4 +1,4 @@
-package com.example.pms.view.splashscreen
+package com.example.pms.view.animation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.painter.Painter
+import kotlinx.coroutines.delay
 
 @Composable
 fun ScaleInImageAnimation(
@@ -31,6 +32,7 @@ fun ScaleInImageAnimation(
             targetValue = 1f,
             animationSpec = tween(durationMillis = animationDuration)
         )
+        delay(1500)
         onAnimationFinished()
 
     }

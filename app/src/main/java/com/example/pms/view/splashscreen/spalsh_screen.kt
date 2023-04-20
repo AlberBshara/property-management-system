@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import com.example.pms.ui.theme.background1
 import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.R
+import com.example.pms.view.animation.ScaleInImageAnimation
 
 @Composable
 fun SplashScreen(
