@@ -79,7 +79,8 @@ fun ForgetPassword(
                     keyboardOption = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Text
                     ), onValueChanged = {
-                    })
+                    }, isError = false
+                )
 
 
                 Button(

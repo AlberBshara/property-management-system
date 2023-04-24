@@ -8,7 +8,7 @@ object RegisterPages {
     const val registerPage2 : Int = 1
     const val registerPage3 : Int = 2
 
-    fun moveToNextRegisterPage(
+     fun moveToNextRegisterPage(
         navController : NavHostController ,
         pageNumber : Int = registerPage1
     ) {

@@ -22,19 +22,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PMSTheme {
-                //init the navigation component:
-                navController = rememberNavController()
-                PmsNavHost(navController = navController)
                 Surface(
                     color = MaterialTheme.colors.background
                 ) {
+                    //init the navigation component:
+                    navController = rememberNavController()
+                    PmsNavHost(navController = navController)
 
                 }
 
             }
         }
     }
-
 }
 
 

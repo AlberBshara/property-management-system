@@ -26,11 +26,16 @@ import com.example.pms.view.animation.RotateImage
 import com.example.pms.ui.theme.background1
 import com.example.pms.ui.theme.iconsColor
 import com.example.pms.viewmodel.destinations.Destination
+import com.example.pms.viewmodel.presentation_vm.login_vm.LoginScreenVM
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel : LoginScreenVM = viewModel()
 ) {
+
+    val state = viewModel.state
 
     Column(
         modifier = Modifier
@@ -62,14 +67,14 @@ fun LoginScreen(
         InputTextFiled(title = stringResource(id = R.string.email),
             icon = R.drawable.email_ic,
             keyboardOption = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text
+                keyboardType = KeyboardType.Email
             ), onValueChanged = {
-
-            })
+                   state.email = it
+            }, isError = false)
 
         InputPassword(onValueChanged = {
-
-        })
+               state.password = it
+        }, isError = false)
 
         Text(
             text = stringResource(id = R.string.forget_password),

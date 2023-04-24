@@ -20,13 +20,17 @@ import com.example.pms.view.regisiter_screen.pages.RegisterPag3
 import com.example.pms.view.regisiter_screen.pages.RegisterPage1
 import com.example.pms.view.regisiter_screen.pages.RegisterPage2
 import com.example.pms.viewmodel.destinations.RegisterPages
+import com.example.pms.viewmodel.presentation_vm.register_vm.RegisterScreenVM
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
 fun RegisterScreen(
     navController: NavHostController,
-    pageNumber: Int = RegisterPages.registerPage1
+    pageNumber: Int = RegisterPages.registerPage1,
+    viewModel : RegisterScreenVM = viewModel()
 ) {
+
 
     Column(
         modifier = Modifier
@@ -52,6 +56,10 @@ fun RegisterScreen(
                         id = R.drawable.logo
                     ),
                     contentDescription = "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .weight(0.2f)
                 )
             }
         }

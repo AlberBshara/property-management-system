@@ -3,18 +3,23 @@ package com.example.pms.viewmodel.preferences
 import android.content.Context
 
 class SharedPreferencesUsage(
-    context : Context
+    context: Context
 ) {
 
     private val sharedPreferences = PMSSharedPreferenceHelper(context)
 
-    fun setUsername(username : String) {
-        sharedPreferences.setData( PMSSharedPreferenceHelper.USER_NAME, username)
+    fun setUsername(username: String) {
+        sharedPreferences.setData(PMSSharedPreferenceHelper.USER_NAME, username)
     }
 
-    fun getUsername() : String
-      = sharedPreferences.getData(PMSSharedPreferenceHelper.USER_NAME)
+    fun getUsername(): String = sharedPreferences.getData(PMSSharedPreferenceHelper.USER_NAME)
 
+
+
+
+    fun clearAllData() {
+        sharedPreferences.editor.clear().apply()
+    }
 
 
 }

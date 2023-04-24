@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.pms.view.dasboard_screen.DashboardScreen
 import com.example.pms.view.forgot_password_screen.ForgetPassword
 import com.example.pms.view.login_screen.LoginScreen
 import com.example.pms.view.regisiter_screen.RegisterScreen
@@ -19,7 +20,8 @@ sealed class Destination(
     object SplashDestination : Destination("splash-screen-destination")
     object LoginDestination : Destination("login-screen-destination")
     object RegisterDestination : Destination("register-screen-destination")
-    object ForgetPasswordDestination : Destination("forget-password-screen")
+    object ForgetPasswordDestination : Destination("forget-password-destination")
+    object DashboardDestination : Destination("dashboard-destination")
 }
 
 
@@ -54,6 +56,9 @@ fun PmsNavHost(
 
         composable(route = Destination.ForgetPasswordDestination.route) {
             ForgetPassword(navController)
+        }
+        composable(Destination.DashboardDestination.route) {
+            DashboardScreen(navController)
         }
     }
 

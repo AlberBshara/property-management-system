@@ -20,4 +20,17 @@
     <string name="login">تسجيل الدخول</string>
 
 
+    <string name="email_blank">يجب ادخال حساب الستخدم</string>
+    <string name="unvalid_email">حساب المستخدم غير صالح!</string>
+    <string name="password_less_than_eight">كلمة المرور يجب ان تكون على الاقل 8 محارف!</string>
+    <string name="invalid_password">يجب ان تحتوي كلمة المررو على الاقل حرف واحد و رمز</string>
+    <string name="passwords_did_not_match">يجب تطابق كلمتي المرور!</string>
+
+
+
+
+
+
+
+
 </resources>

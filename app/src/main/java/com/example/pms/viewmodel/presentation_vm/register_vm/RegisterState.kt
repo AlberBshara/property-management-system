@@ -2,11 +2,11 @@ package com.example.pms.viewmodel.presentation_vm.register_vm
 
 
 data class RegisterState(
-    val firstname : String,
-    val lastname : String ,
-    val phoneNumber : String ,
-    val email : String ,
-    val password : String,
-    val confirmPassword : String,
+    var firstname : String = "",
+    var lastname : String = "",
+    var phoneNumber : String = "",
+    var email : String = "",
+    var password : String = "",
+    var confirmPassword : String = "",
     //val image : Int
 )

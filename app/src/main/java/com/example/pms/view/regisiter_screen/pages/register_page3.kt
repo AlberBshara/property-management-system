@@ -33,11 +33,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.example.pms.ui.theme.iconsColor
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegisterPage3Vm
 
 @Composable
 fun RegisterPag3(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel : RegisterPage3Vm = viewModel()
 ) {
+
+    val state = viewModel.state
 
     val context = LocalContext.current
 
@@ -110,7 +115,9 @@ fun RegisterPag3(
     )
     Button(
         onClick = {
-
+            viewModel.page3Done(
+                navController
+            )
         },
         modifier = Modifier
             .fillMaxWidth()

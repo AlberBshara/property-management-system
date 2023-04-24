@@ -18,7 +18,7 @@ import com.example.pms.ui.theme.iconsColor
 
 @Composable
 fun InputPhoneWithCCP(
-    onValueChanged: (phoneNumber: String, countryCode: String) -> Unit
+    onValueChanged: (phoneNumber: String, countryCode: String) -> Unit,
 ) {
 
     val countyCodes = stringArrayResource(id = R.array.country_codes)

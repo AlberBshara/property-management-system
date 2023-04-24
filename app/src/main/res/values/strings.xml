@@ -11,7 +11,6 @@
     <string name="done">Done</string>
 
 
-
     <string name="app_name_without_abbreviation">Property Management System</string>
     <string name="welcome">Welcome Back!</string>
     <string name="create_new_account">Create new Account !</string>
@@ -21,62 +20,67 @@
     <string name="login">Login</string>
 
 
+    <string name="email_blank">the email can not be blank</string>
+    <string name="unvalid_email">that is not valid email</string>
+    <string name="password_less_than_eight">the password needs to consists of at least 8 character</string>
+    <string name="invalid_password">the password needs to consist of at least one letter and digit</string>
+    <string name="passwords_did_not_match">the passwords do not match</string>
 
     <string-array name="country_codes">
-      <item>+1</item>
-      <item>+963</item>
-      <item>+962</item>
-      <item>+964</item>
-      <item>+965</item>
-      <item>+213</item>
-      <item>+966</item>
-      <item>+967</item>
-      <item>+968</item>
-      <item>+970</item>
-      <item>+971</item>
-      <item>+972</item>
-      <item>+973</item>
-      <item>+974</item>
-      <item>+975</item>
-      <item>+976</item>
-      <item>+992</item>
-      <item>+993</item>
-      <item>+994</item>
-      <item>+995</item>
-      <item>+996</item>
-      <item>+998</item>
-      <item>+81</item>
-      <item>+82</item>
-      <item>+84</item>
-      <item>+86</item>
-      <item>+61</item>
-      <item>+62</item>
-      <item>+63</item>
-      <item>+64</item>
-      <item>+65</item>
-      <item>+66</item>
-      <item>+54</item>
-      <item>+55</item>
-      <item>+56</item>
-      <item>+58</item>
-      <item>+43</item>
-      <item>+44</item>
-      <item>+45</item>
-      <item>+46</item>
-      <item>+47</item>
-      <item>+48</item>
-      <item>+49</item>
-      <item>+41</item>
-      <item>+42</item>
-      <item>+39</item>
-      <item>+40</item>
-      <item>+358</item>
-      <item>+249</item>
-      <item>+20</item>
-      <item>+212</item>
-      <item>others</item>
+        <item>+1</item>
+        <item>+963</item>
+        <item>+962</item>
+        <item>+964</item>
+        <item>+965</item>
+        <item>+213</item>
+        <item>+966</item>
+        <item>+967</item>
+        <item>+968</item>
+        <item>+970</item>
+        <item>+971</item>
+        <item>+972</item>
+        <item>+973</item>
+        <item>+974</item>
+        <item>+975</item>
+        <item>+976</item>
+        <item>+992</item>
+        <item>+993</item>
+        <item>+994</item>
+        <item>+995</item>
+        <item>+996</item>
+        <item>+998</item>
+        <item>+81</item>
+        <item>+82</item>
+        <item>+84</item>
+        <item>+86</item>
+        <item>+61</item>
+        <item>+62</item>
+        <item>+63</item>
+        <item>+64</item>
+        <item>+65</item>
+        <item>+66</item>
+        <item>+54</item>
+        <item>+55</item>
+        <item>+56</item>
+        <item>+58</item>
+        <item>+43</item>
+        <item>+44</item>
+        <item>+45</item>
+        <item>+46</item>
+        <item>+47</item>
+        <item>+48</item>
+        <item>+49</item>
+        <item>+41</item>
+        <item>+42</item>
+        <item>+39</item>
+        <item>+40</item>
+        <item>+358</item>
+        <item>+249</item>
+        <item>+20</item>
+        <item>+212</item>
+        <item>others</item>
 
-  </string-array>
+    </string-array>
 
 
 </resources>

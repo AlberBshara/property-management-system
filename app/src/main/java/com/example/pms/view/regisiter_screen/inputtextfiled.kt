@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -24,10 +25,11 @@ fun InputTextFiled(
     singleLine: Boolean = true,
     keyboardOption: KeyboardOptions,
     onValueChanged: (String) -> Unit,
-    onIconListener: () -> Unit = {}
+    onIconListener: () -> Unit = {},
+    isError : Boolean
 ) {
 
-    var text = remember {
+    val text = rememberSaveable {
         mutableStateOf("")
     }
 
@@ -35,6 +37,7 @@ fun InputTextFiled(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp),
+        isError = isError,
         singleLine = singleLine,
         keyboardOptions = keyboardOption,
         label = { Text(text = title) },
@@ -71,7 +74,8 @@ fun InputTextFiled(
 @Composable
 fun InputPassword(
     title: Int = R.string.password,
-    onValueChanged: (String) -> Unit
+    onValueChanged: (String) -> Unit,
+    isError: Boolean
 ) {
     var password by remember {
         mutableStateOf("")
@@ -82,6 +86,7 @@ fun InputPassword(
         if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
     TextField(
         value = password,
+        isError = isError,
         onValueChange = {
             password = it
             onValueChanged(it)
