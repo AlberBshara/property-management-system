@@ -11,13 +11,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -25,16 +28,17 @@ import com.example.pms.R
 import com.example.pms.view.animation.RotateImage
 import com.example.pms.ui.theme.background1
 import com.example.pms.ui.theme.iconsColor
-import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.presentation_vm.login_vm.LoginScreenVM
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.viewmodel.presentation_vm.login_vm.LoginEvents
 
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    viewModel : LoginScreenVM = viewModel()
+    viewModel: LoginScreenVM = viewModel()
 ) {
 
+    viewModel.setContext(LocalContext.current)
     val state = viewModel.state
 
     Column(
@@ -69,27 +73,49 @@ fun LoginScreen(
             keyboardOption = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Email
             ), onValueChanged = {
-                   state.email = it
-            }, isError = false)
-
+                viewModel.onEvent(LoginEvents.EmailChanged(it))
+            }, isError = state.emailError
+        )
+        viewModel.emailState.value.error?.let {
+            Text(
+                text = it,
+                color = MaterialTheme.colors.error,
+                fontSize = 10.sp,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp)
+            )
+        }
         InputPassword(onValueChanged = {
-               state.password = it
-        }, isError = false)
-
+            viewModel.onEvent(LoginEvents.PasswordChanged(it))
+        }, isError = state.passwordError)
+        viewModel.passwordState.value.error?.let {
+            Text(
+                text = it ,
+                color =MaterialTheme.colors.error,
+                fontSize = 10.sp,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp)
+            )
+        }
         Text(
             text = stringResource(id = R.string.forget_password),
             modifier = Modifier
                 .padding(top = 20.dp)
                 .clickable {
-                    navController.navigate(Destination.ForgetPasswordDestination.route)
+                    viewModel.onEvent(LoginEvents.ForgotMyPassword(navController))
                 },
             color = Color.White,
             fontSize = 12.sp
-
         )
 
         Button(
-            onClick = {},
+            onClick = {
+                viewModel.onEvent(LoginEvents.Submit(navController))
+            },
             modifier = Modifier
                 .fillMaxWidth()
 
@@ -105,12 +131,8 @@ fun LoginScreen(
             modifier = Modifier
                 .padding(top = 10.dp)
                 .clickable {
-                    navController.navigate(Destination.RegisterDestination.route)
+                    viewModel.onEvent(LoginEvents.CreateNewAccount(navController))
                 }
         )
-
-
     }
-
-
 }

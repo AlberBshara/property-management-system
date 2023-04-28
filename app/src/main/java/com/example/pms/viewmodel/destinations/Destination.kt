@@ -1,6 +1,5 @@
 package com.example.pms.viewmodel.destinations
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,7 +11,7 @@ import com.example.pms.view.regisiter_screen.RegisterScreen
 import com.example.pms.view.splashscreen.SplashScreen
 
 
-private const val TAG: String = "Destination.KClass"
+
 
 sealed class Destination(
     val route: String
@@ -45,9 +44,6 @@ fun PmsNavHost(
         composable(route = Destination.RegisterDestination.route) {
             val pageNumber =
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int>(RegisterPages.KEY)
-
-            Log.d(TAG, "to page number of: $pageNumber")
-
             RegisterScreen(
                 navController = navController,
                 pageNumber ?: RegisterPages.registerPage1

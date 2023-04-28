@@ -1,7 +1,11 @@
 package com.example.pms.viewmodel.presentation_vm.register_vm
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-data class RegisterState(
+
+@Parcelize
+data class RegisterData(
     var firstname : String = "",
     var lastname : String = "",
     var phoneNumber : String = "",
@@ -9,4 +13,4 @@ data class RegisterState(
     var password : String = "",
     var confirmPassword : String = "",
     //val image : Int
-)
+) : Parcelable

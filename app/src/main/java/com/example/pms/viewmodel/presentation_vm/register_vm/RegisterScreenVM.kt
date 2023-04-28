@@ -7,7 +7,8 @@ import androidx.compose.runtime.setValue
 
 class RegisterScreenVM() : ViewModel() {
 
-    var state by mutableStateOf(RegisterState())
+    var state by mutableStateOf(RegisterData())
+
 
 
 

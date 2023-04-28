@@ -27,7 +27,31 @@
     <string name="passwords_did_not_match">يجب تطابق كلمتي المرور!</string>
 
 
+    <string name="firstname_blank">يتطلب ادخال الاسم</string>
+    <string name="lastname_blank">يتطلب ادخال اسم العائلة</string>
+    <string name="phoneNumber_blank">ادخال رقم الموبايل الخاص بك</string>
+    <string name="name_contain_number">يرجى ادخال الاسم الحقيقي!</string>
+    <string name="invalid_phone_number">الرقم المدخل غير صالح</string>
+    <string name="country_code_needed">يجب اختيار الرمز الدولي من الايقونة</string>
+    <string name="invalid_name">الاسم لايمكن ان يحوي على ارقام!</string>
 
+
+
+    <string name="car_vector">المركبات</string>
+    <string name="estate_vector">العقارات</string>
+    <string name="suggestion_vector">الاقتراحات</string>
+    <string name="settings_vector">الاعدادات</string>
+    <string name="profile_vector">الملف الشخصي</string>
+    <string name="aboutus_vector">من نحن ؟</string>
+
+
+    <string name="pm">نظام ادارة</string>
+    <string name="system">الممتلكات</string>
+
+    <string name="invalid">غير صالح</string>
+    <string name="password_letters_problem">كلمة المرو يجب ان تحتوي على احرف</string>
+    <string name="password_contains_spaces">كلمة المررو تحتوي على فراغات</string>
+    <string name="uncorrect_info">يجب البيانات المدخلة ان تطابق المعاير التي تذكر لك اعلاه!</string>
 
 
 

@@ -11,4 +11,9 @@
     <color name="background1">#1B4571</color>
     <color name="icon_color">#BF2051</color>
     <color name="transparent">#80FFFFFF</color>
+    <color name="blue">#ADD8E6</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="darkGrey">#333333</color>
+    <color name="teal">#008080</color>
+    <color name="d">#CCCCCC</color>
 </resources>

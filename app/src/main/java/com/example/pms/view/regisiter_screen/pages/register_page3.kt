@@ -115,7 +115,7 @@ fun RegisterPag3(
     )
     Button(
         onClick = {
-            viewModel.page3Done(
+            viewModel.submitData(
                 navController
             )
         },

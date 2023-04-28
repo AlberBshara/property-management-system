@@ -3,32 +3,32 @@ package com.example.pms.viewmodel.presentation_vm.register_vm.validation.user_ca
 import android.content.Context
 import com.example.pms.R
 
-
-class ValidatePassword {
-
+class ValidationName {
     companion object {
         fun run(
-            password: String,
+            name: String,
             context: Context
         ): ValidationResult {
-            if (password.length in 1..7) {
+            if (name.isBlank()) {
                 return ValidationResult(
                     success = false,
-                    errorMessage = context.getString(R.string.password_less_than_eight)
+                    errorMessage = context.getString(R.string.firstname_blank)
                 )
             }
-            val containsLettersAndDigit = password.any { it.isDigit() }
-                    && password.any { it.isLetter() }
-
-            if (!containsLettersAndDigit) {
+            if (!validName(name)) {
                 return ValidationResult(
                     success = false,
-                    errorMessage = context.getString(R.string.invalid_password)
+                    errorMessage = context.getString(R.string.invalid_name)
                 )
             }
             return ValidationResult(
                 success = true
             )
+        }
+
+        private fun validName(string: String): Boolean {
+            val regex = Regex("[\\u0600-\\u06FF\\u0750-\\u077F\\uFB50-\\uFDFF\\uFE70-\\uFEFFa-zA-Z]+")
+            return string.matches(regex)
         }
     }
 }

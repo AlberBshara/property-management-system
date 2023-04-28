@@ -6,5 +6,7 @@ data class RegisterPage1State(
     var lastname : String = "" ,
     var lastname_error : String? = null ,
     var phoneNumber : String = "",
-    var phoneNumber_error: String? = null
+    var phoneNumber_error: String? = null,
+    var countryCode : String = "",
+    var countryCode_error: String? = null
 )

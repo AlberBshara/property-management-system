@@ -1,8 +1,13 @@
 package com.example.pms.viewmodel.presentation_vm.login_vm
 
-class LoginEvents {
+import androidx.navigation.NavHostController
 
-    fun loginButton() {
-
-    }
+sealed class LoginEvents {
+    data class EmailChanged(val email : String) : LoginEvents()
+    data class PasswordChanged(val password : String) : LoginEvents()
+    data class ForgotMyPassword (val navController : NavHostController) : LoginEvents()
+    data class CreateNewAccount(val navController: NavHostController) : LoginEvents()
+    data class EmailErrorChanged(val emailError : Boolean) : LoginEvents()
+    data class PasswordErrorChanged(val passwordError : Boolean) : LoginEvents()
+    data class Submit(val navController: NavHostController) : LoginEvents()
 }

@@ -22,7 +22,7 @@ import com.example.pms.ui.theme.iconsColor
 import com.example.pms.view.regisiter_screen.InputPassword
 import com.example.pms.view.regisiter_screen.InputTextFiled
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page2.RegPage1Events
+import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page2.RegPage2Events
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page2.RegisterPage2Vm
 
 @Composable
@@ -39,14 +39,14 @@ fun RegisterPage2(
         keyboardOption = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Email
         ), onValueChanged = {
-            viewModel.onEvent(RegPage1Events.EmailChanged(it))
+            viewModel.onEvent(RegPage2Events.EmailChanged(it))
         },
         isError = state.emailError != null
     )
     if (state.emailError != null) {
         Text(
             text = state.emailError ?: "",
-            color = Color.Green,
+            color =MaterialTheme.colors.error,
             fontSize = 10.sp,
             textAlign = TextAlign.Start,
             modifier = Modifier
@@ -58,14 +58,14 @@ fun RegisterPage2(
     InputPassword(
         title = R.string.password,
         onValueChanged = {
-            viewModel.onEvent(RegPage1Events.PasswordChanged(it))
+            viewModel.onEvent(RegPage2Events.PasswordChanged(it))
         },
         isError = state.passwordError != null
     )
     if (state.passwordError != null) {
         Text(
             text = state.passwordError ?: "",
-            color = Color.Green,
+            color = MaterialTheme.colors.error,
             fontSize = 10.sp,
             textAlign = TextAlign.Start,
             modifier = Modifier
@@ -76,7 +76,7 @@ fun RegisterPage2(
     InputPassword(
         title = R.string.confirm_password,
         onValueChanged = {
-            viewModel.onEvent(RegPage1Events.RepeatedPasswordChanged(it))
+            viewModel.onEvent(RegPage2Events.RepeatedPasswordChanged(it))
         },
         isError = state.confirmPasswordError != null
     )
@@ -84,7 +84,7 @@ fun RegisterPage2(
     if (state.confirmPasswordError != null) {
         Text(
             text = state.confirmPasswordError ?: "",
-            color = Color.Green,
+            color =MaterialTheme.colors.error,
             fontSize = 10.sp,
             textAlign = TextAlign.Start,
             modifier = Modifier
@@ -94,7 +94,7 @@ fun RegisterPage2(
     }
     FloatingActionButton(
         onClick = {
-            viewModel.submitPage1(navController, context)
+            viewModel.submitPage2(navController, context)
         },
         backgroundColor = iconsColor,
     ) {

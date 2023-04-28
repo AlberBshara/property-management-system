@@ -2,7 +2,7 @@ package com.example.pms.viewmodel.presentation_vm.login_vm
 
 data class LoginState(
     var email : String = "" ,
-    var emailState : String? = null,
+    var emailError : Boolean = true,
     var password: String = "",
-    var passwordError : String? = null
+    var passwordError : Boolean = true
 )

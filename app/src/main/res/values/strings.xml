@@ -26,6 +26,37 @@
     <string name="invalid_password">the password needs to consist of at least one letter and digit</string>
     <string name="passwords_did_not_match">the passwords do not match</string>
 
+
+    <string name="firstname_blank">Entering the name is mandatory</string>
+    <string name="lastname_blank">Entering the name is mandatory</string>
+    <string name="phoneNumber_blank">Entering your phone number is mandatory</string>
+    <string name="name_contain_number">Invalid name, name with numbers is not acceptable</string>
+    <string name="invalid_phone_number">please enter a real phone number!</string>
+    <string name="country_code_needed">chose the country code by clicking on the icon!</string>
+    <string name="invalid_name">the name can not contain numbers</string>
+
+
+
+
+    <string name="car_vector">Vehicles</string>
+    <string name="estate_vector">Estates</string>
+    <string name="suggestion_vector">Suggestions</string>
+    <string name="settings_vector">Settings</string>
+    <string name="profile_vector">My Profile</string>
+    <string name="aboutus_vector">About Us</string>
+
+
+    <string name="pm">property management</string>
+    <string name="system">System</string>
+
+
+    <string name="invalid">is invalid</string>
+    <string name="password_letters_problem">The password does not contain any letters.</string>
+    <string name="password_contains_spaces">The password contains spaces</string>
+    <string name= "uncorrect_info">please, enter acceptable information according to the mentioned
+    guidance above</string>
+
+
     <string-array name="country_codes">
         <item>+1</item>
         <item>+963</item>

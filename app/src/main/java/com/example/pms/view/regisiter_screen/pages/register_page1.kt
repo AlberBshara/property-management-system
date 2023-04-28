@@ -14,13 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.pms.R
 import com.example.pms.ui.theme.iconsColor
 import com.example.pms.view.regisiter_screen.InputTextFiled
 import com.example.pms.view.regisiter_screen.InputPhoneWithCCP
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page1.RegPage1Events
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page1.RegisterPage1Vm
 
 @Composable
@@ -33,35 +36,80 @@ fun RegisterPage1(
     val context = LocalContext.current
 
 
-    InputTextFiled(title = stringResource(id = R.string.first_name),
+    InputTextFiled(
+        title = stringResource(id = R.string.first_name),
         icon = R.drawable.person_ic,
         keyboardOption = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Text
         ),
         onValueChanged = {
-            state.firstname = it
-        }, isError = false
+            viewModel.onEvent(RegPage1Events.FirstNameChanged(it))
+        }, isError = state.firstname_error != null
     )
-    InputTextFiled(title = stringResource(id = R.string.last_name),
+    if (state.firstname_error != null) {
+        Text(
+            text = state.firstname_error ?: "",
+            color = MaterialTheme.colors.error,
+            fontSize = 10.sp,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+        )
+    }
+    InputTextFiled(
+        title = stringResource(id = R.string.last_name),
         icon = R.drawable.person_ic,
         keyboardOption = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Text
         ),
         onValueChanged = {
-            state.lastname = it
-        }, isError = false
+            viewModel.onEvent(RegPage1Events.LastNameChanged(it))
+        }, isError = state.lastname_error != null
     )
-
+    if (state.lastname_error != null) {
+        Text(
+            text = state.lastname_error ?: "",
+            color = MaterialTheme.colors.error,
+            fontSize = 10.sp,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+        )
+    }
 
     InputPhoneWithCCP(
         onValueChanged = { phone, code ->
-            state.phoneNumber = code + phone
+            viewModel.onEvent(RegPage1Events.PhoneNumberChanged(phone, code))
             Toast.makeText(
                 context,
                 "the obtained number $code-$phone", Toast.LENGTH_LONG
             ).show()
         }
     )
+    if (state.phoneNumber_error != null) {
+        Text(
+            text = state.phoneNumber_error ?: "",
+            color = MaterialTheme.colors.error,
+            fontSize = 10.sp,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+        )
+    }
+    if (state.countryCode_error != null) {
+        Text(
+            text = state.countryCode_error ?: "",
+            color = MaterialTheme.colors.error,
+            fontSize = 10.sp,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+        )
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -73,7 +121,7 @@ fun RegisterPage1(
 
         FloatingActionButton(
             onClick = {
-                viewModel.page1Done(navController)
+                viewModel.submitPage1(navController, context)
             },
             backgroundColor = iconsColor,
         ) {
@@ -83,8 +131,5 @@ fun RegisterPage1(
                 tint = Color.White
             )
         }
-
-
     }
-
 }
