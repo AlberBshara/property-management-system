@@ -20,7 +20,7 @@ class UserServicesImplementation(
             val response = try {
                 userRepository.postRegisterData(user)
             } catch (e: Exception) {
-                emit(Resource.Error(e.toString()))
+                emit(Resource.Error(e.message))
                 null
             }
             response?.let {

@@ -8,7 +8,9 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -34,8 +36,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.example.pms.ui.theme.iconsColor
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.ui.theme.transparent_p
+import com.example.pms.view.animation.ProgressAnimatedBar
+import com.example.pms.view.utils.InternetAlertDialog
+import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegPage3Events
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegisterPage3Vm
+import com.example.pms.viewmodel.utils.InternetConnection
 
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun RegisterPag3(
     navController: NavHostController,
@@ -67,6 +75,7 @@ fun RegisterPag3(
             ImageDecoder.decodeBitmap(source)
         }
     }
+
 
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -113,40 +122,65 @@ fun RegisterPag3(
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp, top = 10.dp)
     )
-    Button(
-        onClick = {
-            viewModel.submitData(
-                navController,
-                context
-            )
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 35.dp, end = 35.dp, top = 10.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = iconsColor)
-    ) {
-        Text(
-            text = stringResource(id = R.string.done),
-            color = Color.White,
-            fontWeight = FontWeight.Bold
-        )
-    }
-    if (state.emailDuplicated) {
-        Snackbar(
-            action = {
-                Button(onClick = {
-                    viewModel.duplicatedEmail(navController)
-                }) {
-                    Text(text = stringResource(id = R.string.ok))
-                }
+
+    ProgressAnimatedBar(isLoading = state.isLoading)
+
+    if (!state.isLoading) {
+        Button(
+            onClick = {
+                viewModel.onEvent(RegPage3Events.Submit(navController, context))
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(start = 35.dp, end = 35.dp, top = 10.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = iconsColor)
         ) {
-            Text(text = stringResource(id = R.string.email_duplicated))
+            Text(
+                text = stringResource(id = R.string.done),
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
+    if (state.emailDuplicated) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+                .wrapContentHeight()
+                .background(transparent_p),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = {
+                  viewModel.onEvent(RegPage3Events.DuplicatedEmailDone(
+                      navController
+                  ))
+                },
+                colors = ButtonDefaults.buttonColors(iconsColor),
+                modifier = Modifier.padding(start = 10.dp)
+            ) {
+                Text(text = stringResource(id = R.string.ok))
+            }
+            Spacer(modifier = Modifier.width(18.dp))
+            Text(
+                text = stringResource(id = R.string.email_duplicated),
+                color = Color.White,
+
+            )
+        }
+    }
+
+    InternetAlertDialog(
+        onConfirm = {
+            viewModel.onEvent(RegPage3Events.WifiCase.Confirm(
+                navController, context
+            ))
+        }, onDeny = {
+             viewModel.onEvent(RegPage3Events.WifiCase.Deny)
+        }, openDialog = state.showInternetAlert
+    )
 }
 
 

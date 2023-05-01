@@ -8,14 +8,13 @@ import com.example.pms.viewmodel.preferences.SharedPreferencesUsage
 
 class TokenManager private constructor() {
 
-
     companion object {
         @SuppressLint("StaticFieldLeak")
         private lateinit var INSTANCE: TokenManager
         private lateinit var sharedPreferencesUsage: SharedPreferencesUsage
 
-        fun getInstance(context: Context): TokenManager {
-            if (this.INSTANCE == null) {
+        fun getInstance(context : Context): TokenManager {
+            if (!::INSTANCE.isInitialized) {
                 this.INSTANCE = TokenManager()
             }
             this.sharedPreferencesUsage = SharedPreferencesUsage(context)
@@ -40,6 +39,3 @@ class TokenManager private constructor() {
         "Bearer ${sharedPreferencesUsage.getToken()}"
 
 }
-
-
-

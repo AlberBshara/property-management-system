@@ -1,5 +1,7 @@
 package com.example.pms.viewmodel.destinations
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -24,6 +26,7 @@ sealed class Destination(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun PmsNavHost(
     navController: NavHostController

@@ -1,5 +1,7 @@
 package com.example.pms.view.regisiter_screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,13 +26,13 @@ import com.example.pms.viewmodel.presentation_vm.register_vm.RegisterScreenVM
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun RegisterScreen(
     navController: NavHostController,
     pageNumber: Int = RegisterPages.registerPage1,
     viewModel : RegisterScreenVM = viewModel()
 ) {
-
 
     Column(
         modifier = Modifier

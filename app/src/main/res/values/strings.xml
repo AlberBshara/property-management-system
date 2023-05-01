@@ -58,6 +58,11 @@
     <string name="email_duplicated">The entered account already exists</string>
     <string name="ok">ok</string>
 
+    <string name="internet_unconnected">we noticed that you are not connected to the internet, want to turn on the Wifi ?</string>
+    <string name="confirm">Confirm</string>
+    <string name="deny">Deny</string>
+
+
 
     <string-array name="country_codes">
         <item>+1</item>

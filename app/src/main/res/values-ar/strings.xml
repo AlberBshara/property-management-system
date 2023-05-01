@@ -54,9 +54,9 @@
     <string name="uncorrect_info">يجب البيانات المدخلة ان تطابق المعاير التي تذكر لك اعلاه!</string>
     <string name="email_duplicated">الحساب المدخل موجود مسبقا الرجاء ادخال حساب اخر!</string>
     <string name="ok">حسنا</string>
-
-
-
+    <string name="internet_unconnected">لاحظنا انك غير متصل بالانترنيت, هل تريد تشغيل Wifi ؟</string>
+    <string name="confirm">تأكيد</string>
+    <string name="deny">رفض</string>
 
 
 </resources>
