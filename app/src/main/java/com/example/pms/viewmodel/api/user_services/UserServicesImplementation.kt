@@ -5,34 +5,33 @@ import com.example.pms.viewmodel.api.RetrofitClient
 import com.example.pms.viewmodel.api.util.Resource
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.Flow
-import okhttp3.Response
+import okhttp3.ResponseBody
 
 
 class UserServicesImplementation(
-    private val userApi: UserServicesInterface = RetrofitClient.userRepository
+    private val userRepository: UserServicesInterface = RetrofitClient.userRepository
 ) {
 
-     suspend fun postRegisterUserData(
+    suspend fun postRegisterUserData(
         user: RegisterUserData
-    ): Flow<Resource<Response>> {
+    ): Flow<Resource<ResponseBody>> {
         return flow {
             emit(Resource.Loading(true))
             val response = try {
-                userApi.postRegisterData(
-                    user.name, user.email, user.password, user.phone_number
-                )
+                userRepository.postRegisterData(user)
             } catch (e: Exception) {
-                emit(Resource.Error("couldn't upload the user data"))
+                emit(Resource.Error(e.toString()))
                 null
             }
             response?.let {
-                emit(Resource.Success(
-                    data = response
-                ))
+                emit(
+                    Resource.Success(
+                        data = response
+                    )
+                )
                 emit(Resource.Loading(false))
             }
             emit(Resource.Loading(false))
         }
     }
-
- }
+}

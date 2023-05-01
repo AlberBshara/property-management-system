@@ -30,6 +30,7 @@ class LoginScreenVM : ViewModel() {
     val passwordState by lazy { mutableStateOf(PasswordState(context)) }
 
 
+
     fun onEvent(event: LoginEvents) {
         when (event) {
             is LoginEvents.EmailChanged -> {

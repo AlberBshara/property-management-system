@@ -24,6 +24,8 @@ fun GridCell(
     text: Int,
     onClick: () -> Unit
 ) {
+
+
     Card(
         modifier = Modifier
             .clip(RoundedCornerShape(100.dp))

@@ -55,6 +55,8 @@
     <string name="password_contains_spaces">The password contains spaces</string>
     <string name= "uncorrect_info">please, enter acceptable information according to the mentioned
     guidance above</string>
+    <string name="email_duplicated">The entered account already exists</string>
+    <string name="ok">ok</string>
 
 
     <string-array name="country_codes">

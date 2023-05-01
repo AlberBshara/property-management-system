@@ -39,7 +39,7 @@ import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.Registe
 @Composable
 fun RegisterPag3(
     navController: NavHostController,
-    viewModel : RegisterPage3Vm = viewModel()
+    viewModel: RegisterPage3Vm = viewModel()
 ) {
 
     val state = viewModel.state
@@ -116,7 +116,8 @@ fun RegisterPag3(
     Button(
         onClick = {
             viewModel.submitData(
-                navController
+                navController,
+                context
             )
         },
         modifier = Modifier
@@ -130,5 +131,25 @@ fun RegisterPag3(
             fontWeight = FontWeight.Bold
         )
     }
-
+    if (state.emailDuplicated) {
+        Snackbar(
+            action = {
+                Button(onClick = {
+                    viewModel.duplicatedEmail(navController)
+                }) {
+                    Text(text = stringResource(id = R.string.ok))
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Text(text = stringResource(id = R.string.email_duplicated))
+        }
+    }
 }
+
+
+
+
+

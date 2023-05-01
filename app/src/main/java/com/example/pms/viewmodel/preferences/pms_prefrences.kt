@@ -43,5 +43,6 @@ class PMSSharedPreferenceHelper(context: Context) {
         const val USER_NAME = "username"
         const val EMAIL = "email"
         const val PASSWORD = "password"
+        const val TOKEN = "token"
     }
 }

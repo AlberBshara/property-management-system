@@ -52,6 +52,8 @@
     <string name="password_letters_problem">كلمة المرو يجب ان تحتوي على احرف</string>
     <string name="password_contains_spaces">كلمة المررو تحتوي على فراغات</string>
     <string name="uncorrect_info">يجب البيانات المدخلة ان تطابق المعاير التي تذكر لك اعلاه!</string>
+    <string name="email_duplicated">الحساب المدخل موجود مسبقا الرجاء ادخال حساب اخر!</string>
+    <string name="ok">حسنا</string>
 
 
 
