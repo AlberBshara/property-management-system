@@ -13,4 +13,6 @@ val background1 = Color(0xFF182635)
 val iconsColor = Color(0xFFBF2051)
 val transparent_p = Color(0x23FFFFFF)
 val noColor = Color(0xFFFFFF)
-
+val orange = Color(0xFFFF5722)
+val lightGreen = Color(0x5090EE90)
+val ligthGrey = Color(0x80CCCCCC)

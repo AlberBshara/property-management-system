@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import com.example.pms.ui.theme.iconsColor
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pms.ui.theme.transparent_p
@@ -41,7 +42,6 @@ import com.example.pms.view.animation.ProgressAnimatedBar
 import com.example.pms.view.utils.InternetAlertDialog
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegPage3Events
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegisterPage3Vm
-import com.example.pms.viewmodel.utils.InternetConnection
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
@@ -74,6 +74,7 @@ fun RegisterPag3(
                 .createSource(context.contentResolver, it)
             ImageDecoder.decodeBitmap(source)
         }
+           viewModel.onEvent(RegPage3Events.ImageChanged(bitmap!!))
     }
 
 
@@ -167,7 +168,7 @@ fun RegisterPag3(
             Text(
                 text = stringResource(id = R.string.email_duplicated),
                 color = Color.White,
-
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -179,7 +180,8 @@ fun RegisterPag3(
             ))
         }, onDeny = {
              viewModel.onEvent(RegPage3Events.WifiCase.Deny)
-        }, openDialog = state.showInternetAlert
+        },
+        openDialog = state.showInternetAlert
     )
 }
 

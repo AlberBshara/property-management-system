@@ -11,4 +11,5 @@ object Keys {
     const val ID : String = "id"
     const val USER : String = "User"
     const val MESSAGE : String = "Message"
+    const val IMAGE : String = "image"
 }

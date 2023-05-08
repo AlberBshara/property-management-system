@@ -1,6 +1,7 @@
 package com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -20,13 +21,19 @@ import com.example.pms.viewmodel.utils.InternetConnection
 import com.example.pms.viewmodel.utils.TokenManager
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class RegisterPage3Vm(
     private val userApi: UserServicesImplementation = UserServicesImplementation()
 ) : ViewModel() {
 
-    private val TAG: String = "RegisterPage3Vm.ky"
+    private val TAG : String = "RegisterPage3Vm.ky"
     var state by mutableStateOf(RegisterPage3State())
 
 
@@ -51,6 +58,11 @@ class RegisterPage3Vm(
             is RegPage3Events.DuplicatedEmailDone -> {
                 event.navController.popBackStack()
             }
+            is RegPage3Events.ImageChanged -> {
+                state = state.copy(
+                    image = event.image
+                )
+            }
         }
     }
 
@@ -66,12 +78,21 @@ class RegisterPage3Vm(
                 RegisterPages.REGISTER_DATA_KEY
             )
 
+
+        val bitmap = state.image
+
+        val boas = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, boas)
+        val byteArray = boas.toByteArray()
+        val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(),byteArray)
+        val imageFile = MultipartBody.Part.createFormData("file", "image.jpg", requestFile)
+
         val user = RegisterUserData(
             name = "${registerData?.firstname!!} ${registerData.lastname}",
             email = registerData.email,
             password = registerData.password,
             phone_number = registerData.phoneNumber,
-        )
+        image = imageFile)
 
         InternetConnection.run(context,
             connected = {
@@ -80,6 +101,7 @@ class RegisterPage3Vm(
                     response.collect {
                         when (it) {
                             is Resource.Loading -> {
+                                Log.d(TAG, "submitData: ${it.isLoading}")
                                 state = state.copy(
                                     isLoading = it.isLoading
                                 )

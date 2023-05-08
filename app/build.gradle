@@ -97,6 +97,9 @@ dependencies {
     def lottieVersion = "4.0.0"
     implementation "com.airbnb.android:lottie-compose:$lottieVersion"
 
+   //Accompanist Pager
+    implementation "com.google.accompanist:accompanist-pager:0.18.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.18.0"
 
 
 }

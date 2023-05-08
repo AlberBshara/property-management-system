@@ -58,5 +58,13 @@
     <string name="confirm">تأكيد</string>
     <string name="deny">رفض</string>
 
+    <string name="view_more">عرض المزيد من التفاصيل</string>
+    <string name="home">الرئيسية</string>
+    <string name="sell">بيع</string>
+    <string name="profile">حسابي</string>
+    <string name="chatting">محادثاتي</string>
+    <string name="search">بحث</string>
+    <string name="used_vehicle"> مستعملة</string>
+    <string name="new_vehicle">جديدة</string>
 
 </resources>

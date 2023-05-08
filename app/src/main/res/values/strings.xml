@@ -63,6 +63,14 @@
     <string name="deny">Deny</string>
 
 
+    <string name="view_more">View More details</string>
+    <string name="home">Home</string>
+    <string name="sell">Sell</string>
+    <string name="profile">Profile</string>
+    <string name="chatting">Chatting</string>
+    <string name="search">Search</string>
+    <string name="used_vehicle">Used Vehicle</string>
+    <string name="new_vehicle">New</string>
 
     <string-array name="country_codes">
         <item>+1</item>
