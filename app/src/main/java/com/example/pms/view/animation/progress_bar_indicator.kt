@@ -13,23 +13,26 @@ import com.example.pms.R
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun ProgressAnimatedBar(
-    isLoading : Boolean
+    isLoading: Boolean,
+    modifier: Modifier = Modifier.size(100.dp)
 ) {
     if (isLoading) {
-      val composition by rememberLottieComposition(
-          spec = LottieCompositionSpec
-              .RawRes(R.raw.loading_indiactor)
-      )
+        val composition by rememberLottieComposition(
+            spec = LottieCompositionSpec
+                .RawRes(R.raw.loading_indiactor)
+        )
 
         val animationState by animateLottieCompositionAsState(
-            composition = composition ,
+            composition = composition,
             iterations = LottieConstants.IterateForever,
             isPlaying = isLoading,
             speed = 1f,
             restartOnPlay = false
         )
-            LottieAnimation(composition = composition,
-                progress = animationState ,
-            modifier = Modifier.size(150.dp))
+        LottieAnimation(
+            composition = composition,
+            progress = animationState,
+            modifier = modifier
+        )
     }
 }

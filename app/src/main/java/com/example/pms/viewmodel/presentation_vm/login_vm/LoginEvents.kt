@@ -10,4 +10,10 @@ sealed class LoginEvents {
     data class EmailErrorChanged(val emailError : Boolean) : LoginEvents()
     data class PasswordErrorChanged(val passwordError : Boolean) : LoginEvents()
     data class Submit(val navController: NavHostController) : LoginEvents()
+    object ShowDialog : LoginEvents()
+    sealed class WifiCase : LoginEvents() {
+        object Confirm : WifiCase()
+
+        object Deny : WifiCase()
+    }
 }

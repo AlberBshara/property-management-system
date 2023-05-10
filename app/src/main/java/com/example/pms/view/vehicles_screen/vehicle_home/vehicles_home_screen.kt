@@ -44,7 +44,7 @@ fun VehiclesHomeScreen(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 48.dp)
+            .padding(bottom = 53.dp)
     ) {
 
         AnimatedVisibility(

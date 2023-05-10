@@ -1,7 +1,7 @@
 package com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3
 
 import android.content.Context
-import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -21,19 +21,15 @@ import com.example.pms.viewmodel.utils.InternetConnection
 import com.example.pms.viewmodel.utils.TokenManager
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 
 class RegisterPage3Vm(
-    private val userApi: UserServicesImplementation = UserServicesImplementation()
+    private val userApiRepo: UserServicesImplementation = UserServicesImplementation()
 ) : ViewModel() {
 
     private val TAG : String = "RegisterPage3Vm.ky"
+
     var state by mutableStateOf(RegisterPage3State())
 
 
@@ -44,11 +40,13 @@ class RegisterPage3Vm(
                 submitData(event.navController, event.context)
             }
             is RegPage3Events.WifiCase.Confirm -> {
+                state = state.copy(
+                    requestInternetPermission = !state.requestInternetPermission
+                )
                 InternetConnection.turnOnWifi(event.context)
                 state = state.copy(
                     showInternetAlert = false
                 )
-                submitData(event.navController, event.context)
             }
             is RegPage3Events.WifiCase.Deny -> {
                 state = state.copy(
@@ -78,26 +76,36 @@ class RegisterPage3Vm(
                 RegisterPages.REGISTER_DATA_KEY
             )
 
+        var user : RegisterUserData?
 
-        val bitmap = state.image
+       if (state.image != null){
+           val imageUri: Uri = state.image!!
+           val contentResolver = context.contentResolver
+           val file = File.createTempFile("image", null, context.cacheDir)
 
-        val boas = ByteArrayOutputStream()
-        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, boas)
-        val byteArray = boas.toByteArray()
-        val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(),byteArray)
-        val imageFile = MultipartBody.Part.createFormData("file", "image.jpg", requestFile)
+           contentResolver.openInputStream(imageUri).use { inputStream ->
+               file.outputStream().use { outputStream ->
+                   inputStream?.copyTo(outputStream)
+               }
+           }
+            user = RegisterUserData(
+               name = "${registerData?.firstname!!} ${registerData.lastname}",
+               email = registerData.email,
+               password = registerData.password,
+               phone_number = registerData.phoneNumber,
+               image = file)
+       }
 
-        val user = RegisterUserData(
+          user = RegisterUserData(
             name = "${registerData?.firstname!!} ${registerData.lastname}",
             email = registerData.email,
             password = registerData.password,
-            phone_number = registerData.phoneNumber,
-        image = imageFile)
+            phone_number = registerData.phoneNumber)
 
         InternetConnection.run(context,
             connected = {
                 viewModelScope.launch {
-                    val response = userApi.postRegisterUserData(user)
+                    val response = userApiRepo.postRegisterUserData(user)
                     response.collect {
                         when (it) {
                             is Resource.Loading -> {
@@ -123,10 +131,12 @@ class RegisterPage3Vm(
                                 } else {
                                     //TODO:(post request has been failed after posting)
                                     signedUpFailed(apiResponse.errorMessage!!)
+                                    Log.d(TAG, "submitData: status = false ${apiResponse.errorMessage}")
                                 }
                             }
                             is Resource.Error -> {
                                 //TODO:(post request has been failed after getting an Exception)
+                                Log.d(TAG, "submitData: exception ${it.data}")
                             }
                         }
                     }
@@ -146,17 +156,14 @@ class RegisterPage3Vm(
     ) {
         TokenManager.getInstance(context)
             .save(apiResponse.token)
-        navController.navigate(Destination.DashboardDestination.route) {
-            popUpTo(Destination.SplashDestination.route) {
-                inclusive = true
-            }
-        }
+        navController.popBackStack()
+        navController.navigate(Destination.DashboardDestination.route)
     }
 
     private fun signedUpFailed(
         errorMessage: String
     ) {
-        if (errorMessage.contains("Duplicate email")) {
+        if (errorMessage.contains("1062 Duplicate entry")) {
             state.emailDuplicated = true
         }
     }

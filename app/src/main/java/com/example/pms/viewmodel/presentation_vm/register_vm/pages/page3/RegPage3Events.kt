@@ -14,7 +14,6 @@ sealed class RegPage3Events {
 
     sealed class WifiCase : RegPage3Events() {
         data class Confirm(
-            val navController: NavHostController,
             val context: Context
         ) : WifiCase()
 
@@ -26,7 +25,8 @@ sealed class RegPage3Events {
         ) : RegPage3Events()
 
     data class ImageChanged(
-        val image : Bitmap
+        val image : Uri?
     ) : RegPage3Events()
+
 
 }

@@ -45,7 +45,6 @@ fun VehicleCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(16.dp),
-        backgroundColor = transparent_p,
         shape = RoundedCornerShape(16.dp),
         elevation = 5.dp
     ) {

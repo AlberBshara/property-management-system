@@ -1,5 +1,7 @@
 package com.example.pms.view.login_screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import com.example.pms.view.regisiter_screen.InputPassword
@@ -9,10 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,8 +29,11 @@ import com.example.pms.ui.theme.background1
 import com.example.pms.ui.theme.iconsColor
 import com.example.pms.viewmodel.presentation_vm.login_vm.LoginScreenVM
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.view.animation.ProgressAnimatedBar
+import com.example.pms.view.utils.InternetAlertDialog
 import com.example.pms.viewmodel.presentation_vm.login_vm.LoginEvents
 
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun LoginScreen(
     navController: NavHostController,
@@ -68,7 +70,8 @@ fun LoginScreen(
             fontWeight = FontWeight.Bold
         )
 
-        InputTextFiled(title = stringResource(id = R.string.email),
+        InputTextFiled(
+            title = stringResource(id = R.string.email),
             icon = R.drawable.email_ic,
             keyboardOption = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Email
@@ -92,8 +95,8 @@ fun LoginScreen(
         }, isError = state.passwordError)
         viewModel.passwordState.value.error?.let {
             Text(
-                text = it ,
-                color =MaterialTheme.colors.error,
+                text = it,
+                color = MaterialTheme.colors.error,
                 fontSize = 10.sp,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
@@ -134,5 +137,38 @@ fun LoginScreen(
                     viewModel.onEvent(LoginEvents.CreateNewAccount(navController))
                 }
         )
+
+        ProgressAnimatedBar(isLoading = state.progressBarIndicator, modifier = Modifier.size(50.dp))
     }
+
+
+    if (state.showDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                viewModel.onEvent(LoginEvents.ShowDialog)
+            },
+            title = { Text(stringResource(id = R.string.error)) },
+            text = { Text(state.errorMessage.toString()) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.onEvent(LoginEvents.ShowDialog)
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = iconsColor)
+                ) {
+                    Text(stringResource(id = R.string.ok))
+                }
+            },
+            modifier = Modifier.padding(30.dp),
+            backgroundColor = Color.White
+        )
+    }
+
+
+    InternetAlertDialog(
+        onConfirm = { viewModel.onEvent(LoginEvents.WifiCase.Confirm) },
+        onDeny = { viewModel.onEvent(LoginEvents.WifiCase.Deny) },
+        openDialog = state.showInternetAlert
+    )
+
 }

@@ -66,5 +66,8 @@
     <string name="search">بحث</string>
     <string name="used_vehicle"> مستعملة</string>
     <string name="new_vehicle">جديدة</string>
+    <string name="error">خطأ!</string>
+
+    <string name="less_than2">الاسم يجب ان يجوي على الاقل حرفان</string>
 
 </resources>

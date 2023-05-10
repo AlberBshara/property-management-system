@@ -71,7 +71,9 @@
     <string name="search">Search</string>
     <string name="used_vehicle">Used Vehicle</string>
     <string name="new_vehicle">New</string>
+    <string name="error">Error!</string>
 
+    <string name="less_than2">the name should be at least 2 character</string>
     <string-array name="country_codes">
         <item>+1</item>
         <item>+963</item>

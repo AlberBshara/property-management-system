@@ -37,7 +37,7 @@ fun SearchBar(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
+                .height(53.dp)
                 .clip(shape = RoundedCornerShape(24.dp)),
             elevation = 5.dp,
             contentColor = Color.Transparent

@@ -9,6 +9,12 @@ class ValidationName {
             name: String,
             context: Context
         ): ValidationResult {
+            if (name.length < 2) {
+                return ValidationResult(
+                    success = false,
+                    errorMessage = context.getString(R.string.less_than2)
+                )
+            }
             if (name.isBlank()) {
                 return ValidationResult(
                     success = false,
@@ -27,7 +33,8 @@ class ValidationName {
         }
 
         private fun validName(string: String): Boolean {
-            val regex = Regex("[\\u0600-\\u06FF\\u0750-\\u077F\\uFB50-\\uFDFF\\uFE70-\\uFEFFa-zA-Z]+")
+            val regex =
+                Regex("[\\u0600-\\u06FF\\u0750-\\u077F\\uFB50-\\uFDFF\\uFE70-\\uFEFFa-zA-Z]+")
             return string.matches(regex)
         }
     }

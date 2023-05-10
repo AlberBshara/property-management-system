@@ -40,6 +40,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pms.ui.theme.transparent_p
 import com.example.pms.view.animation.ProgressAnimatedBar
 import com.example.pms.view.utils.InternetAlertDialog
+import com.example.pms.view.utils.RequestInternetPermission
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegPage3Events
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegisterPage3Vm
 
@@ -74,7 +75,7 @@ fun RegisterPag3(
                 .createSource(context.contentResolver, it)
             ImageDecoder.decodeBitmap(source)
         }
-           viewModel.onEvent(RegPage3Events.ImageChanged(bitmap!!))
+        viewModel.onEvent(RegPage3Events.ImageChanged(imageUri!!))
     }
 
 
@@ -155,9 +156,11 @@ fun RegisterPag3(
         ) {
             Button(
                 onClick = {
-                  viewModel.onEvent(RegPage3Events.DuplicatedEmailDone(
-                      navController
-                  ))
+                    viewModel.onEvent(
+                        RegPage3Events.DuplicatedEmailDone(
+                            navController
+                        )
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(iconsColor),
                 modifier = Modifier.padding(start = 10.dp)
@@ -173,13 +176,14 @@ fun RegisterPag3(
         }
     }
 
+
+    
+    RequestInternetPermission(openRequestPermission = state.requestInternetPermission)
     InternetAlertDialog(
         onConfirm = {
-            viewModel.onEvent(RegPage3Events.WifiCase.Confirm(
-                navController, context
-            ))
+            viewModel.onEvent(RegPage3Events.WifiCase.Confirm(context))
         }, onDeny = {
-             viewModel.onEvent(RegPage3Events.WifiCase.Deny)
+            viewModel.onEvent(RegPage3Events.WifiCase.Deny)
         },
         openDialog = state.showInternetAlert
     )

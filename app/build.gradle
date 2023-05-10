@@ -102,4 +102,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:0.18.0"
 
 
+
+    //jetpack Permission
+    implementation 'com.google.accompanist:accompanist-permissions:0.25.0'
+
 }

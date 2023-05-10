@@ -21,16 +21,20 @@ object InternetConnection {
         return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
+
+
     @RequiresApi(Build.VERSION_CODES.M)
     fun run(
         context: Context,
         connected: () -> Unit,
         unconnected: () -> Unit
     ) {
-        if (isConnectedToInternet(context))
+        if (isConnectedToInternet(context)) {
+
             connected()
-        else
+        } else {
             unconnected()
+        }
     }
 
     fun turnOnWifi(

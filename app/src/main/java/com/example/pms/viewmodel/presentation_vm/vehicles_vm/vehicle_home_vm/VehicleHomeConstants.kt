@@ -16,13 +16,15 @@ class VehicleHomeConstants {
             FilteringType(title = FilteringTitles.Fuel , items = listOf("gasoline","electricity")),
             FilteringType(title = FilteringTitles.Model, items = listOf("BMW", "Honda")),
             FilteringType(title = FilteringTitles.Mileage , items = listOf("1000km", "2000km")),
+            FilteringType(title = FilteringTitles.Location, items = listOf("Homs", "Damascs"))
         )
 
         enum class FilteringTitles {
             All, Color , Price ,
             Transmission , Body,
             Year , Used , New ,
-            Fuel , Model , Mileage
+            Fuel , Model , Mileage ,
+            Location
         }
 
         data class FilteringType(
