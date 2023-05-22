@@ -10,12 +10,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +28,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pms.ui.theme.noColor
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.vehicle_home_vm.VehicleHomeEvents
 import com.example.pms.R
+import com.example.pms.view.animation.ShowShimmerEffect
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.vehicle_home_vm.VehicleHomeConstants
+import kotlinx.coroutines.delay
 
 @Composable
 fun VehiclesHomeScreen(
@@ -37,83 +39,91 @@ fun VehiclesHomeScreen(
 ) {
 
     val state = viewModel.state
-    val context = LocalContext.current
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 53.dp)
-    ) {
 
-        AnimatedVisibility(
-            visible = state.showSearchBar,
-            enter = slideInHorizontally(),
+    LaunchedEffect(key1 = true) {
+        delay(5000)
+        viewModel.onEvent(VehicleHomeEvents.LoadingCaseChanged)
+    }
+
+    if (state.isLoading) {
+        ShowShimmerEffect()
+    } else {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 53.dp)
         ) {
-            SearchBar(
-                query = state.query,
-                onCancelListener = {
-                    viewModel.onEvent(VehicleHomeEvents.ShowSearchBar)
-                },
-                onQueryListener = {
-                    viewModel.onEvent(VehicleHomeEvents.SearchQueryChanged(it))
-                }
-            )
-        }
-        if (!state.showSearchBar) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .background(color = noColor),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+
+            AnimatedVisibility(
+                visible = state.showSearchBar,
+                enter = slideInHorizontally(),
             ) {
+                SearchBar(
+                    query = state.query,
+                    onCancelListener = {
+                        viewModel.onEvent(VehicleHomeEvents.ShowSearchBar)
+                    },
+                    onQueryListener = {
+                        viewModel.onEvent(VehicleHomeEvents.SearchQueryChanged(it))
+                    }
+                )
+            }
+            if (!state.showSearchBar) {
                 Row(
-                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .background(color = noColor),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.logo),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(45.dp)
-                            .clip(CircleShape)
-                            .padding(start = 10.dp),
-                        contentScale = ContentScale.Crop
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.logo),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(45.dp)
+                                .clip(CircleShape)
+                                .padding(start = 10.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
 
-                    Text(
-                        text = stringResource(id = R.string.app_name_without_abbreviation),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        color = Color.Black,
-                    )
-                }
-                IconButton(onClick = {
-                    viewModel.onEvent(VehicleHomeEvents.ShowSearchBar)
-                }) {
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = null,
-                        tint = Color.Black
-                    )
+                        Text(
+                            text = stringResource(id = R.string.app_name_without_abbreviation),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            color = Color.Black,
+                        )
+                    }
+                    IconButton(onClick = {
+                        viewModel.onEvent(VehicleHomeEvents.ShowSearchBar)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = null,
+                            tint = Color.Black
+                        )
+                    }
                 }
             }
-        }
 
-        FilteringRow(titles =
-        VehicleHomeConstants.listOfFiltering,
-            onSelectedItem = {
-                viewModel.onEvent(VehicleHomeEvents.ShowDropDownFilter(it))
-            })
+            FilteringRow(titles =
+            VehicleHomeConstants.listOfFiltering,
+                onSelectedItem = {
+                    viewModel.onEvent(VehicleHomeEvents.ShowDropDownFilter(it))
+                })
 
-        AnimatedVisibility(
-            visible = state.showDropDownFilter,
-            enter = slideInVertically()
-        ) {
+            AnimatedVisibility(
+                visible = state.showDropDownFilter,
+                enter = slideInVertically()
+            ) {
 
                 DropdownMenu(
                     expanded = state.showDropDownFilter,
@@ -132,19 +142,17 @@ fun VehiclesHomeScreen(
                         }
                     }
                 }
-        }
-
-
-        LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            items(5) {
-                VehicleCard(navController = navController, onClick = { /*TODO*/ })
+            }
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                items(5) {
+                    VehicleCard(navController = navController, onClick = { /*TODO*/ })
+                }
             }
         }
     }
+
 }
-
-
 

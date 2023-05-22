@@ -16,5 +16,7 @@ sealed class VehicleHomeEvents {
        val filterType : String
     ) : VehicleHomeEvents()
 
+    object LoadingCaseChanged : VehicleHomeEvents()
+
 
 }

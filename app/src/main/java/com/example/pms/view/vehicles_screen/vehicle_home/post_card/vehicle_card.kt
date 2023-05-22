@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.pms.R
-import com.example.pms.ui.theme.transparent_p
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.postcard_vehicle_vm.PostVehicleVM
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -26,6 +25,8 @@ import androidx.navigation.NavHostController
 import com.example.pms.ui.theme.orange
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.postcard_vehicle_vm.PostVehicleEvents
 
+
+private const val NUMBER_OF_IMAGES : Int = 3
 
 @SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalPagerApi::class)
@@ -38,7 +39,7 @@ fun VehicleCard(
 
     val state = viewModel.state
 
-    val pagerState = rememberPagerState(pageCount = state.images.size)
+    val pagerState = rememberPagerState(pageCount = NUMBER_OF_IMAGES)
 
     Card(
         modifier = Modifier
@@ -68,7 +69,8 @@ fun VehicleCard(
                 )
             }
 
-            PagerIndicator(current_index = state.currentImageIndex)
+            PagerIndicator(current_index = state.currentImageIndex ,
+                length = NUMBER_OF_IMAGES)
 
             Row (
                 modifier = Modifier

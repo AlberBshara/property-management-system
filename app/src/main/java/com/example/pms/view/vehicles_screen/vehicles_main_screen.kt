@@ -5,12 +5,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -87,7 +85,6 @@ private fun BottomNavigationVehicle(
         elevation = 5.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(25.dp))
     ) {
         tabs.forEach {
             val selected = (it.route == backEntry.value?.destination?.route)

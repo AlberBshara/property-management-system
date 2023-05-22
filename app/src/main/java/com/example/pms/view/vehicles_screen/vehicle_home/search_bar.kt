@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.pms.R
+import com.example.pms.ui.theme.lightGreen
 
 @Composable
 fun SearchBar(
@@ -60,9 +61,9 @@ fun SearchBar(
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent,
-                    cursorColor = Color.Green,
-                    focusedLabelColor = Color.Green,
-                    focusedIndicatorColor = Color.Green
+                    cursorColor = lightGreen,
+                    focusedLabelColor = lightGreen,
+                    focusedIndicatorColor = lightGreen
                 ),
                 textStyle = TextStyle(
                     color = Color.Black

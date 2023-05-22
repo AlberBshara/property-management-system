@@ -69,5 +69,56 @@
     <string name="error">خطأ!</string>
 
     <string name="less_than2">الاسم يجب ان يجوي على الاقل حرفان</string>
+    <string name="wifi_manually">الاصدارات 10 ومافوق من نظام اندرويد تطلب منك تفيل ال Wifi يديويا للحفاظ على امن معلوماتك</string>
+
+
+    <string name="add_item">أضافة عناصر</string>
+    <string name="location">الموقع</string>
+    <string name="photos">الصور</string>
+    <string name="camera">الكاميرا</string>
+    <string name="files">ملفاتي</string>
+
+    <string name="basic_info">المعلومات الاساسية</string>
+    <string name="brand">ماركة العربة</string>
+    <string name="listingType">نوع العرض</string>
+    <string name="transmission_type">نوع الناقل</string>
+    <string name="secondaryBrand">النوع الاضافي</string>
+    <string name="price">السعر</string>
+    <string name="km">كم</string>
+    <string name="manufacture_year">سنة التصنيع</string>
+    <string name="condition">الحالة</string>
+    <string name="chose_year">اختار سنة التصنيع:</string>
+    <string name="description">معومات اضافية عن العربة</string>
+    <string name="rent">تأجير</string>
+    <string name="manually">غيار عادي</string>
+    <string name="automatic">غيار اتواماتيك</string>
+    <string name="color">الون </string>
+    <string name="submit">أرسال البيانات</string>
+    <string name="fuel_type">نوع الوقود</string>
+
+
+    <string name="gasoline">البنزين</string>
+    <string name="diesel">ديزل</string>
+    <string name="hybrid">هجين</string>
+    <string name="electric">كهرباء</string>
+
+
+    <string name="vehicle_caution">لقد لاحظنا انك تضع بعض الصور ليست عربات!</string>
+    <string name="vehicle_caution_message">سوف نحذف الصور التي لاتحوي على عربات </string>
+    <string name="vehicle_caution_message_con"> لمنع البيانات غير المناسبة مع غرض النظام</string>
+
+
+    <string-array name="colors_list">
+        <item>أحمر</item>
+        <item>برتقالي</item>
+        <item>اصفر</item>
+        <item>اخضر</item>
+        <item>أزرق</item>
+        <item>نيلي</item>
+        <item>البنفسجي</item>
+        <item>اسود</item>
+        <item>ابيض</item>
+        <item>رمادي</item>
+    </string-array>
 
 </resources>

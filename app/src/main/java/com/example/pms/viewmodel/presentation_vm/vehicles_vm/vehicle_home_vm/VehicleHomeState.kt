@@ -5,5 +5,6 @@ data class VehicleHomeState(
     var showSearchBar : Boolean = false,
     var showDropDownFilter : Boolean = false,
     var filterType : String = "",
-    var filterId : Int = -1
+    var filterId : Int = -1,
+    var isLoading : Boolean = false
 )

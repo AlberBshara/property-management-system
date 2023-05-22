@@ -7,9 +7,13 @@ import androidx.lifecycle.ViewModel
 
 class VehicleHomeVM : ViewModel() {
 
-
     var state by mutableStateOf(VehicleHomeState())
 
+    init {
+        state = state.copy(
+            isLoading = !state.isLoading
+        )
+    }
 
     fun onEvent(event : VehicleHomeEvents) {
         when(event) {
@@ -34,6 +38,11 @@ class VehicleHomeVM : ViewModel() {
                      showDropDownFilter = !state.showDropDownFilter,
                      filterType = event.filterType
                  )
+            }
+            is VehicleHomeEvents.LoadingCaseChanged -> {
+                state = state.copy(
+                    isLoading =  !state.isLoading
+                )
             }
         }
     }

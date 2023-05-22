@@ -11,40 +11,38 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PagerIndicator(
-    current_index: Int
+    current_index: Int,
+    length: Int
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Box(
-            modifier = Modifier
-                .size(12.dp)
-                .padding(start = 4.dp, end = 4.dp)
-                .background(
-                    color = if (current_index == 0) Color.Green else Color.Gray,
-                    shape = RoundedCornerShape(8.dp)
+        for (i in 0 until  length) {
+            if (i < 10) {
+                Box(
+                    modifier = Modifier
+                        .size(12.dp)
+                        .padding(start = 4.dp, end = 4.dp)
+                        .background(
+                            color = if (current_index == i) Color.Green else Color.Gray,
+                            shape = RoundedCornerShape(8.dp)
+                        )
                 )
-        )
-        Box(
-            modifier = Modifier
-                .size(12.dp)
-                .padding(start = 4.dp, end = 4.dp)
-                .background(
-                    color = if (current_index == 1) Color.Green else Color.Gray,
-                    shape = RoundedCornerShape(8.dp)
+            }else {
+                Box(
+                    modifier = Modifier
+                        .size(5.dp)
+                        .padding(start = 2.dp, end = 2.dp)
+                        .background(
+                            color = Color.Gray,
+                            shape = RoundedCornerShape(4.dp)
+                        )
                 )
-        )
-        Box(
-            modifier = Modifier
-                .size(12.dp)
-                .padding(start = 4.dp, end = 4.dp)
-                .background(
-                    color = if (current_index == 2) Color.Green else Color.Gray,
-                    shape = RoundedCornerShape(8.dp)
-                )
-        )
+            }
+        }
+
     }
 }
 

@@ -84,12 +84,7 @@ fun RegisterScreen(
                     RegisterPages.registerPage2 -> RegisterPage2(navController = navController)
                     RegisterPages.registerPage3 -> RegisterPag3(navController = navController)
                 }
-
             }
         }
-
-
     }
-
-
 }

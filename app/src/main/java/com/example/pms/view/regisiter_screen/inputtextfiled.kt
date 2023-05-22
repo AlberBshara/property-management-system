@@ -26,7 +26,7 @@ fun InputTextFiled(
     keyboardOption: KeyboardOptions,
     onValueChanged: (String) -> Unit,
     onIconListener: () -> Unit = {},
-    isError : Boolean
+    isError: Boolean
 ) {
 
     val text = rememberSaveable {

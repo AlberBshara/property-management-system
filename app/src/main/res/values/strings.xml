@@ -56,7 +56,7 @@
     <string name= "uncorrect_info">please, enter acceptable information according to the mentioned
     guidance above</string>
     <string name="email_duplicated">The entered account already exists</string>
-    <string name="ok">ok</string>
+    <string name="ok">Ok</string>
 
     <string name="internet_unconnected">we noticed that you are not connected to the internet, want to turn on the Wifi ?</string>
     <string name="confirm">Confirm</string>
@@ -66,14 +66,75 @@
     <string name="view_more">View More details</string>
     <string name="home">Home</string>
     <string name="sell">Sell</string>
+    <string name="rent">Rent</string>
     <string name="profile">Profile</string>
     <string name="chatting">Chatting</string>
     <string name="search">Search</string>
-    <string name="used_vehicle">Used Vehicle</string>
+    <string name="used_vehicle">Used</string>
     <string name="new_vehicle">New</string>
     <string name="error">Error!</string>
 
     <string name="less_than2">the name should be at least 2 character</string>
+
+
+
+    <string name="wifi_manually">Android 10 or more versions are recommended to manually turn on Wifi for security</string>
+
+
+
+    <string name="add_item">Add Items</string>
+    <string name="location">Location</string>
+    <string name="photos">Photos</string>
+    <string name="camera">Camera</string>
+    <string name="files">Files</string>
+
+
+    <string name="basic_info">Basic information</string>
+    <string name="brand">Brand of the Vehicle</string>
+    <string name="listingType">type of Listing</string>
+    <string name="transmission_type">Transmission Type</string>
+    <string name="secondaryBrand">Secondary Brand</string>
+    <string name="price">Price</string>
+    <string name="km">KM</string>
+    <string name="manufacture_year">year of manufacture</string>
+    <string name="condition">Condition</string>
+    <string name="chose_year">Chose the year of manufacture: </string>
+    <string name="description">Description</string>
+    <string name="manually">Manually</string>
+    <string name="automatic">Automatic</string>
+    <string name="color">Color</string>
+    <string name="fuel_type">Fuel Type</string>
+
+
+    <string name="submit">Submit the Data</string>
+
+
+
+    <string name="gasoline">Gasoline</string>
+    <string name="diesel">Diesel </string>
+    <string name="hybrid">Hybrid</string>
+    <string name="electric">Electric</string>
+
+    <string name="vehicle_caution">we noticed that you provided some images are not a Vehicle!</string>
+    <string name="vehicle_caution_message">we will remove these images, </string>
+    <string name="vehicle_caution_message_con"> to prevent fake data</string>
+
+
+
+    <string-array name="colors_list">
+        <item>Red</item>
+        <item>Orange</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Indigo</item>
+       <item>Violet</item>
+        <item>Black</item>
+        <item>White</item>
+        <item>Gray</item>
+    </string-array>
+
+
     <string-array name="country_codes">
         <item>+1</item>
         <item>+963</item>

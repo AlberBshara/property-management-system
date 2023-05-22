@@ -1,11 +1,8 @@
 package com.example.pms.view.regisiter_screen.pages
 
 
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -30,13 +27,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.pms.ui.theme.iconsColor
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.pms.ui.theme.transparent_p
 import com.example.pms.view.animation.ProgressAnimatedBar
 import com.example.pms.view.utils.InternetAlertDialog
@@ -58,9 +55,6 @@ fun RegisterPag3(
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
     }
-    var bitmap by remember {
-        mutableStateOf<Bitmap?>(null)
-    }
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
@@ -68,13 +62,6 @@ fun RegisterPag3(
         })
 
     imageUri?.let {
-        bitmap = if (Build.VERSION.SDK_INT < 28) {
-            MediaStore.Images.Media.getBitmap(context.contentResolver, it)
-        } else {
-            val source = ImageDecoder
-                .createSource(context.contentResolver, it)
-            ImageDecoder.decodeBitmap(source)
-        }
         viewModel.onEvent(RegPage3Events.ImageChanged(imageUri!!))
     }
 
@@ -83,7 +70,7 @@ fun RegisterPag3(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (bitmap == null) {
+        if (imageUri == null) {
             Image(
                 painter = painterResource(id = R.drawable.person_profile),
                 contentDescription = "",
@@ -93,9 +80,9 @@ fun RegisterPag3(
                 contentScale = ContentScale.Crop
             )
         } else {
-            Image(
-                bitmap = bitmap?.asImageBitmap()!!,
-                contentDescription = "",
+            AsyncImage(
+                model = state.image,
+                contentDescription = null,
                 modifier = Modifier
                     .size(150.dp)
                     .clip(CircleShape),
@@ -177,7 +164,7 @@ fun RegisterPag3(
     }
 
 
-    
+
     RequestInternetPermission(openRequestPermission = state.requestInternetPermission)
     InternetAlertDialog(
         onConfirm = {

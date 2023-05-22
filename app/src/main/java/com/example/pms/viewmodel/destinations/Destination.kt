@@ -42,8 +42,8 @@ fun PmsNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = Destination.SplashDestination.route
-    // startDestination = Destination.VehiclesMainDestination.route
+        //startDestination = Destination.SplashDestination.route
+      startDestination = Destination.VehiclesMainDestination.route
     ) {
         composable(route = Destination.SplashDestination.route) {
             SplashScreen(navController)
