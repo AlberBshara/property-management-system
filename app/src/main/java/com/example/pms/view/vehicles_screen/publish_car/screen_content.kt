@@ -3,8 +3,10 @@ package com.example.pms.view.vehicles_screen.publish_car
 import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -40,6 +42,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
 
+@RequiresApi(Build.VERSION_CODES.M)
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalPagerApi::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -160,7 +163,7 @@ fun ScreenContent(
             }
             item {
                 PublishingVehicleForm(
-                    navHostController = navController,
+                    navController = navController,
                     viewModel = viewModel,
                     state = state
                 )

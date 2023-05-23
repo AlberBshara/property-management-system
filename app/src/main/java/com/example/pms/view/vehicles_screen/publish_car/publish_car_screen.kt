@@ -3,8 +3,10 @@ package com.example.pms.view.vehicles_screen.publish_car
 
 import android.Manifest
 import android.net.Uri
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -16,11 +18,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.PublishVehicleVM
 import  androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.view.utils.InternetAlertDialog
+import com.example.pms.view.utils.RequestInternetPermission
+import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegPage3Events
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.PublishVehicleEvents
+import com.example.pms.viewmodel.utils.LocationPermission
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
+@RequiresApi(Build.VERSION_CODES.M)
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class)
 @Composable
 fun PublishingCarScreen(
@@ -65,9 +72,12 @@ fun PublishingCarScreen(
                         permission.launchPermissionRequest()
                     }
                 },
-                onLocationListener = { },
+                onLocationListener = {
+                    viewModel.onEvent(PublishVehicleEvents.ShowLocationPermission)
+                },
                 onFileListener = { },
-                onCameraListener = { }
+                onCameraListener = { },
+                showIndicator = state.showIndicator
             )
         },
     ) {
@@ -89,6 +99,22 @@ fun PublishingCarScreen(
                     .padding(10.dp)
             )
         }
+
+        if (state.showLocationPermission){
+            LocationPermission(onGrantedLocation = {
+                viewModel.onEvent(PublishVehicleEvents.GetLocation(context))
+            })
+        }
+
+        RequestInternetPermission(openRequestPermission = state.requestInternetPermission)
+        InternetAlertDialog(
+            onConfirm = {
+                viewModel.onEvent(PublishVehicleEvents.WifiCase.Confirm(context))
+            }, onDeny = {
+                viewModel.onEvent(PublishVehicleEvents.WifiCase.Deny)
+            },
+            openDialog = state.showInternetAlert
+        )
     }
 }
 

@@ -10,6 +10,10 @@ data class PublishVehicleState(
     var previousOffset : Int = 0,
     var showYearDialogPicker : Boolean = false ,
     var imageDetectionCaution : List<Int> = emptyList() ,
+    var showLocationPermission : Boolean = false,
+    var showIndicator : Boolean = false ,
+    var showInternetAlert : Boolean = false,
+    var requestInternetPermission : Boolean = false ,
     var enteredData : EnteredData = EnteredData()
 ){
     data class EnteredData(

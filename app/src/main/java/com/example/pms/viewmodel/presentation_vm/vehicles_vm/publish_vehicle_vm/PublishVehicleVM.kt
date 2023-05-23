@@ -3,7 +3,9 @@ package com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +14,8 @@ import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pms.viewmodel.utils.ImageDetection
+import com.example.pms.viewmodel.utils.InternetConnection
+import com.example.pms.viewmodel.utils.LocationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,6 +25,7 @@ class PublishVehicleVM : ViewModel() {
     var state by mutableStateOf(PublishVehicleState())
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun onEvent(event: PublishVehicleEvents) {
         when (event) {
             is PublishVehicleEvents.AddNewImage -> {
@@ -135,6 +140,28 @@ class PublishVehicleVM : ViewModel() {
             is PublishVehicleEvents.ImageDetectionCautionOk -> {
                 deleteTheFakeImage(event.indicesList)
             }
+            is PublishVehicleEvents.ShowLocationPermission -> {
+                state = state.copy(
+                    showLocationPermission = !state.showLocationPermission
+                )
+            }
+            is PublishVehicleEvents.GetLocation -> {
+                getLocation(event.context)
+            }
+            is PublishVehicleEvents.WifiCase.Confirm -> {
+                state = state.copy(
+                    requestInternetPermission = !state.requestInternetPermission
+                )
+                InternetConnection.turnOnWifi(event.context)
+                state = state.copy(
+                    showInternetAlert = false
+                )
+            }
+            is PublishVehicleEvents.WifiCase.Deny -> {
+                state = state.copy(
+                    showInternetAlert = false
+                )
+            }
         }
     }
 
@@ -214,12 +241,45 @@ class PublishVehicleVM : ViewModel() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun getLocation(context: Context) {
+        viewModelScope.launch {
+            InternetConnection.run(
+                context,
+                connected = {
+                    state = state.copy(
+                        showIndicator = true
+                    )
+                    launch {
+                        LocationHelper.getCurrentLocation(context,
+                            onLocationListener = { result ->
+                                state = state.copy(
+                                    enteredData = state.enteredData.copy(
+                                        location = result.address
+                                    ),
+                                    showLocationPermission = false,
+                                    showIndicator = false
+                                )
+                            })
+                    }
+                },
+                unconnected = {
+                    state = state.copy(
+                        showInternetAlert = true
+                    )
+                }
+            )
+        }
+    }
+
     private fun collapsingImageCalculation(
         lazyListState: LazyListState,
         graphicsLayer: GraphicsLayerScope
     ) {
-        state.scrolledY += lazyListState.firstVisibleItemScrollOffset - state.previousOffset
-        graphicsLayer.translationY = state.scrolledY * 0.5f
-        state.previousOffset = lazyListState.firstVisibleItemScrollOffset
+        viewModelScope.launch {
+            state.scrolledY += lazyListState.firstVisibleItemScrollOffset - state.previousOffset
+            graphicsLayer.translationY = state.scrolledY * 0.5f
+            state.previousOffset = lazyListState.firstVisibleItemScrollOffset
+        }
     }
 }

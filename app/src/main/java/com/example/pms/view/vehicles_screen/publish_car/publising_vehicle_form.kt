@@ -4,11 +4,13 @@ package com.example.pms.view.vehicles_screen.publish_car
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -18,8 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.pms.R
-import com.example.pms.ui.theme.buttonsColor
-import com.example.pms.ui.theme.lightGreen
+import com.example.pms.ui.theme.*
 import com.example.pms.view.animation.CircularSlider
 import com.example.pms.view.utils.YearDialogPicker
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.PublishVehicleEvents
@@ -28,7 +29,7 @@ import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.
 
 @Composable
 fun PublishingVehicleForm(
-    navHostController: NavHostController,
+    navController: NavHostController,
     viewModel: PublishVehicleVM,
     state: PublishVehicleState
 ) {
@@ -129,8 +130,8 @@ fun PublishingVehicleForm(
         ) {
             CircularSlider(
                 modifier = Modifier.size(180.dp),
-                thumbColor = buttonsColor,
-                progressColor = lightGreen,
+                thumbColor = lightBlue,
+                progressColor = lightBlue,
             ) {
                 viewModel.onEvent(PublishVehicleEvents.OnKiloMeterChanged(it))
             }
@@ -141,17 +142,38 @@ fun PublishingVehicleForm(
             )
         }
 
-        PMSOutLinedTextField(
-            initialValue = state.enteredData.location,
-            onValueChanged = {
+        OutlinedTextField(
+            value = state.enteredData.location,
+            onValueChange = {
                 viewModel.onEvent(PublishVehicleEvents.OnLocationChanged(it))
             },
-            label = R.string.location,
-            keyboardType = KeyboardType.Text,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            leadingIcon = R.drawable.location_ic
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                backgroundColor = transparentGray,
+                focusedBorderColor = lightGreen,
+                unfocusedBorderColor = transparentGray,
+                cursorColor = lightGreen
+            ),
+            shape = RoundedCornerShape(20.dp),
+            label = {
+                Text(
+                    text = stringResource(id = R.string.location),
+                    color = Color.DarkGray,
+                    style = MaterialTheme.typography.caption
+                )
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text
+            ),
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.location_ic),
+                    contentDescription = null
+                )
+            }
         )
 
         Row(
@@ -249,7 +271,8 @@ fun PublishingVehicleForm(
                 viewModel.onEvent(PublishVehicleEvents.Submit)
             },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = lightGreen
+                backgroundColor = lightBlue,
+                disabledBackgroundColor = lightBlue
             ),
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
@@ -269,17 +292,7 @@ fun PublishingVehicleForm(
                 textAlign = TextAlign.Center
             )
         }
-
     }
 }
-
-
-
-
-
-
-
-
-
 
 

@@ -19,6 +19,7 @@ import com.example.pms.ui.theme.lightGreen
 import com.example.pms.ui.theme.transparentGray
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.KeyboardType
+import com.example.pms.ui.theme.lightBlue
 
 
 private const val DEFAULT_LEADING_ICON: Int = -1
@@ -47,9 +48,9 @@ fun PMSOutLinedTextField(
         modifier = modifier,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = transparentGray,
-            focusedBorderColor = lightGreen,
+            focusedBorderColor = lightBlue,
             unfocusedBorderColor = transparentGray,
-            cursorColor = lightGreen
+            cursorColor = lightBlue
         ),
         shape = RoundedCornerShape(20.dp),
         label = {
@@ -118,9 +119,9 @@ fun PMSDropDownOutLinedTextFiled(
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 backgroundColor = transparentGray,
-                focusedBorderColor = lightGreen,
+                focusedBorderColor = lightBlue,
                 unfocusedBorderColor = transparentGray,
-                cursorColor = lightGreen
+                cursorColor = lightBlue
             ),
             shape = RoundedCornerShape(20.dp),
             label = {

@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.graphics.GraphicsLayerScope
+import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegPage3Events
+import com.example.pms.viewmodel.utils.LocationHelper
 
 sealed class PublishVehicleEvents {
 
@@ -78,6 +80,20 @@ sealed class PublishVehicleEvents {
     data class ImageDetectionCautionOk(
         val indicesList: List<Int>
     ) : PublishVehicleEvents()
+
+    data class GetLocation(
+        val context: Context
+    ) : PublishVehicleEvents()
+
+    object ShowLocationPermission : PublishVehicleEvents()
+
+    sealed class WifiCase : PublishVehicleEvents() {
+        data class Confirm(
+            val context: Context
+        ) : WifiCase()
+
+        object Deny : WifiCase()
+    }
 
     object Submit : PublishVehicleEvents()
 

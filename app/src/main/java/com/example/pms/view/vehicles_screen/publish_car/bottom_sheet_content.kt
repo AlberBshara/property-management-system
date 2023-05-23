@@ -3,6 +3,7 @@ package com.example.pms.view.vehicles_screen.publish_car
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -17,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.pms.R
+import com.example.pms.ui.theme.darkBlue
+import com.example.pms.ui.theme.lightBlue
 
 
 @Composable
@@ -24,7 +27,8 @@ fun ExpandedBottomSheetContent(
     onAddPhotosListener: () -> Unit,
     onLocationListener: () -> Unit,
     onFileListener: () -> Unit,
-    onCameraListener: () -> Unit
+    onCameraListener: () -> Unit,
+    showIndicator: Boolean = false
 ) {
 
     Column(
@@ -35,14 +39,30 @@ fun ExpandedBottomSheetContent(
             .background(Color.White)
             .padding(top = 16.dp)
     ) {
-        Text(
-            text = stringResource(id = R.string.add_item),
-            textAlign = TextAlign.Center,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            fontStyle = FontStyle.Italic,
-            modifier = Modifier.fillMaxWidth()
-        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            if (showIndicator) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(28.dp),
+                    color = lightBlue
+                )
+            }
+            Text(
+                text = stringResource(id = R.string.add_item),
+                textAlign = TextAlign.Center,
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Italic,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -201,7 +221,7 @@ fun CollapsedBottomSheetContent(
             onClick = {
                 onLocationListener()
             },
-            modifier = Modifier.padding(start= 10.dp , end = 10.dp, top= 1.dp, bottom = 1.dp)
+            modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 1.dp, bottom = 1.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.location_ic),
