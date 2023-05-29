@@ -24,6 +24,8 @@ class PublishVehicleVM : ViewModel() {
 
     var state by mutableStateOf(PublishVehicleState())
 
+    private val MAX_IMAGES : Int = 10
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun onEvent(event: PublishVehicleEvents) {
@@ -84,6 +86,13 @@ class PublishVehicleVM : ViewModel() {
                 state = state.copy(
                     enteredData = state.enteredData.copy(
                         kilometer = event.kilometer * 100000
+                    )
+                )
+            }
+            is PublishVehicleEvents.OnGovernorateChanged -> {
+                state = state.copy(
+                    enteredData = state.enteredData.copy(
+                        governorate = event.governorate
                     )
                 )
             }
@@ -174,17 +183,19 @@ class PublishVehicleVM : ViewModel() {
         updatedImagesList: List<Uri>,
         context: Context
     ) {
-        val newImagesList = state.enteredData.listOfSelectedImages
-            .toMutableList()
-        viewModelScope.launch {
-            newImagesList += updatedImagesList
-            state = state.copy(
-                enteredData = state.enteredData.copy(
-                    listOfSelectedImages = newImagesList
-                )
-            )
-        }
-        detectVehicles(newImagesList, context)
+       if(state.enteredData.listOfSelectedImages.size <= MAX_IMAGES ) {
+           val newImagesList = state.enteredData.listOfSelectedImages
+               .toMutableList()
+           viewModelScope.launch {
+               newImagesList += updatedImagesList
+               state = state.copy(
+                   enteredData = state.enteredData.copy(
+                       listOfSelectedImages = newImagesList
+                   )
+               )
+           }
+           detectVehicles(newImagesList, context)
+       }
     }
 
     @SuppressLint("SuspiciousIndentation")

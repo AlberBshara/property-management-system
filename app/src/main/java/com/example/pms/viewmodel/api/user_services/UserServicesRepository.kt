@@ -11,8 +11,8 @@ import retrofit2.HttpException
 import java.io.IOException
 
 
-class UserServicesImplementation(
-    private val userRepository: UserServicesInterface = RetrofitClient.userRepository
+class UserServicesRepository(
+    private val userServicesInterface: UserServicesInterface = RetrofitClient.userRepository
 ) {
 
     suspend fun postRegisterUserData(
@@ -21,7 +21,7 @@ class UserServicesImplementation(
         return flow {
             emit(Resource.Loading(true))
             val response = try {
-                userRepository.postRegisterData(user)
+                userServicesInterface.postRegisterData(user)
             } catch (e: IOException) {
                 emit(Resource.Error(e.message))
                 null
@@ -49,7 +49,7 @@ class UserServicesImplementation(
         return flow {
             emit(Resource.Loading(true))
             val response = try {
-                userRepository.postLoginData(user)
+                userServicesInterface.postLoginData(user)
             } catch (e: java.lang.Exception) {
                 emit(Resource.Error(e.toString()))
                 null

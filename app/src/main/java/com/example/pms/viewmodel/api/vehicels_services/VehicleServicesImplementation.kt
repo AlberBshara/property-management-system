@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.flow
 import okhttp3.ResponseBody
 
 class VehicleServicesImplementation(
-    private val vehicleRepository: VehicleServicesInterface = RetrofitClient.vehicleRepository
+    private val vehicleServicesInterface: VehicleServicesInterface = RetrofitClient.vehicleRepository
 ) {
 
     suspend fun publishingVehicle(

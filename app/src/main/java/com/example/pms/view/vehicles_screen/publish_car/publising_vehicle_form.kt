@@ -1,6 +1,8 @@
 package com.example.pms.view.vehicles_screen.publish_car
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,13 +29,13 @@ import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.PublishVehicleState
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.PublishVehicleVM
 
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun PublishingVehicleForm(
     navController: NavHostController,
     viewModel: PublishVehicleVM,
     state: PublishVehicleState
 ) {
-
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -142,39 +144,53 @@ fun PublishingVehicleForm(
             )
         }
 
-        OutlinedTextField(
-            value = state.enteredData.location,
-            onValueChange = {
-                viewModel.onEvent(PublishVehicleEvents.OnLocationChanged(it))
-            },
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = transparentGray,
-                focusedBorderColor = lightGreen,
-                unfocusedBorderColor = transparentGray,
-                cursorColor = lightGreen
-            ),
-            shape = RoundedCornerShape(20.dp),
-            label = {
-                Text(
-                    text = stringResource(id = R.string.location),
-                    color = Color.DarkGray,
-                    style = MaterialTheme.typography.caption
-                )
-            },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text
-            ),
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.location_ic),
-                    contentDescription = null
-                )
-            }
-        )
+                .padding(10.dp)
+        ) {
+            PMSDropDownOutLinedTextFiled(
+                initialValue = state.enteredData.governorate,
+                onValueChanged = {
+                   viewModel.onEvent(PublishVehicleEvents.OnGovernorateChanged(it))
+                },
+                label = R.string.governorate,
+                listMenuItems = listOf(),
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            OutlinedTextField(
+                value = state.enteredData.location,
+                onValueChange = {
+                    viewModel.onEvent(PublishVehicleEvents.OnLocationChanged(it))
+                },
+                modifier = Modifier.weight(1f),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    backgroundColor = transparentGray,
+                    focusedBorderColor = lightBlue,
+                    unfocusedBorderColor = transparentGray,
+                    cursorColor = lightBlue
+                ),
+                shape = RoundedCornerShape(20.dp),
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.location),
+                        color = Color.DarkGray,
+                        style = MaterialTheme.typography.caption
+                    )
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text
+                ),
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.location_ic),
+                        contentDescription = null
+                    )
+                }
+            )
+        }
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

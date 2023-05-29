@@ -24,8 +24,6 @@ fun GridCell(
     text: Int,
     onClick: () -> Unit
 ) {
-
-
     Card(
         modifier = Modifier
             .clip(RoundedCornerShape(100.dp))
@@ -42,13 +40,11 @@ fun GridCell(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
             Box(
                 modifier = Modifier
                     .padding(5.dp)
                     .requiredSize(100.dp, 100.dp), Alignment.Center
             ) {
-
                 Image(
                     painter = painterResource(id = image),
                     contentDescription = "icon",
@@ -56,19 +52,11 @@ fun GridCell(
                         .size(50.dp)
                         .padding(bottom = 5.dp)
                 )
-
             }
-
             Text(
                 text = stringResource(id = text),
                 color = Color.White
-
             )
-
-
         }
-
-
     }
-
 }

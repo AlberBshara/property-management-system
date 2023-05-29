@@ -58,6 +58,7 @@ fun VehicleCard(
                 modifier = Modifier.padding(14.dp)
             ) { current_image_index ->
                 state.currentImageIndex = current_image_index
+                viewModel.onEvent(PostVehicleEvents.OnCurrentImageIndexChanged(pagerState.currentPage))
                 Image(
                     painter = painterResource(id = state.images[current_image_index]),
                     contentDescription = "Car Image",

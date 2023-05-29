@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.pms.R
 import com.example.pms.view.animation.RotateImage
-import com.example.pms.ui.theme.background1
 import com.example.pms.ui.theme.iconsColor
 import com.example.pms.viewmodel.presentation_vm.login_vm.LoginScreenVM
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.ui.theme.background1
 import com.example.pms.view.animation.ProgressAnimatedBar
 import com.example.pms.view.utils.InternetAlertDialog
 import com.example.pms.viewmodel.presentation_vm.login_vm.LoginEvents

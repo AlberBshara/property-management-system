@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.pms.ui.theme.lightBlue
 
 @Composable
 fun PagerIndicator(
@@ -19,30 +20,19 @@ fun PagerIndicator(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
-        for (i in 0 until  length) {
+        for (i in 0 until length) {
             if (i < 10) {
                 Box(
                     modifier = Modifier
                         .size(12.dp)
                         .padding(start = 4.dp, end = 4.dp)
                         .background(
-                            color = if (current_index == i) Color.Green else Color.Gray,
+                            color = if (current_index == i) lightBlue else Color.Gray,
                             shape = RoundedCornerShape(8.dp)
-                        )
-                )
-            }else {
-                Box(
-                    modifier = Modifier
-                        .size(5.dp)
-                        .padding(start = 2.dp, end = 2.dp)
-                        .background(
-                            color = Color.Gray,
-                            shape = RoundedCornerShape(4.dp)
                         )
                 )
             }
         }
-
     }
 }
 

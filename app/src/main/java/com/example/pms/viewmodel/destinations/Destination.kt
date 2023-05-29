@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pms.view.chatting_screen.ChattingMainScreen
+import com.example.pms.view.chatting_screen.messages_screen.MessagesScreen
 import com.example.pms.view.dasboard_screen.DashboardScreen
 import com.example.pms.view.forgot_password_screen.ForgetPassword
 import com.example.pms.view.login_screen.LoginScreen
@@ -15,6 +16,7 @@ import com.example.pms.view.regisiter_screen.RegisterScreen
 import com.example.pms.view.splashscreen.SplashScreen
 import com.example.pms.view.vehicles_screen.VehiclesMainScreen
 import com.example.pms.view.vehicles_screen.publish_car.PublishingCarScreen
+import com.example.pms.view.vehicles_screen.vehicle_details_screen.VehicleDetailsScreen
 import com.example.pms.view.vehicles_screen.vehicle_home.VehiclesHomeScreen
 
 
@@ -31,6 +33,9 @@ sealed class Destination(
     object PublishCarDestination : Destination("publish-car-screen-destination")
     object VehiclesHomeDestination : Destination("vehicles-home-screen-destination")
     object ChattingMainDestination : Destination("chatting-main-screen-destination")
+    object MessagesDestination : Destination("messages-screen-destination")
+    object VehicleDetailsDestination : Destination("vehicle_details-screen-destination")
+
 }
 
 
@@ -42,8 +47,7 @@ fun PmsNavHost(
 
     NavHost(
         navController = navController,
-        //startDestination = Destination.SplashDestination.route
-      startDestination = Destination.VehiclesMainDestination.route
+        startDestination = Destination.VehicleDetailsDestination.route
     ) {
         composable(route = Destination.SplashDestination.route) {
             SplashScreen(navController)
@@ -68,24 +72,27 @@ fun PmsNavHost(
         composable(Destination.DashboardDestination.route) {
             DashboardScreen(navController)
         }
-
         composable(Destination.VehiclesMainDestination.route) {
             VehiclesMainScreen(navController)
         }
-
-        composable(Destination.ProfileDestination.route){
+        composable(Destination.ProfileDestination.route) {
             ProfileScreen(navController)
         }
         composable(Destination.PublishCarDestination.route) {
             PublishingCarScreen(navController)
         }
-        composable(Destination.VehiclesHomeDestination.route){
+        composable(Destination.VehiclesHomeDestination.route) {
             VehiclesHomeScreen(navController)
         }
         composable(Destination.ChattingMainDestination.route) {
             ChattingMainScreen(navController)
         }
-
+        composable(Destination.MessagesDestination.route) {
+            MessagesScreen(navController)
+        }
+        composable(Destination.VehicleDetailsDestination.route) {
+            VehicleDetailsScreen(navController)
+        }
     }
 
 }

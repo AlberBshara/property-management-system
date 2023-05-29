@@ -25,6 +25,7 @@ data class PublishVehicleState(
         var price : Float = 0f,
         var kilometer : Float = 0f,
         var location : String = "",
+        var governorate : String = "" ,
         var manufactureYear : String = "",
         var condition : String = "" ,
         var description : String = "",

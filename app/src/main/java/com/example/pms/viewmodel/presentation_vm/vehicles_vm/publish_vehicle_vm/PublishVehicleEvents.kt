@@ -4,8 +4,6 @@ import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.graphics.GraphicsLayerScope
-import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegPage3Events
-import com.example.pms.viewmodel.utils.LocationHelper
 
 sealed class PublishVehicleEvents {
 
@@ -42,6 +40,10 @@ sealed class PublishVehicleEvents {
 
     data class OnKiloMeterChanged(
         val kilometer: Float
+    ) : PublishVehicleEvents()
+
+    data class OnGovernorateChanged(
+        val governorate: String
     ) : PublishVehicleEvents()
 
     data class OnLocationChanged(

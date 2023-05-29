@@ -112,7 +112,8 @@ fun RegisterPag3(
             .padding(start = 20.dp, end = 20.dp, top = 10.dp)
     )
 
-    ProgressAnimatedBar(isLoading = state.isLoading)
+    ProgressAnimatedBar(isLoading = state.isLoading,
+    modifier = Modifier.size(60.dp))
 
     if (!state.isLoading) {
         Button(

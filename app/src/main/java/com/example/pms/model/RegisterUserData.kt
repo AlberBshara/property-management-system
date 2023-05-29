@@ -6,6 +6,8 @@ import java.io.File
 
 
 data class RegisterUserData(
+    @SerializedName(Keys.ID)
+    val user_id : Int = -1 ,
     @SerializedName(Keys.NAME)
     val name: String,
     @SerializedName(Keys.EMAIL)
@@ -25,7 +27,7 @@ data class RegisterUserData(
          @SerializedName(Keys.TOKEN)
          val token : String,
          @SerializedName(Keys.MESSAGE)
-         val errorMessage : String? = null
+         val errorMessage : String? = null,
              )
 }
 

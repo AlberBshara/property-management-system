@@ -5,17 +5,23 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
-import com.example.pms.ui.theme.background1
-import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.R
+import com.example.pms.ui.theme.background1
 import com.example.pms.view.animation.ScaleInImageAnimation
+import com.example.pms.viewmodel.presentation_vm.splash_vm.SplashScreenVM
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.viewmodel.presentation_vm.splash_vm.SplashEvents
 
 @Composable
 fun SplashScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: SplashScreenVM = viewModel()
 ) {
+    val context = LocalContext.current
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -26,8 +32,7 @@ fun SplashScreen(
         ScaleInImageAnimation(
             image = painterResource(id = R.drawable.logo_background),
             onAnimationFinished = {
-                navController.popBackStack()
-                navController.navigate(Destination.LoginDestination.route)
+                viewModel.onEvent(SplashEvents.OnAnimationFinished(navController, context))
             }
         )
     }

@@ -3,6 +3,8 @@ package com.example.pms.view.vehicles_screen
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
@@ -31,6 +33,7 @@ import com.example.pms.viewmodel.presentation_vm.vehicles_vm.VehicleMainEvents
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
 
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun VehiclesMainScreen(
     navController: NavHostController,

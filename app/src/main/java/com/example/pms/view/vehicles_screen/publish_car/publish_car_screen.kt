@@ -20,7 +20,6 @@ import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.
 import  androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pms.view.utils.InternetAlertDialog
 import com.example.pms.view.utils.RequestInternetPermission
-import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page3.RegPage3Events
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.PublishVehicleEvents
 import com.example.pms.viewmodel.utils.LocationPermission
 import com.google.accompanist.permissions.ExperimentalPermissionsApi

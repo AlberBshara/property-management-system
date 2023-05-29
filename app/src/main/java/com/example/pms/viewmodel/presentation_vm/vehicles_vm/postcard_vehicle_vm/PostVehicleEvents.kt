@@ -9,4 +9,8 @@ sealed class PostVehicleEvents {
         val navController: NavHostController,
         val postId : Int = -1
     ) : PostVehicleEvents()
+
+    data class OnCurrentImageIndexChanged(
+        val index : Int
+    ) : PostVehicleEvents()
 }

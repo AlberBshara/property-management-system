@@ -107,6 +107,25 @@
     <string name="vehicle_caution_message">سوف نحذف الصور التي لاتحوي على عربات </string>
     <string name="vehicle_caution_message_con"> لمنع البيانات غير المناسبة مع غرض النظام</string>
 
+    <string name="no_messages">لايوجد تواصل بينكم بعد</string>
+    <string name="vehicle_state">حالة العربة:</string>
+
+
+    <string name="governorate">محافظة</string>
+    <string name="vehicle_info">معلومات العربة:</string>
+    <string name="Damascus"> دمشق</string>
+    <string name="Aleppo"> حلب</string>
+    <string name="Homs"> حمص</string>
+    <string name="RifDimashq"> ريف دمشق</string>
+    <string name="Latakia"> اللاذقية</string>
+    <string name="Idlib"> ادلب</string>
+    <string name="Ḥamah"> حماة</string>
+    <string name="DayralZawr"> دير الزور</string>
+    <string name="Daraa"> درعا</string>
+    <string name="AlSuwayda"> السويداء</string>
+    <string name="AlRaqqah"> الرقة</string>
+    <string name="AlQunayṭirah"> القنيطرة</string>
+    <string name="AlḤasakah"> الحسكة</string>
 
     <string-array name="colors_list">
         <item>أحمر</item>

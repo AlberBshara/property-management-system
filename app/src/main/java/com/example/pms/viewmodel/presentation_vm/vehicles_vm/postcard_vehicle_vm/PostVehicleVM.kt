@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.pms.viewmodel.destinations.Destination
 
 class PostVehicleVM : ViewModel() {
 
@@ -17,8 +18,15 @@ class PostVehicleVM : ViewModel() {
                 )
                 //TODO: request to add it to mu fav-list.
             }
+            is PostVehicleEvents.OnCurrentImageIndexChanged -> {
+                state = state.copy(
+                    currentImageIndex = event.index
+                )
+            }
             is PostVehicleEvents.ViewMore -> {
-
+                event.navController.navigate(
+                    Destination.VehicleDetailsDestination.route
+                )
             }
         }
     }

@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.pms.R
-import com.example.pms.ui.theme.lightGreen
+import com.example.pms.ui.theme.lightBlue
 
 @Composable
 fun AlertDialogForDetectedImage(
@@ -22,7 +22,6 @@ fun AlertDialogForDetectedImage(
     AlertDialog(
         modifier = modifier,
         onDismissRequest = {
-
         },
         text = {
             Text(
@@ -40,9 +39,9 @@ fun AlertDialogForDetectedImage(
                     onConfirm(indicesList)
                 },
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = lightGreen,
-                    disabledBackgroundColor = lightGreen,
-                    disabledContentColor = lightGreen
+                    backgroundColor = lightBlue,
+                    disabledBackgroundColor = lightBlue,
+                    disabledContentColor = lightBlue
                 )
             ) {
                 Text(

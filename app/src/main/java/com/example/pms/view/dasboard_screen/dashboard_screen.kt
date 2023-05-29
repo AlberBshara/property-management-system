@@ -20,11 +20,12 @@ import com.example.pms.R
 import com.example.pms.ui.theme.background1
 import com.example.pms.viewmodel.presentation_vm.dashboard_vm.DashboardScreenVM
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.viewmodel.presentation_vm.dashboard_vm.DashboardEvents
 
 @Composable
 fun DashboardScreen(
     navController: NavHostController,
-    viewModel : DashboardScreenVM = viewModel()
+    viewModel: DashboardScreenVM = viewModel()
 ) {
     Column(
         modifier = Modifier
@@ -33,11 +34,11 @@ fun DashboardScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
 
-        ) {
+    ) {
 
         Column(
             verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp, bottom = 10.dp)
@@ -69,12 +70,14 @@ fun DashboardScreen(
 
 
             Column {
-                GridCell(R.drawable.car_vector, R.string.car_vector, onClick = { })
+                GridCell(R.drawable.car_vector, R.string.car_vector, onClick = {
+                    viewModel.onEvent(DashboardEvents.OnVehicleClicked(navController))
+                })
                 GridCell(R.drawable.settings_vector, R.string.settings_vector, onClick = {})
                 GridCell(R.drawable.profile_vector, R.string.profile_vector, onClick = {})
             }
 
-            Column() {
+            Column {
                 GridCell(R.drawable.house_vector, R.string.estate_vector, onClick = {})
                 GridCell(R.drawable.suggestion_vector, R.string.suggestion_vector, onClick = {})
                 GridCell(R.drawable.aboutus_vector, R.string.aboutus_vector, onClick = {})

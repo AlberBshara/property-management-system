@@ -120,6 +120,28 @@
     <string name="vehicle_caution_message_con"> to prevent fake data</string>
 
 
+    <string name="no_messages">no messages yet</string>
+
+    <string name="governorate">Governorate</string>
+    <string name="vehicle_info">Vehicle Information:</string>
+    <string name="vehicle_state">Vehicle State:</string>
+
+    <string name="Damascus"> Damascus</string>
+    <string name="Aleppo"> Aleppo</string>
+    <string name="Homs"> Homs</string>
+    <string name="RifDimashq"> Rif Dimashq</string>
+    <string name="Latakia"> Latakia</string>
+    <string name="Idlib"> Idlib</string>
+    <string name="Ḥamah"> Hamah</string>
+    <string name="DayralZawr"> Dayr al-Zawr</string>
+    <string name="Daraa"> Daraa</string>
+    <string name="AlSuwayda"> Al-Suwayda</string>
+    <string name="AlRaqqah"> Al-Raqqah</string>
+    <string name="AlQunayṭirah"> Al-Qunayṭirah</string>
+    <string name="AlḤasakah"> Al-Hasakah</string>
+
+
+
 
     <string-array name="colors_list">
         <item>Red</item>

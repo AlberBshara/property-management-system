@@ -19,12 +19,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.pms.ui.theme.lightGreen
 import com.example.pms.ui.theme.transparentGray
 import com.example.pms.R
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
+import com.example.pms.ui.theme.lightBlue
 
 
 private const val year: Int = 1970
@@ -48,9 +48,9 @@ fun YearDialogPicker(
             onValueChange = {},
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 backgroundColor = transparentGray,
-                focusedBorderColor = lightGreen,
+                focusedBorderColor = lightBlue,
                 unfocusedBorderColor = transparentGray,
-                cursorColor = lightGreen
+                cursorColor = lightBlue
             ),
             shape = RoundedCornerShape(20.dp),
             label = {

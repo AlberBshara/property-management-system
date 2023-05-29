@@ -1,7 +1,6 @@
 package com.example.pms.view.regisiter_screen.pages
 
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -82,10 +81,6 @@ fun RegisterPage1(
     InputPhoneWithCCP(
         onValueChanged = { phone, code ->
             viewModel.onEvent(RegPage1Events.PhoneNumberChanged(phone, code))
-            Toast.makeText(
-                context,
-                "the obtained number $code-$phone", Toast.LENGTH_LONG
-            ).show()
         }
     )
     if (state.phoneNumber_error != null) {

@@ -1,20 +1,16 @@
 package com.example.pms.view.animation
 
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.*
 import com.example.pms.R
 
-@SuppressLint("SuspiciousIndentation")
 @Composable
 fun ProgressAnimatedBar(
     isLoading: Boolean,
-    modifier: Modifier = Modifier.size(100.dp)
+    modifier: Modifier = Modifier
 ) {
     if (isLoading) {
         val composition by rememberLottieComposition(

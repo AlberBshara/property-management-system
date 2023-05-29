@@ -15,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pms.R
-import com.example.pms.ui.theme.background1
 import com.example.pms.ui.theme.transparent_p
 import com.example.pms.view.animation.RotateImage
 import com.example.pms.view.regisiter_screen.pages.RegisterPag3
@@ -24,6 +23,7 @@ import com.example.pms.view.regisiter_screen.pages.RegisterPage2
 import com.example.pms.viewmodel.destinations.RegisterPages
 import com.example.pms.viewmodel.presentation_vm.register_vm.RegisterScreenVM
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.ui.theme.background1
 
 
 @RequiresApi(Build.VERSION_CODES.M)

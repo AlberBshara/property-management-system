@@ -15,7 +15,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.example.pms.R
 import com.example.pms.model.LoginUserRequest
-import com.example.pms.viewmodel.api.user_services.UserServicesImplementation
+import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.presentation_vm.login_vm.validation.EmailState
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 
 class LoginScreenVM(
-    private val userApiRepo: UserServicesImplementation = UserServicesImplementation()
+    private val userApiRepo: UserServicesRepository = UserServicesRepository()
 ) : ViewModel() {
 
 

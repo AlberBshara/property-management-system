@@ -38,9 +38,9 @@ class PMSSharedPreferenceHelper(context: Context) {
     companion object {
         private const val SP_MODE = Context.MODE_PRIVATE
         private const val SP_NAME = "property management system"
-        private const val TAG = "PMS_SharedPreference"
         const val DEFAULT_VALUE  = "default value"
         const val USER_NAME = "username"
+        const val USER_ID = "user_id"
         const val EMAIL = "email"
         const val PASSWORD = "password"
         const val TOKEN = "token"

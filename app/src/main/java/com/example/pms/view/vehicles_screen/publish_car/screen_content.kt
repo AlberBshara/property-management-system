@@ -122,7 +122,7 @@ fun ScreenContent(
                                 .height(200.dp)
                                 .fillMaxWidth()
                         ) {
-                            viewModel.onEvent(PublishVehicleEvents.ImageIndexChanged(it))
+                            viewModel.onEvent(PublishVehicleEvents.ImageIndexChanged(pagerState.currentPage))
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()

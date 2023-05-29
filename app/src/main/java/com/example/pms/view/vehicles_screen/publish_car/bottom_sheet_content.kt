@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.pms.R
-import com.example.pms.ui.theme.darkBlue
 import com.example.pms.ui.theme.lightBlue
 
 
@@ -165,69 +163,3 @@ fun ExpandedBottomSheetContent(
     }
 }
 
-
-@Composable
-fun CollapsedBottomSheetContent(
-    onAddPhotosListener: () -> Unit,
-    onLocationListener: () -> Unit,
-    onFileListener: () -> Unit,
-    onCameraListener: () -> Unit
-) {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        IconButton(
-            onClick = {
-                onAddPhotosListener()
-            },
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 1.dp, bottom = 1.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.image_ic),
-                contentDescription = null,
-                tint = Color.Green
-            )
-        }
-
-        IconButton(
-            onClick = {
-                onCameraListener()
-            },
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 1.dp, bottom = 1.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.camera_ic),
-                contentDescription = null,
-                tint = Color.Red
-            )
-        }
-
-        IconButton(
-            onClick = {
-                onFileListener()
-            },
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 1.dp, bottom = 1.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.file_ic),
-                contentDescription = null,
-                tint = Color.Cyan
-            )
-        }
-        IconButton(
-            onClick = {
-                onLocationListener()
-            },
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 1.dp, bottom = 1.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.location_ic),
-                contentDescription = null,
-                tint = Color.Yellow.copy(alpha = 0.6f)
-            )
-        }
-    }
-}
