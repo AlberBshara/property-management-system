@@ -87,6 +87,10 @@ sealed class PublishVehicleEvents {
         val context: Context
     ) : PublishVehicleEvents()
 
+    data class OnDerivingForceChanged(
+        val derivingForce : String
+    ) : PublishVehicleEvents()
+
     object ShowLocationPermission : PublishVehicleEvents()
 
     sealed class WifiCase : PublishVehicleEvents() {
@@ -97,7 +101,13 @@ sealed class PublishVehicleEvents {
         object Deny : WifiCase()
     }
 
-    object Submit : PublishVehicleEvents()
+    data class Submit(
+        val context: Context
+    ) : PublishVehicleEvents()
+
+    object HideSnackBar : PublishVehicleEvents()
+
+    object OnDoneClicked : PublishVehicleEvents()
 
 
 }

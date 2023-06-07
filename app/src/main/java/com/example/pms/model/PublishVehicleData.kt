@@ -5,33 +5,43 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 
 data class PublishVehicleData(
-
-    @SerializedName(Keys.OWNER_ID)
-    val id : Int,
-    @SerializedName(Keys.NAME)
-    val name : String ,
     @SerializedName(Keys.OPERATION_TYPE)
     val operationType : String ,
     @SerializedName(Keys.TRANSMISSION_TYPE)
     val transmissionType : String ,
     @SerializedName(Keys.BRAND)
-    val brand : String,
+    val brand : String ,
     @SerializedName(Keys.SECONDARY_BRAND)
     val secondaryBrand : String ,
-    @SerializedName(Keys.LOCATION)
-    val location : String ,
+    @SerializedName(Keys.GOVERNORATE)
+    val governorate : String ,
     @SerializedName(Keys.SECOND_LOCATION)
-    val secondaryLocation: String ,
+    val locationInDamascus : String ,
     @SerializedName(Keys.COLOR)
-    val color : String,
+    val color : String ,
     @SerializedName(Keys.DESCRIPTION)
     val description : String ,
     @SerializedName(Keys.PRICE)
-    val price : String ,
+    val price : Double ,
     @SerializedName(Keys.YEAR)
-    val year : String ,
+    val yearOfManufacture : Int ,
     @SerializedName(Keys.KILOMETERS)
-    val kilometers : String ,
-    @SerializedName(Keys.IMAGE)
-    val imagesFile : MultipartBody.Part? = null
-)
+    val kilometers : Int ,
+    @SerializedName(Keys.ADDRESS)
+    val address : String ,
+    @SerializedName(Keys.FUEL_TYPE)
+    val fuelType : String ,
+    @SerializedName(Keys.CONDITION)
+    val condition : String ,
+    @SerializedName(Keys.DRIVING_FORCE)
+    val drivingForce : String,
+    @SerializedName("image1")
+    val image1 : MultipartBody.Part? = null
+){
+    data class PublishVehicleResponse(
+      @SerializedName(Keys.STATUS)
+      val status : Boolean ,
+      @SerializedName(Keys.CAR)
+      val vehicle : PublishVehicleData
+    )
+}

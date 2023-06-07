@@ -102,6 +102,9 @@
     <string name="hybrid">هجين</string>
     <string name="electric">كهرباء</string>
 
+    <string name="data_required">يجب ملئ جميع البيانات</string>
+    <string name="additional_info_vehicle">معلومات اضافية عن العربة:</string>
+
 
     <string name="vehicle_caution">لقد لاحظنا انك تضع بعض الصور ليست عربات!</string>
     <string name="vehicle_caution_message">سوف نحذف الصور التي لاتحوي على عربات </string>
@@ -110,34 +113,80 @@
     <string name="no_messages">لايوجد تواصل بينكم بعد</string>
     <string name="vehicle_state">حالة العربة:</string>
 
-
-    <string name="governorate">محافظة</string>
+    <string name="contact_info">معلومات التواصل:</string>
+    <string name="visit_profile">دخول الى الحساب</string>
+    <string name="governorate">المحافظة</string>
+    <string name="more">تفاصيل أضافية</string>
     <string name="vehicle_info">معلومات العربة:</string>
-    <string name="Damascus"> دمشق</string>
-    <string name="Aleppo"> حلب</string>
-    <string name="Homs"> حمص</string>
-    <string name="RifDimashq"> ريف دمشق</string>
-    <string name="Latakia"> اللاذقية</string>
-    <string name="Idlib"> ادلب</string>
-    <string name="Ḥamah"> حماة</string>
-    <string name="DayralZawr"> دير الزور</string>
-    <string name="Daraa"> درعا</string>
-    <string name="AlSuwayda"> السويداء</string>
-    <string name="AlRaqqah"> الرقة</string>
-    <string name="AlQunayṭirah"> القنيطرة</string>
-    <string name="AlḤasakah"> الحسكة</string>
+
+    <string name="app_version">اصدار التطبيق 1.0</string>
+    <string name="submitted">لقد تم نشؤ البيانات بنجاح</string>
+    <string name="settings">الأعدادات</string>
+    <string name="account">الحساب</string>
+    <string name="edit_account">تعديل على بيانات الحساب</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="privacy">الخصوصية</string>
+    <string name="notifications">الاشعارات</string>
+    <string name="language">اللغة</string>
+    <string name="theme">الثيم</string>
+    <string name="logout">تسجيل الخروج</string>
+
+    <string name="deriving_force">نظام قوة الدفع</string>
+    <string name="fwd">نظام دفع أمامي</string>
+    <string name="rwd">نظام دفع خلفي</string>
+    <string name="four_wd">نظام دفع رباعي</string>
+    <string name="awd">نظام الدفع الكلي</string>
+
+    <string name="owner">المالك</string>
+
+    <string-array name="cities_array">
+        <item>دمشق</item>
+        <item>حلب</item>
+        <item>حمص</item>
+        <item>ريف دمشق</item>
+        <item >اللاذقية</item>
+        <item >أدلب</item>
+        <item>حماة</item>
+        <item>دير الزور</item>
+        <item>درعا</item>
+        <item>السويداء</item>
+        <item>الرقة</item>
+        <item>القامشلي</item>
+        <item>الحسكة</item>
+        <item>طرطوس</item>
+    </string-array>
+
 
     <string-array name="colors_list">
-        <item>أحمر</item>
-        <item>برتقالي</item>
-        <item>اصفر</item>
-        <item>اخضر</item>
-        <item>أزرق</item>
-        <item>نيلي</item>
-        <item>البنفسجي</item>
-        <item>اسود</item>
-        <item>ابيض</item>
-        <item>رمادي</item>
+    <item>أزرق</item>
+    <item>أحمر</item>
+    <item>أخضر</item>
+    <item>أسود</item>
+    <item>أبيض</item>
+    <item>أصفر</item>
+    <item>وردي</item>
+    <item>بنفسجي</item>
+    <item>برتقالي</item>
+    <item>رمادي</item>
+    <item>بني</item>
+    <item>بيج</item>
+    <item>تركواز</item>
+    <item>ذهبي</item>
+    <item>فضي</item>
+    <item>ماجنتا</item>
+    <item>تحت الرمادي</item>
+    <item>تركواز داكن</item>
+    <item>مارون</item>
+    <item>لافندر</item>
+    <item>كريم</item>
+    <item>زيتوني</item>
+    <item>سماوي</item>
+    <item>مرجاني</item>
+    <item>فحمي</item>
+    <item>صدئي</item>
+    <item>أخضر نعناع</item>
+    <item>خردلي</item>
+    <item>شامبانيا</item>
     </string-array>
 
 </resources>

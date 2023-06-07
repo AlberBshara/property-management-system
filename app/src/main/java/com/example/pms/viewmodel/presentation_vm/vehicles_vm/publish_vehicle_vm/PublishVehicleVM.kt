@@ -13,19 +13,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pms.model.PublishVehicleData
+import com.example.pms.viewmodel.api.util.Resource
+import com.example.pms.viewmodel.api.vehicels_services.VehicleServicesImplementation
 import com.example.pms.viewmodel.utils.ImageDetection
 import com.example.pms.viewmodel.utils.InternetConnection
 import com.example.pms.viewmodel.utils.LocationHelper
+import com.example.pms.viewmodel.utils.TokenManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PublishVehicleVM : ViewModel() {
+class PublishVehicleVM(
+    private val vehicleApiRepo: VehicleServicesImplementation = VehicleServicesImplementation()
+) : ViewModel() {
 
     var state by mutableStateOf(PublishVehicleState())
 
-    private val MAX_IMAGES : Int = 10
-
+    private val MAX_IMAGES: Int = 10
+    private val TAG: String = "PublishVehicleVM.kt"
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun onEvent(event: PublishVehicleEvents) {
@@ -137,7 +143,7 @@ class PublishVehicleVM : ViewModel() {
                 )
             }
             is PublishVehicleEvents.Submit -> {
-                submitData()
+                submitData(event.context)
             }
             is PublishVehicleEvents.OnFuelTypeChanged -> {
                 state = state.copy(
@@ -148,6 +154,13 @@ class PublishVehicleVM : ViewModel() {
             }
             is PublishVehicleEvents.ImageDetectionCautionOk -> {
                 deleteTheFakeImage(event.indicesList)
+            }
+            is PublishVehicleEvents.OnDerivingForceChanged -> {
+                state = state.copy(
+                    enteredData = state.enteredData.copy(
+                        derivingForce = event.derivingForce
+                    )
+                )
             }
             is PublishVehicleEvents.ShowLocationPermission -> {
                 state = state.copy(
@@ -171,11 +184,95 @@ class PublishVehicleVM : ViewModel() {
                     showInternetAlert = false
                 )
             }
+            is PublishVehicleEvents.HideSnackBar -> {
+                state = state.copy(
+                    dataInvalid = false
+                )
+            }
+            is PublishVehicleEvents.OnDoneClicked -> {
+                state = state.copy(
+                    done = false
+                )
+            }
         }
     }
 
 
-    private fun submitData() {
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun submitData(context: Context) {
+        if (state.enteredData.isValid()) {
+
+            val cd = state.enteredData
+                val vehicleData = PublishVehicleData(
+                    operationType = cd.listingType,
+                    transmissionType = cd.transmissionType,
+                    brand = cd.brand,
+                   secondaryBrand = cd.secondaryBrand,
+                    governorate = cd.governorate,
+                    locationInDamascus = "Barzeh",
+                    color = cd.color,
+                    description = cd.description,
+                    price = cd.price.toDouble(),
+                    yearOfManufacture = cd.manufactureYear.toInt(),
+                    kilometers = cd.kilometer.toInt(),
+                    address = cd.location ,
+                    condition = cd.condition ,
+                    fuelType = cd.fuelType,
+                    drivingForce = cd.derivingForce
+                )
+
+            if (state.enteredData.listOfSelectedImages.isNotEmpty()) {
+                // here to fill the data with images:
+            }
+            InternetConnection.run(context,
+                connected = {
+                    viewModelScope.launch {
+                        val response = vehicleApiRepo.publishingVehicle(
+                            vehicleData,
+                            TokenManager.getInstance(context).getToken()
+                        )
+                        response.collect {
+                            when (it) {
+                                is Resource.Loading -> {
+                                    Log.d(TAG, "submitData: ${it.isLoading}")
+                                    state = state.copy(
+                                        showUploadingAllData = it.isLoading
+                                    )
+                                }
+                                is Resource.Success -> {
+                                    if (it.data != null) {
+                                        if (it.data.status) {
+                                            Log.d(
+                                                TAG,
+                                                "submitData: Success ${it.data.vehicle.brand}"
+                                            )
+                                            state = state.copy(
+                                                done = true
+                                            )
+                                        } else {
+                                            Log.d(TAG, "submitData: Success ${it.data.status}")
+                                        }
+                                    } else {
+                                        Log.d(TAG, "submitData: Success but with null response")
+                                    }
+                                }
+                                is Resource.Error -> {
+                                    Log.d(TAG, "submitData: exception ${it.data}")
+                                }
+                            }
+                        }
+                    }
+                },
+                unconnected = {
+                    state = state.copy(
+                        showInternetAlert = true
+                    )
+                })
+        } else {
+            state = state.copy(
+                dataInvalid = true
+            )
+        }
     }
 
 
@@ -183,19 +280,19 @@ class PublishVehicleVM : ViewModel() {
         updatedImagesList: List<Uri>,
         context: Context
     ) {
-       if(state.enteredData.listOfSelectedImages.size <= MAX_IMAGES ) {
-           val newImagesList = state.enteredData.listOfSelectedImages
-               .toMutableList()
-           viewModelScope.launch {
-               newImagesList += updatedImagesList
-               state = state.copy(
-                   enteredData = state.enteredData.copy(
-                       listOfSelectedImages = newImagesList
-                   )
-               )
-           }
-           detectVehicles(newImagesList, context)
-       }
+        if (state.enteredData.listOfSelectedImages.size <= MAX_IMAGES) {
+            val newImagesList = state.enteredData.listOfSelectedImages
+                .toMutableList()
+            viewModelScope.launch {
+                newImagesList += updatedImagesList
+                state = state.copy(
+                    enteredData = state.enteredData.copy(
+                        listOfSelectedImages = newImagesList
+                    )
+                )
+            }
+            detectVehicles(newImagesList, context)
+        }
     }
 
     @SuppressLint("SuspiciousIndentation")

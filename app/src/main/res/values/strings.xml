@@ -65,23 +65,24 @@
 
     <string name="view_more">View More details</string>
     <string name="home">Home</string>
-    <string name="sell">Sell</string>
-    <string name="rent">Rent</string>
+    <string name="sell">sell</string>
+    <string name="rent">rent</string>
     <string name="profile">Profile</string>
     <string name="chatting">Chatting</string>
     <string name="search">Search</string>
-    <string name="used_vehicle">Used</string>
-    <string name="new_vehicle">New</string>
+    <string name="used_vehicle">used</string>
+    <string name="new_vehicle">new</string>
     <string name="error">Error!</string>
 
     <string name="less_than2">the name should be at least 2 character</string>
 
-
+  <string name="data_required">All the Data required</string>
 
     <string name="wifi_manually">Android 10 or more versions are recommended to manually turn on Wifi for security</string>
 
+   <string name="additional_info_vehicle">Additional Info about the Vehicle</string>
 
-
+    <string name="settings">Settings</string>
     <string name="add_item">Add Items</string>
     <string name="location">Location</string>
     <string name="photos">Photos</string>
@@ -100,8 +101,8 @@
     <string name="condition">Condition</string>
     <string name="chose_year">Chose the year of manufacture: </string>
     <string name="description">Description</string>
-    <string name="manually">Manually</string>
-    <string name="automatic">Automatic</string>
+    <string name="manually">manually</string>
+    <string name="automatic">automatic</string>
     <string name="color">Color</string>
     <string name="fuel_type">Fuel Type</string>
 
@@ -110,52 +111,97 @@
 
 
 
-    <string name="gasoline">Gasoline</string>
-    <string name="diesel">Diesel </string>
-    <string name="hybrid">Hybrid</string>
-    <string name="electric">Electric</string>
+    <string name="gasoline">gasoline</string>
+    <string name="diesel">diesel </string>
+    <string name="hybrid">hybrid</string>
+    <string name="electric">electric</string>
 
     <string name="vehicle_caution">we noticed that you provided some images are not a Vehicle!</string>
     <string name="vehicle_caution_message">we will remove these images, </string>
     <string name="vehicle_caution_message_con"> to prevent fake data</string>
 
+    <string name="submitted">your data has been submitted successfully</string>
 
     <string name="no_messages">no messages yet</string>
 
     <string name="governorate">Governorate</string>
     <string name="vehicle_info">Vehicle Information:</string>
     <string name="vehicle_state">Vehicle State:</string>
+    <string name="contact_info">Contact Information:</string>
 
-    <string name="Damascus"> Damascus</string>
-    <string name="Aleppo"> Aleppo</string>
-    <string name="Homs"> Homs</string>
-    <string name="RifDimashq"> Rif Dimashq</string>
-    <string name="Latakia"> Latakia</string>
-    <string name="Idlib"> Idlib</string>
-    <string name="Ḥamah"> Hamah</string>
-    <string name="DayralZawr"> Dayr al-Zawr</string>
-    <string name="Daraa"> Daraa</string>
-    <string name="AlSuwayda"> Al-Suwayda</string>
-    <string name="AlRaqqah"> Al-Raqqah</string>
-    <string name="AlQunayṭirah"> Al-Qunayṭirah</string>
-    <string name="AlḤasakah"> Al-Hasakah</string>
+    <string name="owner">Owner</string>
+    <string name="visit_profile">visit this profile</string>
+
+    <string name="deriving_force">Deriving Force</string>
+    <string name="fwd">FWD</string>
+    <string name="rwd">RWD</string>
+    <string name="four_wd">4WD</string>
+    <string name="awd">AWD</string>
+    <string name="account">Account</string>
+    <string name="edit_account">Edit profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="privacy">Privacy</string>
+    <string name="notifications">Notifications</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="more">More</string>
+    <string name="logout">LOGOUT</string>
+    <string name="app_version">App version 1.0</string>
+
+
+
+    <string-array name="cities_array">
+        <item>Damascus</item>
+        <item>Aleppo</item>
+        <item>Homs</item>
+        <item>Rif Dimashq</item>
+        <item >Latakia</item>
+        <item >Idlib</item>
+        <item>Hamah</item>
+        <item>Dayr al-Zawr</item>
+        <item>Daraa</item>
+        <item>Al-Suwayda</item>
+        <item>Al-Raqqah</item>
+        <item>Al-Qunayṭirah</item>
+        <item>Al-Hasakah</item>
+        <item>Tartus</item>
+    </string-array>
 
 
 
 
     <string-array name="colors_list">
-        <item>Red</item>
-        <item>Orange</item>
-        <item>Yellow</item>
-        <item>Green</item>
         <item>Blue</item>
-        <item>Indigo</item>
-       <item>Violet</item>
+        <item>Red</item>
+        <item>Green</item>
         <item>Black</item>
         <item>White</item>
+        <item>Yellow</item>
+        <item>Pink</item>
+        <item>Purple</item>
+        <item>Orange</item>
         <item>Gray</item>
+        <item>Brown</item>
+        <item>Beige</item>
+        <item>Turquoise</item>
+        <item>Gold</item>
+        <item>Silver</item>
+        <item>Magenta</item>
+        <item>Navy</item>
+        <item>Teal</item>
+        <item>Maroon</item>
+        <item>Lavender</item>
+        <item>Cream</item>
+        <item>Olive</item>
+        <item>Sky blue</item>
+        <item>Coral</item>
+        <item>Indigo</item>
+        <item>Charcoal</item>
+        <item>Rust</item>
+        <item>Mint green</item>
+        <item>Mustard</item>
+        <item>Champagne</item>
     </string-array>
-
 
     <string-array name="country_codes">
         <item>+1</item>
@@ -213,5 +259,78 @@
 
     </string-array>
 
+
+    <string-array name="car_brands">
+        <item>Acura</item>
+        <item>Alfa Romeo</item>
+        <item>Aston Martin</item>
+        <item>Audi</item>
+        <item>BMW</item>
+        <item>Bentley</item>
+        <item>Bugatti</item>
+        <item>Buick</item>
+        <item>Cadillac</item>
+        <item>Chevrolet</item>
+        <item>Chrysler</item>
+        <item>Citroen</item>
+        <item>Cooper</item>
+        <item>Dacia</item>
+        <item>Daewoo</item>
+        <item>Dodge</item>
+        <item>Ferrari</item>
+        <item>Fiat</item>
+        <item>Ford</item>
+        <item>GMC</item>
+        <item>Geely</item>
+        <item>General Motors</item>
+        <item>Genesis</item>
+        <item>Holden</item>
+        <item>Honda</item>
+        <item>Hummer</item>
+        <item>Hyundai</item>
+        <item>Infiniti</item>
+        <item>Isuzu</item>
+        <item>Jaguar</item>
+        <item>Jeep</item>
+        <item>Kia</item>
+        <item>Koenigsegg</item>
+        <item>Lamborghini</item>
+        <item>Lancia</item>
+        <item>Land Rover</item>
+        <item>Lexus</item>
+        <item>Lincoln</item>
+        <item>Lotus</item>
+        <item>Maserati</item>
+        <item>Mazda</item>
+        <item>McLaren</item>
+        <item>Mercedes-Benz</item>
+        <item>Mercury</item>
+        <item>Mini</item>
+        <item>Mitsubishi</item>
+        <item>Nissan</item>
+        <item>Opel</item>
+        <item>Pagani</item>
+        <item>Peugeot</item>
+        <item>Polestar</item>
+        <item>Pontiac</item>
+        <item>Porsche</item>
+        <item>Ram</item>
+        <item>Renault</item>
+        <item>Rivian</item>
+        <item>Rolls-Royce</item>
+        <item>Saab</item>
+        <item>Saturn</item>
+        <item>Scion</item>
+        <item>Seat</item>
+        <item>Skoda</item>
+        <item>Smart</item>
+        <item>Subaru</item>
+        <item>Suzuki</item>
+        <item>Tata Motors</item>
+        <item>Tesla</item>
+        <item>Toyota</item>
+        <item>Volkswagen</item>
+        <item>Volvo</item>
+    </string-array>
 
 </resources>

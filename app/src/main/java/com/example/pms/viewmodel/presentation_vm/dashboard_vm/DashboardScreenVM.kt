@@ -12,6 +12,11 @@ class DashboardScreenVM : ViewModel() {
                     Destination.VehiclesMainDestination.route
                 )
             }
+            is DashboardEvents.OnSettingClicked -> {
+                event.navController.navigate(
+                    Destination.SettingsDestination.route
+                )
+            }
         }
     }
 }

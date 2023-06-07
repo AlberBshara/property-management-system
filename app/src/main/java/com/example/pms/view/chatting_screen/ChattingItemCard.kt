@@ -54,7 +54,7 @@ fun ChattingItemCard(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(150.dp)
+                    .size(50.dp)
                     .border(border = BorderStroke(4.dp, Brush.sweepGradient(rainbowColors)))
                     .padding(4.dp)
                     .clip(shape = CircleShape)

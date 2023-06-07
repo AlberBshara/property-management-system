@@ -28,7 +28,7 @@ fun GridCell(
         modifier = Modifier
             .clip(RoundedCornerShape(100.dp))
             .padding(10.dp)
-            .size(150.dp),
+            .size(130.dp),
         elevation = 0.dp,
         backgroundColor = transparent_p,
         onClick = {

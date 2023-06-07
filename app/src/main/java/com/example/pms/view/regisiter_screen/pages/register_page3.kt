@@ -23,8 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pms.R
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -52,25 +50,22 @@ fun RegisterPag3(
 
     val context = LocalContext.current
 
-    var imageUri by remember {
+    val imageUri = remember {
         mutableStateOf<Uri?>(null)
     }
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
-            imageUri = uri
+            imageUri.value = uri
         })
-
-    imageUri?.let {
-        viewModel.onEvent(RegPage3Events.ImageChanged(imageUri!!))
-    }
 
 
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (imageUri == null) {
+        if (imageUri.value == null) {
             Image(
                 painter = painterResource(id = R.drawable.person_profile),
                 contentDescription = "",
@@ -80,6 +75,7 @@ fun RegisterPag3(
                 contentScale = ContentScale.Crop
             )
         } else {
+            viewModel.onEvent(RegPage3Events.ImageChanged(imageUri.value))
             AsyncImage(
                 model = state.image,
                 contentDescription = null,

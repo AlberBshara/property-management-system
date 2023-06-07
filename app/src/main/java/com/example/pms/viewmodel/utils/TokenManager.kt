@@ -12,9 +12,9 @@ class TokenManager private constructor() {
         @SuppressLint("StaticFieldLeak")
         private lateinit var INSTANCE: TokenManager
         private lateinit var sharedPreferencesUsage: SharedPreferencesUsage
-        private const val TOKEN_TYPE : String = "Bearer"
+        private const val TOKEN_TYPE: String = "Bearer"
 
-        fun getInstance(context : Context): TokenManager {
+        fun getInstance(context: Context): TokenManager {
             if (!::INSTANCE.isInitialized) {
                 this.INSTANCE = TokenManager()
             }
@@ -36,7 +36,7 @@ class TokenManager private constructor() {
     fun exits(): Boolean =
         sharedPreferencesUsage.getToken() != PMSSharedPreferenceHelper.DEFAULT_VALUE
 
-    fun getToken() : String =
+    fun getToken(): String =
         "$TOKEN_TYPE ${sharedPreferencesUsage.getToken()}"
 
 }

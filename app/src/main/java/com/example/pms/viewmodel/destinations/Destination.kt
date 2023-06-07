@@ -13,6 +13,7 @@ import com.example.pms.view.forgot_password_screen.ForgetPassword
 import com.example.pms.view.login_screen.LoginScreen
 import com.example.pms.view.profile_screen.ProfileScreen
 import com.example.pms.view.regisiter_screen.RegisterScreen
+import com.example.pms.view.settings_screen.SettingsScreen
 import com.example.pms.view.splashscreen.SplashScreen
 import com.example.pms.view.vehicles_screen.VehiclesMainScreen
 import com.example.pms.view.vehicles_screen.publish_car.PublishingCarScreen
@@ -35,6 +36,7 @@ sealed class Destination(
     object ChattingMainDestination : Destination("chatting-main-screen-destination")
     object MessagesDestination : Destination("messages-screen-destination")
     object VehicleDetailsDestination : Destination("vehicle_details-screen-destination")
+    object SettingsDestination : Destination("settings-screen-destination")
 
 }
 
@@ -47,7 +49,7 @@ fun PmsNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = Destination.VehicleDetailsDestination.route
+        startDestination = Destination.SplashDestination.route
     ) {
         composable(route = Destination.SplashDestination.route) {
             SplashScreen(navController)
@@ -92,6 +94,9 @@ fun PmsNavHost(
         }
         composable(Destination.VehicleDetailsDestination.route) {
             VehicleDetailsScreen(navController)
+        }
+        composable(Destination.SettingsDestination.route) {
+            SettingsScreen(navController)
         }
     }
 

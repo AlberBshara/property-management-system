@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 
 
-private fun Modifier.shimmerEffect(): Modifier = composed {
+fun Modifier.shimmerEffect(): Modifier = composed {
 
     var size by remember {
         mutableStateOf(IntSize.Zero)

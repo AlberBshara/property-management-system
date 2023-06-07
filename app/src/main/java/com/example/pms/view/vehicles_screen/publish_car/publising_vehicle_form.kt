@@ -3,6 +3,7 @@ package com.example.pms.view.vehicles_screen.publish_car
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -24,10 +26,13 @@ import androidx.navigation.NavHostController
 import com.example.pms.R
 import com.example.pms.ui.theme.*
 import com.example.pms.view.animation.CircularSlider
+import com.example.pms.view.utils.DialogLoading
+import com.example.pms.view.utils.SuccessDialog
 import com.example.pms.view.utils.YearDialogPicker
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.PublishVehicleEvents
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.PublishVehicleState
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.publish_vehicle_vm.PublishVehicleVM
+
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
@@ -36,6 +41,8 @@ fun PublishingVehicleForm(
     viewModel: PublishVehicleVM,
     state: PublishVehicleState
 ) {
+
+    val context = LocalContext.current
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -96,8 +103,8 @@ fun PublishingVehicleForm(
                     viewModel.onEvent(PublishVehicleEvents.OnBrandChanged(it))
                 },
                 label = R.string.brand,
-                listMenuItems = listOf("BMS", "Sham", "asd", "Kia", "other"),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                listMenuItems = listOf(*stringArrayResource(id = R.array.car_brands))
             )
             Spacer(modifier = Modifier.width(10.dp))
             PMSOutLinedTextField(
@@ -144,6 +151,39 @@ fun PublishingVehicleForm(
             )
         }
 
+        OutlinedTextField(
+            value = state.enteredData.location,
+            onValueChange = {
+                viewModel.onEvent(PublishVehicleEvents.OnLocationChanged(it))
+            },
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth(),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                backgroundColor = transparentGray,
+                focusedBorderColor = lightBlue,
+                unfocusedBorderColor = transparentGray,
+                cursorColor = lightBlue
+            ),
+            shape = RoundedCornerShape(20.dp),
+            label = {
+                Text(
+                    text = stringResource(id = R.string.location),
+                    color = Color.DarkGray,
+                    style = MaterialTheme.typography.caption
+                )
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text
+            ),
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.location_ic),
+                    contentDescription = null
+                )
+            }
+        )
+
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
@@ -153,43 +193,28 @@ fun PublishingVehicleForm(
             PMSDropDownOutLinedTextFiled(
                 initialValue = state.enteredData.governorate,
                 onValueChanged = {
-                   viewModel.onEvent(PublishVehicleEvents.OnGovernorateChanged(it))
+                    viewModel.onEvent(PublishVehicleEvents.OnGovernorateChanged(it))
                 },
                 label = R.string.governorate,
-                listMenuItems = listOf(),
+                listMenuItems = listOf(*stringArrayResource(id = R.array.cities_array)),
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(10.dp))
-            OutlinedTextField(
-                value = state.enteredData.location,
-                onValueChange = {
-                    viewModel.onEvent(PublishVehicleEvents.OnLocationChanged(it))
-                },
+
+            PMSDropDownOutLinedTextFiled(
                 modifier = Modifier.weight(1f),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    backgroundColor = transparentGray,
-                    focusedBorderColor = lightBlue,
-                    unfocusedBorderColor = transparentGray,
-                    cursorColor = lightBlue
-                ),
-                shape = RoundedCornerShape(20.dp),
-                label = {
-                    Text(
-                        text = stringResource(id = R.string.location),
-                        color = Color.DarkGray,
-                        style = MaterialTheme.typography.caption
-                    )
+                initialValue = state.enteredData.derivingForce,
+                onValueChanged = {
+                    viewModel.onEvent(PublishVehicleEvents.OnDerivingForceChanged(it))
                 },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text
-                ),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.location_ic),
-                        contentDescription = null
-                    )
-                }
+                label = R.string.deriving_force,
+                listMenuItems = listOf(
+                    stringResource(id = R.string.fwd),
+                    stringResource(id = R.string.rwd),
+                    stringResource(id = R.string.four_wd)
+                )
             )
+
         }
 
         Row(
@@ -281,10 +306,41 @@ fun PublishingVehicleForm(
             singleLine = false
         )
 
+        AnimatedVisibility(visible = state.dataInvalid) {
+            Snackbar(
+                backgroundColor = Color.DarkGray,
+                elevation = 3.dp,
+                modifier = Modifier
+                    .padding(10.dp),
+                action = {
+                    Button(
+                        onClick = {
+                            viewModel.onEvent(PublishVehicleEvents.HideSnackBar)
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = lightBlue,
+                            disabledBackgroundColor = lightBlue
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.ok),
+                            color = Color.White,
+                            style = MaterialTheme.typography.button
+                        )
+                    }
+                }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.data_required),
+                    color = Color.White,
+                    style = MaterialTheme.typography.caption
+                )
+            }
+        }
 
         Button(
             onClick = {
-                viewModel.onEvent(PublishVehicleEvents.Submit)
+                viewModel.onEvent(PublishVehicleEvents.Submit(context))
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = lightBlue,
@@ -308,6 +364,13 @@ fun PublishingVehicleForm(
                 textAlign = TextAlign.Center
             )
         }
+
+        DialogLoading(isLoading = state.showUploadingAllData)
+
+        SuccessDialog(showIt = state.done,
+            onOkButtonListener = {
+               viewModel.onEvent(PublishVehicleEvents.OnDoneClicked)
+            })
     }
 }
 
