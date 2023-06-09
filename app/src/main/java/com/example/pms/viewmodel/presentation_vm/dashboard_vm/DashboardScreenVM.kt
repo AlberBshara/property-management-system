@@ -5,8 +5,8 @@ import com.example.pms.viewmodel.destinations.Destination
 
 class DashboardScreenVM : ViewModel() {
 
-    fun onEvent(event : DashboardEvents) {
-        when(event){
+    fun onEvent(event: DashboardEvents) {
+        when (event) {
             is DashboardEvents.OnVehicleClicked -> {
                 event.navController.navigate(
                     Destination.VehiclesMainDestination.route
@@ -15,6 +15,11 @@ class DashboardScreenVM : ViewModel() {
             is DashboardEvents.OnSettingClicked -> {
                 event.navController.navigate(
                     Destination.SettingsDestination.route
+                )
+            }
+            is DashboardEvents.OnProfileClicked -> {
+                event.navController.navigate(
+                    Destination.ProfileDestination.route
                 )
             }
         }

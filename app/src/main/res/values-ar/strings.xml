@@ -139,6 +139,19 @@
 
     <string name="owner">المالك</string>
 
+    <string name="estate_caution">لقد لاحظنا انك تضع بعض الصور التي ليست عقارات!</string>
+    <string name="estate_caution_message1">سوف نحذف الصور التي لاتحوي على عقارات </string>
+    <string name="estate_caution_message2"> لمنع البيانات غير المناسبة مع غرض النظام</string>
+
+    <string name="code"> الكود </string>
+    <string name="put_code_reset_password"> ضع الكود الذي أرسلناه لك </string>
+    <string name="my_fav">مفضلتي</string>
+    <string name="my_posts">منشوراتي</string>
+
+
+
+
+
     <string-array name="cities_array">
         <item>دمشق</item>
         <item>حلب</item>

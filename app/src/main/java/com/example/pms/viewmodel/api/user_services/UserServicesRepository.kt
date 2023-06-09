@@ -1,8 +1,6 @@
 package com.example.pms.viewmodel.api.user_services
 
-import com.example.pms.model.LoginUserRequest
-import com.example.pms.model.LogoutResponse
-import com.example.pms.model.RegisterUserData
+import com.example.pms.model.*
 import com.example.pms.viewmodel.api.RetrofitClient
 import com.example.pms.viewmodel.api.util.Resource
 import kotlinx.coroutines.flow.flow
@@ -91,6 +89,97 @@ class UserServicesRepository(
         }
         response?.let {
             emit(Resource.Success(data = response))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
+
+    suspend fun postSendEmailForgetPassword(
+        email: ResetPassword.SendEmailRequest
+    ): Flow<Resource<ResetPassword.SendEmailResponse>> {
+
+        return flow {
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.postSendEmailForgetPassword(email)
+            } catch (e: java.lang.Exception) {
+                emit(Resource.Error(e.toString()))
+                null
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.toString()))
+                null
+            }
+            response?.let {
+                emit(Resource.Success(data = response))
+                emit(Resource.Loading(false))
+            }
+            emit(Resource.Loading(false))
+        }
+    }
+
+
+    suspend fun postSendCodeForgetPassword(
+        code: ResetPassword.SendCodeRequest
+    ): Flow<Resource<ResetPassword.SendCodeResponse>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.postSendCodePassword(code)
+            } catch (e: java.lang.Exception) {
+                emit(Resource.Error(e.toString()))
+                null
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.toString()))
+                null
+            }
+            response?.let {
+                emit(Resource.Success(data = response))
+                emit(Resource.Loading(false))
+            }
+            emit(Resource.Loading(false))
+        }
+    }
+
+
+    suspend fun postSendResetForgetPassword(
+        reset_password: ResetPassword.SendResetRequest
+    ): Flow<Resource<ResetPassword.SendResetResponse>> {
+
+        return flow {
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.postSendResetPassword(reset_password)
+            } catch (e: java.lang.Exception) {
+                emit(Resource.Error(e.toString()))
+                null
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.toString()))
+                null
+            }
+            response?.let {
+                emit(Resource.Success(data = response))
+                emit(Resource.Loading(false))
+            }
+            emit(Resource.Loading(false))
+        }
+    }
+
+    suspend fun fetchProfileData(
+        token: String
+    ): Flow<Resource<ProfileData>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            userServicesInterface.getProfile(token)
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
             emit(Resource.Loading(false))
         }
         emit(Resource.Loading(false))

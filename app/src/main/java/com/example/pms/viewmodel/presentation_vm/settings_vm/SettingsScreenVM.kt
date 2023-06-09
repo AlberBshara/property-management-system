@@ -42,7 +42,7 @@ class SettingsScreenVM(
 
             }
             is SettingsEvents.OnChangePasswordClicked -> {
-
+                    event.navController.navigate(Destination.ForgetPasswordDestination.route)
             }
             is SettingsEvents.OnEditProfileClicked -> {
 

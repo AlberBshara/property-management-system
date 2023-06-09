@@ -76,7 +76,9 @@ fun DashboardScreen(
                 GridCell(R.drawable.settings_vector, R.string.settings_vector, onClick = {
                     viewModel.onEvent(DashboardEvents.OnSettingClicked(navController))
                 })
-                GridCell(R.drawable.profile_vector, R.string.profile_vector, onClick = {})
+                GridCell(R.drawable.profile_vector, R.string.profile_vector, onClick = {
+                    viewModel.onEvent(DashboardEvents.OnProfileClicked(navController))
+                })
             }
 
             Column {

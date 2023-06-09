@@ -1,13 +1,11 @@
 package com.example.pms.view.vehicles_screen.vehicle_details_screen
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import com.example.pms.view.animation.shimmerEffect
 
@@ -62,7 +60,6 @@ fun ShimmerViewMoreDetails() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
                 .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -85,7 +82,6 @@ fun ShimmerViewMoreDetails() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
                 .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically

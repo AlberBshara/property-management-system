@@ -74,6 +74,8 @@
     <string name="new_vehicle">new</string>
     <string name="error">Error!</string>
 
+    <string name="my_fav">My Favourites</string>
+    <string name="my_posts">My Posts</string>
     <string name="less_than2">the name should be at least 2 character</string>
 
   <string name="data_required">All the Data required</string>
@@ -147,6 +149,17 @@
     <string name="more">More</string>
     <string name="logout">LOGOUT</string>
     <string name="app_version">App version 1.0</string>
+
+
+
+    <string name="estate_caution">we noticed that you provided some images are not estate!</string>
+    <string name="estate_caution_message1">we will remove these images, </string>
+    <string name="estate_caution_message2"> to prevent fake data</string>
+
+
+    <string name="code"> Code</string>
+    <string name="put_code_reset_password">put the code that we have been send you :</string>
+
 
 
 

@@ -16,13 +16,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.pms.model.PublishVehicleData
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.api.vehicels_services.VehicleServicesImplementation
-import com.example.pms.viewmodel.utils.ImageDetection
-import com.example.pms.viewmodel.utils.InternetConnection
-import com.example.pms.viewmodel.utils.LocationHelper
-import com.example.pms.viewmodel.utils.TokenManager
+import com.example.pms.viewmodel.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 
 class PublishVehicleVM(
     private val vehicleApiRepo: VehicleServicesImplementation = VehicleServicesImplementation()
@@ -200,36 +198,51 @@ class PublishVehicleVM(
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun submitData(context: Context) {
-        if (state.enteredData.isValid()) {
+        if (state.enteredData.isValid()
+            && state.enteredData.listOfSelectedImages.isNotEmpty()
+        ) {
+
 
             val cd = state.enteredData
-                val vehicleData = PublishVehicleData(
-                    operationType = cd.listingType,
-                    transmissionType = cd.transmissionType,
-                    brand = cd.brand,
-                   secondaryBrand = cd.secondaryBrand,
-                    governorate = cd.governorate,
-                    locationInDamascus = "Barzeh",
-                    color = cd.color,
-                    description = cd.description,
-                    price = cd.price.toDouble(),
-                    yearOfManufacture = cd.manufactureYear.toInt(),
-                    kilometers = cd.kilometer.toInt(),
-                    address = cd.location ,
-                    condition = cd.condition ,
-                    fuelType = cd.fuelType,
-                    drivingForce = cd.derivingForce
-                )
+            val vehicleData = PublishVehicleData(
+                operationType = cd.listingType,
+                transmissionType = cd.transmissionType,
+                brand = cd.brand,
+                secondaryBrand = cd.secondaryBrand,
+                governorate = cd.governorate,
+                locationInDamascus = "Barzeh",
+                color = cd.color,
+                description = cd.description,
+                price = cd.price.toDouble(),
+                yearOfManufacture = cd.manufactureYear.toInt(),
+                kilometers = cd.kilometer.toDouble(),
+                address = cd.location,
+                condition = cd.condition,
+                fuelType = cd.fuelType,
+                drivingForce = cd.derivingForce
+            )
 
-            if (state.enteredData.listOfSelectedImages.isNotEmpty()) {
-                // here to fill the data with images:
-            }
+
+
             InternetConnection.run(context,
                 connected = {
                     viewModelScope.launch {
+
+                        val image1 = ImageHelper.uriToMultipart(context, cd.listOfSelectedImages[0], "image")
+                        val listOfImagesFiles: MutableList<MultipartBody.Part> = mutableListOf(image1)
+                        for (i in 1 until state.enteredData.listOfSelectedImages.size) {
+                            listOfImagesFiles.add(
+                                ImageHelper.uriToMultipart(
+                                    context,
+                                    cd.listOfSelectedImages[i],
+                                    "image$i"
+                                )
+                            )
+                        }
                         val response = vehicleApiRepo.publishingVehicle(
-                            vehicleData,
-                            TokenManager.getInstance(context).getToken()
+                            vehicle = vehicleData,
+                            imagesList = listOfImagesFiles,
+                            token = TokenManager.getInstance(context).getToken()
                         )
                         response.collect {
                             when (it) {
@@ -244,13 +257,16 @@ class PublishVehicleVM(
                                         if (it.data.status) {
                                             Log.d(
                                                 TAG,
-                                                "submitData: Success ${it.data.vehicle.brand}"
+                                                "submitData: Success ${it.data}"
                                             )
                                             state = state.copy(
                                                 done = true
                                             )
                                         } else {
-                                            Log.d(TAG, "submitData: Success ${it.data.status}")
+                                            Log.d(
+                                                TAG,
+                                                "submitData: Success with false status: ${it.data}"
+                                            )
                                         }
                                     } else {
                                         Log.d(TAG, "submitData: Success but with null response")

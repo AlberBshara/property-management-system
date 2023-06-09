@@ -1,19 +1,19 @@
 package com.example.pms.view.forgot_password_screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,11 +26,21 @@ import com.example.pms.ui.theme.background1
 import com.example.pms.ui.theme.iconsColor
 import com.example.pms.ui.theme.transparent_p
 import com.example.pms.view.regisiter_screen.InputTextFiled
+import com.example.pms.viewmodel.presentation_vm.forget_password_vm.ForgetPasswordScreenVM
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.view.animation.ProgressAnimatedBar
+import com.example.pms.view.utils.InternetAlertDialog
+import com.example.pms.viewmodel.presentation_vm.forget_password_vm.ForgetPasswordScreenEvents
 
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun ForgetPassword(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: ForgetPasswordScreenVM = viewModel()
 ) {
+    val context = LocalContext.current
+    viewModel.setContext(context)
+    val state = viewModel.state
 
     Column(
         modifier = Modifier
@@ -53,7 +63,7 @@ fun ForgetPassword(
             contentDescription = "forgetPassword",
             modifier = Modifier.weight(0.3f)
         )
-
+        ProgressAnimatedBar(isLoading = state.progressBarIndicator, modifier = Modifier.size(50.dp))
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -74,18 +84,25 @@ fun ForgetPassword(
                     fontWeight = FontWeight.Bold,
                 )
 
-                InputTextFiled(title = stringResource(id = R.string.email),
+                InputTextFiled(
+                    title = stringResource(id = R.string.email),
                     icon = R.drawable.email_ic,
                     keyboardOption = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Text
                     ), onValueChanged = {
-                    }, isError = false
+                        viewModel.onEvent(ForgetPasswordScreenEvents.OnEmailChange(it))
+                    },
+                    isError = false
                 )
 
-
                 Button(
+                    enabled = state.enableButtonSendEmail,
                     onClick = {
-
+                        viewModel.onEvent(
+                            ForgetPasswordScreenEvents.OnSendButtonChange(
+                                navController
+                            )
+                        )
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -96,5 +113,31 @@ fun ForgetPassword(
                 }
             }
         }
+        if (state.showAlertMessageFromServer) {
+            AlertDialog(
+                onDismissRequest = {
+                    viewModel.onEvent(ForgetPasswordScreenEvents.OnShowInternetAlertChange)
+                },
+                title = { Text(stringResource(id = R.string.error)) },
+                text = { Text(state.errorMessage.toString()) },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            viewModel.onEvent(ForgetPasswordScreenEvents.OnShowAlertMessageFromServer)
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = iconsColor)
+                    ) {
+                        Text(stringResource(id = R.string.ok))
+                    }
+                },
+                modifier = Modifier.padding(30.dp),
+                backgroundColor = Color.White
+            )
+        }
+        InternetAlertDialog(
+            onConfirm = { viewModel.onEvent(ForgetPasswordScreenEvents.WifiCase.Confirm) },
+            onDeny = { viewModel.onEvent(ForgetPasswordScreenEvents.WifiCase.Deny) },
+            openDialog = state.showInternetAlert
+        )
     }
 }

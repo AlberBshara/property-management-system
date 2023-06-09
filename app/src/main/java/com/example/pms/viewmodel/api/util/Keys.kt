@@ -40,4 +40,16 @@ object Keys {
     const val ESTATE_ID : String = "estate_id"
 
 
+
+    const val ERROR_MESSAGE : String = "ErrorMessage"
+    const val CODE : String = "code"
+    const val PASSWORD_CONFIRMATION :String="password_confirmation"
+
+
+    const val ROLE : String = "role"
+    const val FACEBOOK_LINK : String = "facebook_URL"
+    const val INSTAGRAM_LINK : String = "instagram_URL"
+    const val TWITTER_LINK : String = "twitter_URL"
+
+
 }
