@@ -35,11 +35,11 @@ sealed class PublishVehicleEvents {
     ) : PublishVehicleEvents()
 
     data class OnPriceChanged(
-        val price: Float
+        val price: Double
     ) : PublishVehicleEvents()
 
     data class OnKiloMeterChanged(
-        val kilometer: Float
+        val kilometer: Double
     ) : PublishVehicleEvents()
 
     data class OnGovernorateChanged(

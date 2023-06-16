@@ -51,10 +51,15 @@ class RegisterPage1Vm : ViewModel() {
                 phoneNumber_error = phoneNumberValidate.errorMessage
             )
         } else {
+            val phoneNumber = if (state.countryCode == "000"){
+                state.phoneNumber
+            }else{
+               "+" + state.countryCode + " " + state.phoneNumber
+            }
             val registerData = RegisterData(
                 firstname = state.firstname,
                 lastname = state.lastname,
-                phoneNumber = "${state.countryCode} ${state.phoneNumber}",
+                phoneNumber = phoneNumber,
             )
             RegisterPages.moveToNextRegisterPage(
                 navController = navController,

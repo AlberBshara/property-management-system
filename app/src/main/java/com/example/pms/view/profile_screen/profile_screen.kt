@@ -23,8 +23,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.pms.ui.theme.lightBlue
 import com.example.pms.view.animation.shimmerEffect
+import com.example.pms.view.utils.RefreshScreen
 import com.example.pms.viewmodel.presentation_vm.profile_vm.ProfileEvents
 import com.example.pms.viewmodel.presentation_vm.profile_vm.ProfileScreenVM
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun ProfileScreen(
@@ -36,104 +39,118 @@ fun ProfileScreen(
     viewModel.onEvent(ProfileEvents.OnStart(context))
     val state = viewModel.state
 
+    val refreshingState = rememberSwipeRefreshState(isRefreshing = state.isRefreshing)
+
     if (state.isLoading) {
         ShimmerProfileLoading()
     } else {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.7f)
-                    .background(color = lightBlue)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(30.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    if (state.imageUrl == null) {
-                        Image(
-                            painter = painterResource(id = R.drawable.person_profile),
-                            contentDescription = "profile_image",
-                            modifier = Modifier
-                                .weight(1f)
-                                .clip(CircleShape)
-                        )
-                    } else {
-                        AsyncImage(
-                            model = state.imageUrl,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(150.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    Text(
-                        text = state.name, fontSize = 22.sp, modifier = Modifier
-                            .weight(0.6f)
-                            .padding(20.dp), color = Color.White
-                    )
-                    Row(
-                        modifier = Modifier
-                            .padding(start = 30.dp, end = 30.dp)
-                            .weight(0.3f)
-                    ) {
-                        CardSocialMedia(
-                            facebookClickable = {
-                                viewModel.onEvent(ProfileEvents.PressOnFacebook(navController))
-                            },
-                            instagramClickable = {
-                                viewModel.onEvent(ProfileEvents.PressOnInstagram(navController))
-                            },
-                            twitterClickable = {
-                                viewModel.onEvent(ProfileEvents.PressOnTwitter(navController))
-                            }
-                        )
-                    }
-                }
+        RefreshScreen(needRefresh = state.timeOut,
+            onReloadListener = {
+                viewModel.onEvent(ProfileEvents.OnReloadClicked(context))
+            })
+       if (!state.timeOut){
+           SwipeRefresh(state = refreshingState,
+               onRefresh = {
+                   viewModel.onEvent(ProfileEvents.OnRefresh(true, context))
+               }) {
+               Column(
+                   modifier = Modifier
+                       .fillMaxSize()
+                       .verticalScroll(rememberScrollState())
+               ) {
+                   Box(
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           .weight(0.7f)
+                           .background(color = lightBlue)
+                   ) {
+                       Column(
+                           modifier = Modifier
+                               .fillMaxSize()
+                               .padding(30.dp),
+                           verticalArrangement = Arrangement.Center,
+                           horizontalAlignment = Alignment.CenterHorizontally
+                       ) {
+                           if (state.imageUrl == null) {
+                               Image(
+                                   painter = painterResource(id = R.drawable.person_profile),
+                                   contentDescription = "",
+                                   modifier = Modifier
+                                       .size(100.dp)
+                                       .clip(CircleShape),
+                                   contentScale = ContentScale.Crop
+                               )
+                           } else {
+                               AsyncImage(
+                                   model = state.imageUrl,
+                                   contentDescription = null,
+                                   modifier = Modifier
+                                       .size(100.dp)
+                                       .clip(CircleShape),
+                                   contentScale = ContentScale.Crop
+                               )
+                           }
+                           Text(
+                               text = state.name, fontSize = 22.sp, modifier = Modifier
+                                   .weight(0.6f)
+                                   .padding(20.dp), color = Color.White
+                           )
+                           Row(
+                               modifier = Modifier
+                                   .padding(start = 30.dp, end = 30.dp)
+                                   .weight(0.3f)
+                           ) {
+                               CardSocialMedia(
+                                   facebookClickable = {
+                                       viewModel.onEvent(ProfileEvents.PressOnFacebook(navController))
+                                   },
+                                   instagramClickable = {
+                                       viewModel.onEvent(ProfileEvents.PressOnInstagram(navController))
+                                   },
+                                   twitterClickable = {
+                                       viewModel.onEvent(ProfileEvents.PressOnTwitter(navController))
+                                   }
+                               )
+                           }
+                       }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    IconButtonProfile(
-                        icon = R.drawable.edit_ic,
-                        onClick = {
-                            viewModel.onEvent(ProfileEvents.EditButton(navController))
-                        },
-                        color = Color.White
-                    )
-                }
-            }
+                       Row(
+                           modifier = Modifier.fillMaxWidth(),
+                           horizontalArrangement = Arrangement.End
+                       ) {
+                           IconButtonProfile(
+                               icon = R.drawable.edit_ic,
+                               onClick = {
+                                   viewModel.onEvent(ProfileEvents.EditButton(navController))
+                               },
+                               color = Color.White
+                           )
+                       }
+                   }
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .background(color = Color.White)
-            ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    CardEmailPhoneLocation(icon = R.drawable.email_ic, text = state.email)
-                    CardEmailPhoneLocation(icon = R.drawable.phone_ic, text = state.phone)
-                    CardEmailPhoneLocation(icon = R.drawable.location_icon, text = state.location)
-                    CardsFavouritesPosts(
-                        icon = R.drawable.love_icon2,
-                        text = stringResource(id = R.string.my_fav),
-                        onClick = { viewModel.onEvent(ProfileEvents.PressOnFavourites(navController)) })
-                    CardsFavouritesPosts(
-                        icon = R.drawable.posts_ic,
-                        text = stringResource(id = R.string.my_posts),
-                        onClick = { viewModel.onEvent(ProfileEvents.PressOnPosts(navController)) })
-                }
-            }
-        }
+                   Box(
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           .weight(1f)
+                           .background(color = Color.White)
+                   ) {
+                       Column(modifier = Modifier.fillMaxWidth()) {
+                           CardEmailPhoneLocation(icon = R.drawable.email_ic, text = state.email)
+                           CardEmailPhoneLocation(icon = R.drawable.phone_ic, text = state.phone)
+                           CardEmailPhoneLocation(icon = R.drawable.location_icon, text = state.location)
+                           CardsFavouritesPosts(
+                               icon = R.drawable.love_icon2,
+                               text = stringResource(id = R.string.my_fav),
+                               onClick = { viewModel.onEvent(ProfileEvents.PressOnFavourites(navController)) })
+                           CardsFavouritesPosts(
+                               icon = R.drawable.posts_ic,
+                               text = stringResource(id = R.string.my_posts),
+                               onClick = { viewModel.onEvent(ProfileEvents.PressOnPosts(navController)) })
+                       }
+                   }
+               }
+           }
+       }
     }
 }
 
@@ -168,7 +185,7 @@ private fun CardEmailPhoneLocation(
 ) {
     Row(
         modifier = Modifier
-            .padding(20.dp),
+            .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -242,57 +259,57 @@ private fun ShimmerProfileLoading() {
                 .padding(top = 20.dp, start = 10.dp, end = 10.dp)
                 .height(50.dp)
         )
-    }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(30.dp)
+                    .padding(10.dp)
+                    .shimmerEffect()
+            )
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(30.dp)
+                    .padding(10.dp)
+                    .shimmerEffect()
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(30.dp)
+                    .padding(10.dp)
+                    .shimmerEffect()
+            )
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(30.dp)
+                    .padding(10.dp)
+                    .shimmerEffect()
+            )
+        }
         Box(
             modifier = Modifier
-                .weight(1f)
-                .height(30.dp)
-                .padding(10.dp)
-                .shimmerEffect()
-        )
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .height(30.dp)
-                .padding(10.dp)
+                .fillMaxWidth()
+                .height(60.dp)
+                .padding(20.dp)
                 .shimmerEffect()
         )
     }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .height(30.dp)
-                .padding(10.dp)
-                .shimmerEffect()
-        )
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .height(30.dp)
-                .padding(10.dp)
-                .shimmerEffect()
-        )
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .padding(20.dp)
-            .shimmerEffect()
-    )
 }

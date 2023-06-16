@@ -25,8 +25,8 @@ data class PublishVehicleState(
         var secondaryBrand: String = "",
         var listingType: String = "",
         var transmissionType: String = "",
-        var price: Float = 0f,
-        var kilometer: Float = 0f,
+        var price: Double = 0.0,
+        var kilometer: Double = 0.0,
         var location: String = "",
         var governorate: String = "",
         var manufactureYear: String = "",
@@ -38,7 +38,7 @@ data class PublishVehicleState(
     ) {
         fun isValid(): Boolean =
             brand.isNotEmpty() && secondaryBrand.isNotEmpty() && listingType.isNotEmpty()
-                    && transmissionType.isNotEmpty() && price != 0f && kilometer != 0f
+                    && transmissionType.isNotEmpty() && price != 0.0 && kilometer != 0.0
                     && location.isNotEmpty() && governorate.isNotEmpty()
                     && manufactureYear.isNotEmpty() && condition.isNotEmpty()
                     && description.isNotEmpty() && color.isNotEmpty()

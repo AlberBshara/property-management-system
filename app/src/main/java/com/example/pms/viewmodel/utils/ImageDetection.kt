@@ -71,7 +71,6 @@ object ImageDetection {
                     .addOnFailureListener {
 
                     }
-
             } catch (e: Exception) {
                 e.printStackTrace()
             }

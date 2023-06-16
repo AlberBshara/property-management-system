@@ -16,6 +16,7 @@ import com.example.pms.view.profile_screen.ProfileScreen
 import com.example.pms.view.regisiter_screen.RegisterScreen
 import com.example.pms.view.settings_screen.SettingsScreen
 import com.example.pms.view.splashscreen.SplashScreen
+import com.example.pms.view.suggesstions.SuggestionMainScreen
 import com.example.pms.view.vehicles_screen.VehiclesMainScreen
 import com.example.pms.view.vehicles_screen.publish_car.PublishingCarScreen
 import com.example.pms.view.vehicles_screen.vehicle_details_screen.VehicleDetailsScreen
@@ -39,7 +40,11 @@ sealed class Destination(
     object VehicleDetailsDestination : Destination("vehicle_details-screen-destination")
     object SettingsDestination : Destination("settings-screen-destination")
     object ResetPasswordScreen : Destination("reset_password_screen-destination")
+    object SuggestionsDestination : Destination("suggestions-main-screen-destination")
 
+    companion object {
+        const val CAR_ID_KEY: String = "carId"
+    }
 }
 
 
@@ -95,13 +100,18 @@ fun PmsNavHost(
             MessagesScreen(navController)
         }
         composable(Destination.VehicleDetailsDestination.route) {
-            VehicleDetailsScreen(navController)
+            val carId =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int>(Destination.CAR_ID_KEY)
+            VehicleDetailsScreen(navController, carId = carId ?: -1)
         }
         composable(Destination.SettingsDestination.route) {
             SettingsScreen(navController)
         }
         composable(Destination.ResetPasswordScreen.route) {
             ResetPasswordScreen(navController = navController)
+        }
+        composable(Destination.SuggestionsDestination.route) {
+            SuggestionMainScreen(navController)
         }
     }
 

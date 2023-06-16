@@ -9,7 +9,9 @@ data class VehicleViewMoreData(
     @SerializedName("Car : ")
     val vehicle : VehicleData,
     @SerializedName("Images : ")
-    val imagesList : List<ImageData>
+    val imagesList : List<ImageData>,
+    @SerializedName("Owner : ")
+    val owner : Owner
 ) {
     data class VehicleData(
         @SerializedName(Keys.ID)
@@ -66,5 +68,17 @@ data class VehicleViewMoreData(
         val creationDate : String ,
         @SerializedName(Keys.UPDATED_DATE)
         val updatedDate : String
+    )
+    data class Owner(
+        @SerializedName(Keys.ID)
+        val id : Int ,
+        @SerializedName(Keys.NAME)
+        val userName : String ,
+        @SerializedName(Keys.EMAIL)
+        val email : String ,
+        @SerializedName(Keys.PHONE_NUMBER)
+        val phoneNumber : String ,
+        @SerializedName(Keys.IMAGE)
+        val image : String ?
     )
 }

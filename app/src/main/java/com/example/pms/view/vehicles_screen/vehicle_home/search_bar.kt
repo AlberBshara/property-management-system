@@ -3,6 +3,7 @@ package com.example.pms.view.vehicles_screen.vehicle_home
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -16,16 +17,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.pms.R
-import com.example.pms.ui.theme.lightGreen
+import com.example.pms.ui.theme.lightBlue
 
 @Composable
 fun SearchBar(
     query: String,
     onQueryListener: (String) -> Unit,
-    onCancelListener : () -> Unit
+    onCancelListener: () -> Unit,
+    onDone: (String) -> Unit
 ) {
-
-
+    val searchQuery = remember {
+        mutableStateOf("")
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,6 +50,7 @@ fun SearchBar(
                 value = query,
                 onValueChange = {
                     onQueryListener(it)
+                    searchQuery.value = it
                 },
                 leadingIcon = {
                     Icon(
@@ -61,22 +65,24 @@ fun SearchBar(
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent,
-                    cursorColor = lightGreen,
-                    focusedLabelColor = lightGreen,
-                    focusedIndicatorColor = lightGreen
+                    cursorColor = lightBlue,
+                    focusedLabelColor = lightBlue,
+                    focusedIndicatorColor = lightBlue
                 ),
                 textStyle = TextStyle(
                     color = Color.Black
                 ),
                 trailingIcon = {
-                        Icon(imageVector = Icons.Filled.Close,
-                            contentDescription = null,
+                    Icon(imageVector = Icons.Filled.Close,
+                        contentDescription = null,
                         tint = Color.Black,
                         modifier = Modifier.clickable {
                             onCancelListener()
                         })
-
-                }
+                },
+                keyboardActions = KeyboardActions(onDone = {
+                    onDone(searchQuery.value)
+                })
             )
         }
     }

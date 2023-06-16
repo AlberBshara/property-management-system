@@ -122,7 +122,7 @@ fun PublishingVehicleForm(
             initialValue = state.enteredData.price.toString(),
             onValueChanged = {
                 if (it.isNotEmpty()) {
-                    viewModel.onEvent(PublishVehicleEvents.OnPriceChanged(it.toFloat()))
+                    viewModel.onEvent(PublishVehicleEvents.OnPriceChanged(it.toDouble()))
                 }
             }, label = R.string.price,
             keyboardType = KeyboardType.Number,
@@ -142,10 +142,10 @@ fun PublishingVehicleForm(
                 thumbColor = lightBlue,
                 progressColor = lightBlue,
             ) {
-                viewModel.onEvent(PublishVehicleEvents.OnKiloMeterChanged(it))
+                viewModel.onEvent(PublishVehicleEvents.OnKiloMeterChanged(it.toDouble()))
             }
             Text(
-                text = "${state.enteredData.kilometer} " + stringResource(id = R.string.km),
+                text = "${state.enteredData.kilometer.toFloat()} " + stringResource(id = R.string.km),
                 style = MaterialTheme.typography.caption,
                 color = Color.Black
             )

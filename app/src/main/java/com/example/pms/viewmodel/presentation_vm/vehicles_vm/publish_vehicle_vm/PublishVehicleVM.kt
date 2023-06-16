@@ -28,8 +28,10 @@ class PublishVehicleVM(
 
     var state by mutableStateOf(PublishVehicleState())
 
-    private val MAX_IMAGES: Int = 10
-    private val TAG: String = "PublishVehicleVM.kt"
+    companion object {
+        private const val MAX_IMAGES: Int = 10
+        private const val TAG: String = "PublishVehicleVM.kt"
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun onEvent(event: PublishVehicleEvents) {
@@ -213,9 +215,9 @@ class PublishVehicleVM(
                 locationInDamascus = "Barzeh",
                 color = cd.color,
                 description = cd.description,
-                price = cd.price.toDouble(),
+                price = cd.price,
                 yearOfManufacture = cd.manufactureYear.toInt(),
-                kilometers = cd.kilometer.toDouble(),
+                kilometers = cd.kilometer,
                 address = cd.location,
                 condition = cd.condition,
                 fuelType = cd.fuelType,
@@ -228,8 +230,10 @@ class PublishVehicleVM(
                 connected = {
                     viewModelScope.launch {
 
-                        val image1 = ImageHelper.uriToMultipart(context, cd.listOfSelectedImages[0], "image")
-                        val listOfImagesFiles: MutableList<MultipartBody.Part> = mutableListOf(image1)
+                        val image1 =
+                            ImageHelper.uriToMultipart(context, cd.listOfSelectedImages[0], "image")
+                        val listOfImagesFiles: MutableList<MultipartBody.Part> =
+                            mutableListOf(image1)
                         for (i in 1 until state.enteredData.listOfSelectedImages.size) {
                             listOfImagesFiles.add(
                                 ImageHelper.uriToMultipart(

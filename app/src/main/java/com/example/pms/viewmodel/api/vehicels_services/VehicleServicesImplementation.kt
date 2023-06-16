@@ -1,6 +1,8 @@
 package com.example.pms.viewmodel.api.vehicels_services
 
+import com.example.pms.model.HomeVehiclesResponse
 import com.example.pms.model.PublishVehicleData
+import com.example.pms.model.SearchData
 import com.example.pms.model.VehicleViewMoreData
 import com.example.pms.viewmodel.api.RetrofitClient
 import com.example.pms.viewmodel.api.util.Resource
@@ -51,7 +53,7 @@ class VehicleServicesImplementation(
                 image7 = imagesList?.let { if (it.size > 6) it[6] else null },
                 image8 = imagesList?.let { if (it.size > 7) it[7] else null },
                 image9 = imagesList?.let { if (it.size > 8) it[8] else null },
-                image10 = imagesList?.let {if (it.size > 9) it[9] else null },
+                image10 = imagesList?.let { if (it.size > 9) it[9] else null },
             )
         } catch (e: IOException) {
             emit(Resource.Error(e.cause.toString()))
@@ -81,11 +83,56 @@ class VehicleServicesImplementation(
             emit(Resource.Error(message = e.response().toString()))
             null
         }
-
         response?.let {
             emit(Resource.Success(data = response))
             emit(Resource.Loading(false))
         }
         emit(Resource.Loading(false))
     }
+
+
+    suspend fun fetchAllVehiclesPosts(
+        token: String,
+        pageNumber: Int
+    ): Flow<Resource<HomeVehiclesResponse>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            vehicleServicesInterface.getAllVehiclesPosts(
+                token, pageNumber
+            )
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.message))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
+    suspend fun search(
+        token : String ,
+        searchData: SearchData
+    ): Flow<Resource<SearchData.SearchResponse>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            vehicleServicesInterface.search(token , searchData)
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
 }

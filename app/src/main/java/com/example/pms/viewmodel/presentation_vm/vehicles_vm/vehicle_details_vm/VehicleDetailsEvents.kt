@@ -5,7 +5,8 @@ import android.content.Context
 sealed class VehicleDetailsEvents {
 
     data class OnStart(
-        val context: Context
+        val context: Context,
+        val carId : Int
     ) : VehicleDetailsEvents()
 
     data class OnCurrentImageIndexChanged(
@@ -19,5 +20,10 @@ sealed class VehicleDetailsEvents {
 
     data class OnShareClicked(
         val context: Context
+    ) : VehicleDetailsEvents()
+
+    data class OnReloadClicked(
+        val context: Context,
+        val carId : Int
     ) : VehicleDetailsEvents()
 }

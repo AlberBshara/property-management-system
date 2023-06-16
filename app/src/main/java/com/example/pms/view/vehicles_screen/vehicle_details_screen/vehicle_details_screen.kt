@@ -32,6 +32,7 @@ import com.example.pms.R
 import com.example.pms.ui.theme.*
 import com.example.pms.view.animation.CircularSlider
 import com.example.pms.view.utils.RatingBar
+import com.example.pms.view.utils.RefreshScreen
 import com.example.pms.view.vehicles_screen.vehicle_home.post_card.PagerIndicator
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.vehicle_details_vm.VehicleDetailsEvents
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.vehicle_details_vm.VehicleDetailsState
@@ -40,130 +41,134 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 
 
-
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun VehicleDetailsScreen(
     navController: NavHostController,
-    viewModel: VehicleDetailsScreenVM = viewModel()
+    viewModel: VehicleDetailsScreenVM = viewModel(),
+    carId: Int
 ) {
     val context = LocalContext.current
-    viewModel.onEvent(VehicleDetailsEvents.OnStart(context))
+    viewModel.onEvent(VehicleDetailsEvents.OnStart(context, carId))
     val state = viewModel.state
 
     if (state.isLoading) {
         ShimmerViewMoreDetails()
     } else {
         val pagerState = rememberPagerState(pageCount = state.imagesList.size)
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top,
+        RefreshScreen(needRefresh = state.timeOut,
+            onReloadListener = {
+                viewModel.onEvent(VehicleDetailsEvents.OnReloadClicked(context, carId))
+            })
+        if (!state.timeOut) {
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopCenter)
+                    .fillMaxSize()
             ) {
-
-                if (state.imagesList.isNotEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.BottomEnd
-                    ) {
-                        HorizontalPager(
-                            state = pagerState,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                        ) { index: Int ->
-                            viewModel.onEvent(
-                                VehicleDetailsEvents.OnCurrentImageIndexChanged(
-                                    pagerState.currentPage
-                                )
-                            )
-                            AsyncImage(
-                                model = state.imagesList[index].imageUrl,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(200.dp)
-                                    .clip(
-                                        shape = RoundedCornerShape(
-                                            bottomEnd = 16.dp,
-                                            bottomStart = 16.dp
-                                        )
-                                    ),
-                                contentScale = ContentScale.FillWidth
-                            )
-                        }
-                        FloatingActionButton(
-                            modifier = Modifier.align(Alignment.BottomEnd),
-                            backgroundColor = transparentGray,
-                            onClick = {
-                                viewModel.onEvent(VehicleDetailsEvents.OnShareClicked(context))
-                            }) {
-                            Icon(
-                                imageVector = Icons.Filled.Share,
-                                contentDescription = null,
-                                tint = Color.LightGray
-                            )
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(2.dp))
-                PagerIndicator(
-                    current_index = state.currentImageIndex,
-                    length = state.imagesList.size
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                LazyColumn(
+                Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Top,
                     modifier = Modifier
-                        .padding(bottom = 50.dp)
                         .fillMaxWidth()
+                        .align(Alignment.TopCenter)
                 ) {
-                    item {
-                        VehicleInfo(state)
-                        VehicleCase(state)
-                        ContactInfo(state,
-                            onCallPhoneListener = {
+
+                    if (state.imagesList.isNotEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            contentAlignment = Alignment.BottomEnd
+                        ) {
+                            HorizontalPager(
+                                state = pagerState,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                            ) { index: Int ->
                                 viewModel.onEvent(
-                                    VehicleDetailsEvents.OnCallPhoneClicked(
-                                        it,
-                                        context
+                                    VehicleDetailsEvents.OnCurrentImageIndexChanged(
+                                        pagerState.currentPage
                                     )
                                 )
+                                AsyncImage(
+                                    model = state.imagesList[index].imageUrl,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(200.dp)
+                                        .clip(
+                                            shape = RoundedCornerShape(
+                                                bottomEnd = 16.dp,
+                                                bottomStart = 16.dp
+                                            )
+                                        ),
+                                    contentScale = ContentScale.FillWidth
+                                )
                             }
-                        )
-                        MoreInfo(state)
-                        OwnerCard(state,
-                            onVisitProfileListener = {
-
-                            },
-                            onChattingListener = {
-
-                            })
+                            FloatingActionButton(
+                                modifier = Modifier.align(Alignment.BottomEnd),
+                                backgroundColor = transparentGray,
+                                onClick = {
+                                    viewModel.onEvent(VehicleDetailsEvents.OnShareClicked(context))
+                                }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Share,
+                                    contentDescription = null,
+                                    tint = Color.LightGray
+                                )
+                            }
+                        }
                     }
-                }
+                    Spacer(modifier = Modifier.height(2.dp))
+                    PagerIndicator(
+                        current_index = state.currentImageIndex,
+                        length = state.imagesList.size
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    LazyColumn(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Top,
+                        modifier = Modifier
+                            .padding(bottom = 50.dp)
+                            .fillMaxWidth()
+                    ) {
+                        item {
+                            VehicleInfo(state)
+                            VehicleCase(state)
+                            ContactInfo(state,
+                                onCallPhoneListener = {
+                                    viewModel.onEvent(
+                                        VehicleDetailsEvents.OnCallPhoneClicked(
+                                            it,
+                                            context
+                                        )
+                                    )
+                                }
+                            )
+                            MoreInfo(state)
+                            OwnerCard(state,
+                                onVisitProfileListener = {
 
+                                },
+                                onChattingListener = {
+
+                                })
+                        }
+                    }
+
+                }
+                BottomItems(
+                    onBookClinked = {
+                    },
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth()
+                        .heightIn(max = 50.dp)
+                        .align(Alignment.BottomCenter),
+                    price = state.price.toString() + " s.p "
+                )
             }
-            BottomItems(
-                onBookClinked = {
-                },
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth()
-                    .heightIn(max = 50.dp)
-                    .align(Alignment.BottomCenter),
-                price = state.price.toString() + " s.p "
-            )
         }
     }
 }
@@ -380,14 +385,14 @@ private fun ContactInfo(
                 modifier = Modifier.padding(end = 10.dp)
             )
             Text(
-                text = "+963-947424243",
+                text = state.phoneNumber,
                 color = Color.DarkGray,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.subtitle2
             )
         }
         IconButton(onClick = {
-            onCallPhoneListener("+963-947424243")
+            onCallPhoneListener(state.phoneNumber)
         }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_phone),
@@ -442,24 +447,43 @@ private fun OwnerCard(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.person_profile),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(50.dp)
-                            .border(
-                                border = BorderStroke(
-                                    2.dp,
-                                    Brush.sweepGradient(rainbowColors)
-                                ),
-                                shape = CircleShape
-                            )
-                            .clip(shape = CircleShape)
-                    )
+                    if (state.userImage != null) {
+                        AsyncImage(
+                            model = state.userImage,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .size(50.dp)
+                                .border(
+                                    border = BorderStroke(
+                                        2.dp,
+                                        Brush.sweepGradient(rainbowColors)
+                                    ),
+                                    shape = CircleShape
+                                )
+                                .clip(shape = CircleShape)
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(id = R.drawable.person_profile),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .size(50.dp)
+                                .border(
+                                    border = BorderStroke(
+                                        2.dp,
+                                        Brush.sweepGradient(rainbowColors)
+                                    ),
+                                    shape = CircleShape
+                                )
+                                .clip(shape = CircleShape)
+                        )
+                    }
                     Text(
-                        text = "Alber Bshara",
+                        text = state.userName,
                         textAlign = TextAlign.Start,
                         color = Color.Black,
                         style = MaterialTheme.typography.subtitle1,

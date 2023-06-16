@@ -10,4 +10,6 @@ data class ProfileState(
     var facebookLink: String? = null,
     var instagramLink: String? = null,
     var twitterLink: String? = null,
+    var isRefreshing: Boolean = false,
+    var timeOut: Boolean = false
 )

@@ -22,13 +22,16 @@ class VehicleDetailsScreenVM(
 
     var state by mutableStateOf(VehicleDetailsState())
 
-    private val TAG: String = "VehicleDetailsScreenVM.kt"
+    companion object {
+        private const val TAG: String = "VehicleDetailsScreenVM.kt"
+    }
+
     private var counter: Int = 0
 
     fun onEvent(event: VehicleDetailsEvents) {
         when (event) {
             is VehicleDetailsEvents.OnStart -> {
-                getVehicleDataById(event.context, 1)
+                getVehicleDataById(event.context, event.carId)
             }
             is VehicleDetailsEvents.OnCurrentImageIndexChanged -> {
                 state = state.copy(
@@ -41,7 +44,9 @@ class VehicleDetailsScreenVM(
             is VehicleDetailsEvents.OnShareClicked -> {
                 shareVehicleData(event.context)
             }
-
+            is VehicleDetailsEvents.OnReloadClicked -> {
+                reload(event.context, event.carId)
+            }
         }
     }
 
@@ -74,6 +79,7 @@ class VehicleDetailsScreenVM(
                             if (it.data != null) {
                                 if (it.data.status) {
                                     val vehicle = it.data.vehicle
+                                    val owner = it.data.owner
                                     state = state.copy(
                                         ownerId = vehicle.ownerId,
                                         brand = vehicle.brand,
@@ -91,7 +97,12 @@ class VehicleDetailsScreenVM(
                                         price = vehicle.price,
                                         description = vehicle.description,
                                         location = vehicle.governorate + ", " + (vehicle.address
-                                            ?: context.getString(R.string.invalid))
+                                            ?: context.getString(R.string.invalid)),
+                                        userId = owner.id ,
+                                        userName = owner.userName,
+                                        email = owner.email,
+                                        phoneNumber = owner.phoneNumber,
+                                        userImage = owner.image ,
                                     )
                                     try {
                                         if (it.data.imagesList.isNotEmpty()) {
@@ -107,6 +118,9 @@ class VehicleDetailsScreenVM(
                         }
                         is Resource.Error -> {
                             Log.d(TAG, "getVehicleDataById: ${it.message}")
+                                state = state.copy(
+                                    timeOut = true
+                                )
                         }
                     }
                 }
@@ -115,6 +129,15 @@ class VehicleDetailsScreenVM(
 
     }
 
+    private fun reload(
+        context: Context, carId: Int
+    ) {
+        this.counter = 0
+        getVehicleDataById(context, carId)
+        state = state.copy(
+            timeOut = false
+        )
+    }
 
     private fun makingCall(phoneNumber: String, context: Context) {
         viewModelScope.launch {

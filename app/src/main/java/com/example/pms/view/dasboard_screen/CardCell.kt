@@ -29,7 +29,7 @@ fun GridCell(
             .clip(RoundedCornerShape(100.dp))
             .padding(10.dp)
             .size(130.dp),
-        elevation = 0.dp,
+        elevation = 4.dp,
         backgroundColor = transparent_p,
         onClick = {
             onClick()
@@ -42,7 +42,6 @@ fun GridCell(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(5.dp)
                     .requiredSize(100.dp, 100.dp), Alignment.Center
             ) {
                 Image(
@@ -50,7 +49,7 @@ fun GridCell(
                     contentDescription = "icon",
                     modifier = Modifier
                         .size(50.dp)
-                        .padding(bottom = 5.dp)
+                        .padding(bottom = 4.dp)
                 )
             }
             Text(

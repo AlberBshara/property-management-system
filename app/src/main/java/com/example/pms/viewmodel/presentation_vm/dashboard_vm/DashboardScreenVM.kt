@@ -22,6 +22,15 @@ class DashboardScreenVM : ViewModel() {
                     Destination.ProfileDestination.route
                 )
             }
+            is DashboardEvents.OnSuggestionClicked -> {
+                event.navController.navigate(
+                    Destination.SuggestionsDestination.route
+                )
+            }
+            is DashboardEvents.OnAboutUsClicked -> {
+            }
+            is DashboardEvents.OnEstateClicked -> {
+            }
         }
     }
 }

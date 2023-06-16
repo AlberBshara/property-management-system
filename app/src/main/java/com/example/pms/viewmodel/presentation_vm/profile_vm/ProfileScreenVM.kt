@@ -20,12 +20,20 @@ class ProfileScreenVM(
     var state by mutableStateOf(ProfileState())
     private var counter: Int = 0
 
-    private val TAG: String = "ProfileScreenVM.kt"
+    companion object {
+        private const val TAG: String = "ProfileScreenVM.kt"
+    }
 
     fun onEvent(event: ProfileEvents) {
         when (event) {
             is ProfileEvents.OnStart -> {
                 fetchProfileData(event.context)
+            }
+            is ProfileEvents.OnRefresh -> {
+                state = state.copy(
+                    isRefreshing = event.isRefreshing
+                )
+                refresh(event.context)
             }
             is ProfileEvents.EditButton -> {
                 //  event.navHostController.navigate(Destination.EditProfileInfoDestination.route)
@@ -39,6 +47,9 @@ class ProfileScreenVM(
             is ProfileEvents.PressOnFavourites -> {
             }
             is ProfileEvents.PressOnPosts -> {
+            }
+            is ProfileEvents.OnReloadClicked -> {
+               reload(event.context)
             }
         }
     }
@@ -56,7 +67,8 @@ class ProfileScreenVM(
                     when (it) {
                         is Resource.Loading -> {
                             state = state.copy(
-                                isLoading = it.isLoading
+                                isLoading = it.isLoading,
+                                isRefreshing = it.isLoading
                             )
                             Log.d(TAG, "fetchProfileData: Loading ${it.isLoading}")
                         }
@@ -72,11 +84,14 @@ class ProfileScreenVM(
                                     facebookLink = user.facebookLink,
                                     instagramLink = user.instagramLink,
                                     twitterLink = user.twitterLink,
-                                    )
-                                Log.d(TAG, "fetchProfileData: Success ${it.data.user.email}")
+                                )
+                                Log.d(TAG, "fetchProfileData: Success ${it.data.user}")
                             }
                         }
                         is Resource.Error -> {
+                            state = state.copy(
+                                timeOut = true
+                            )
                             Log.d(TAG, "fetchProfileData: Exception ${it.message}")
                         }
                     }
@@ -84,6 +99,24 @@ class ProfileScreenVM(
 
             }
         }
+    }
+
+
+    private fun refresh(
+        context: Context
+    ) {
+        this.counter = 0
+        fetchProfileData(context)
+    }
+
+    private fun reload(
+        context: Context
+    ) {
+        this.counter = 0
+        fetchProfileData(context)
+        state = state.copy(
+            timeOut = false
+        )
     }
 
 }

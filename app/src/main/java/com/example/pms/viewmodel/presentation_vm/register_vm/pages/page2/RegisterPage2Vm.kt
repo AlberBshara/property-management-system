@@ -28,9 +28,7 @@ class RegisterPage2Vm : ViewModel() {
             is RegPage2Events.RepeatedPasswordChanged -> {
                 state = state.copy(confirmPassword = event.repeatedPassword)
             }
-
         }
-
     }
 
     fun submitPage2(

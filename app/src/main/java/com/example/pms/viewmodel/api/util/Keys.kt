@@ -52,4 +52,14 @@ object Keys {
     const val TWITTER_LINK : String = "twitter_URL"
 
 
+    const val ALL_POSTS : String = "All_Post"
+    const val POST : String = "post"
+    const val CURRENT_PAGE : String = "current_page"
+    const val DATA : String = "data"
+    const val PAGE_QUERY : String = "page"
+    const val LAST_PAGE : String = "last_page"
+
+    const val TYPE : String = "type"
+
+
 }

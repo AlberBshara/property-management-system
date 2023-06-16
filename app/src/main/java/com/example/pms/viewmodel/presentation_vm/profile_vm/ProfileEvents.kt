@@ -9,6 +9,11 @@ sealed class ProfileEvents {
         val context: Context
     ) : ProfileEvents()
 
+    data class OnRefresh(
+        val isRefreshing: Boolean,
+        val context: Context
+    ) : ProfileEvents()
+
     data class EditButton(
         val navHostController: NavHostController
     ) : ProfileEvents()
@@ -33,4 +38,7 @@ sealed class ProfileEvents {
         val navHostController: NavHostController
     ) : ProfileEvents()
 
+    data class OnReloadClicked(
+       val context: Context
+    ) : ProfileEvents()
 }

@@ -36,6 +36,19 @@
     <string name="invalid_name">الاسم لايمكن ان يحوي على ارقام!</string>
 
 
+    <string name="no_internet">من الممكن انه لايوجد اتصال بالانتريت</string>
+    <string name="try_these_steps">يمكنك تجريب بعض الخطوات التالية لاعادة لاتصال بالانترنيت:</string>
+    <string name="check_wifi">تحقق من مودم الراوتر ثم اعادة لاتصال بالوايفاي.</string>
+    <string name="reload">اعادة تحميل</string>
+    <string name="no_more_data">غير متاح المزيد من البيانات</string>
+    <string name="reset">أعادة البداية</string>
+
+
+    <string name="how_help">كيف يمكنني مساعدتك ؟</string>
+    <string name="start">أبدأ</string>
+
+
+
 
     <string name="car_vector">المركبات</string>
     <string name="estate_vector">العقارات</string>
@@ -70,6 +83,12 @@
 
     <string name="less_than2">الاسم يجب ان يجوي على الاقل حرفان</string>
     <string name="wifi_manually">الاصدارات 10 ومافوق من نظام اندرويد تطلب منك تفيل ال Wifi يديويا للحفاظ على امن معلوماتك</string>
+
+    <string name="finding_garage">أيجاد اقرب كراج سيارات؟</string>
+    <string name="finding_wash">أيجاد أقرب مغسل سيارات ؟</string>
+    <string name="news_car">أخبار وكل شيء جديد عن السيارات ؟</string>
+    <string name="rate_car">هل تريد تقييم سيارتك ؟</string>
+
 
 
     <string name="add_item">أضافة عناصر</string>
