@@ -17,4 +17,6 @@ data class VehicleHomeState(
     var lastPage : Int = 0 ,
     var noMoreData : Boolean = false,
     var needRefresh : Boolean = false ,
+    var pickingPrice : Boolean = false ,
+    var showAdvanceFiltering : Boolean = false
 )

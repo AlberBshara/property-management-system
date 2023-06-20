@@ -41,7 +41,7 @@ data class PublishVehicleData(
       val status : Boolean ,
       @SerializedName(Keys.CAR)
       val vehicle : PublishVehicleData,
-      @SerializedName(Keys.IMAGES_LIST)
+      @SerializedName("images")
       val imagesList : List<VehicleViewMoreData.ImageData>? = null
     )
 }

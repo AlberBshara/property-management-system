@@ -1,9 +1,6 @@
 package com.example.pms.viewmodel.api.vehicels_services
 
-import com.example.pms.model.HomeVehiclesResponse
-import com.example.pms.model.PublishVehicleData
-import com.example.pms.model.SearchData
-import com.example.pms.model.VehicleViewMoreData
+import com.example.pms.model.*
 import com.example.pms.viewmodel.api.util.Keys
 import com.example.pms.viewmodel.api.util.Urls
 import okhttp3.MultipartBody
@@ -66,9 +63,17 @@ interface VehicleServicesInterface {
 
     @POST(Urls.SEARCH_EDN_POINT)
     suspend fun search(
-        @Header(Keys.AUTHORIZATION) authToken: String ,
+        @Header(Keys.AUTHORIZATION) authToken: String,
         @Body search: SearchData
     ): SearchData.SearchResponse
+
+
+    @POST(Urls.FILTERING_END_POINT)
+    suspend fun filter(
+        @Header(Keys.AUTHORIZATION) authToken: String,
+        @Body filteredData: FilteringData
+    ): FilteringData.FilteringResponse
+
 
 
 }

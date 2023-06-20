@@ -14,6 +14,7 @@
     <string name="try_these_steps">Try these steps to get back online:</string>
     <string name="check_wifi">check your modem and router and reconnect to Wi-Fi</string>
     <string name="reload">Reload Page</string>
+    <string name="pick_price">Pick the range of prices that you are seeking for:</string>
 
     <string name="app_name_without_abbreviation">Property Management System</string>
     <string name="welcome">Welcome Back!</string>
@@ -98,6 +99,9 @@
     <string name="camera">Camera</string>
     <string name="files">Files</string>
 
+    <string name="advance_filtering">Advance filtering</string>
+    <string name="filter_guidlines">To help you find what you desire, you can filter the data based on more than one criterion.</string>
+    <string name="operation">Operation Type</string>
 
     <string name="finding_garage">Find the nearest car garages ? </string>
     <string name="finding_wash">Find the nearest car wash ?</string>

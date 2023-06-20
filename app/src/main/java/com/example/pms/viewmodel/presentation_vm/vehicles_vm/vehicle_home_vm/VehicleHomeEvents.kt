@@ -30,10 +30,24 @@ sealed class VehicleHomeEvents {
 
     data class ShowDropDownFilter(
         val id: Int
-    ) : VehicleHomeEvents()
+     ) : VehicleHomeEvents()
 
     data class FilterTypeChanged(
+        val context: Context,
+        val filterTitle: String,
         val filterType: String
+    ) : VehicleHomeEvents()
+
+    data class AdvancedFiltering(
+        val filterTitle: String
+    ) : VehicleHomeEvents()
+
+    object ShowAdvanceFiltering : VehicleHomeEvents()
+
+    data class FilteringByPrice(
+        val context: Context ,
+        val minimumPrice : Double ,
+        val maximumPrice : Double
     ) : VehicleHomeEvents()
 
     object LoadingCaseChanged : VehicleHomeEvents()
@@ -46,5 +60,6 @@ sealed class VehicleHomeEvents {
     data class OnNeedRefresh(
         val context: Context
     ) : VehicleHomeEvents()
+
 
 }

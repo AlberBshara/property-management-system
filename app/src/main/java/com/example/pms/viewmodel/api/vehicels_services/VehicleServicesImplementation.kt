@@ -1,9 +1,6 @@
 package com.example.pms.viewmodel.api.vehicels_services
 
-import com.example.pms.model.HomeVehiclesResponse
-import com.example.pms.model.PublishVehicleData
-import com.example.pms.model.SearchData
-import com.example.pms.model.VehicleViewMoreData
+import com.example.pms.model.*
 import com.example.pms.viewmodel.api.RetrofitClient
 import com.example.pms.viewmodel.api.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -115,12 +112,12 @@ class VehicleServicesImplementation(
     }
 
     suspend fun search(
-        token : String ,
+        token: String,
         searchData: SearchData
     ): Flow<Resource<SearchData.SearchResponse>> = flow {
         emit(Resource.Loading(true))
         val response = try {
-            vehicleServicesInterface.search(token , searchData)
+            vehicleServicesInterface.search(token, searchData)
         } catch (e: IOException) {
             emit(Resource.Error(message = e.toString()))
             null
@@ -134,5 +131,28 @@ class VehicleServicesImplementation(
         }
         emit(Resource.Loading(false))
     }
+
+
+    suspend fun filter(
+        token: String,
+        filteredData: FilteringData
+    ): Flow<Resource<FilteringData.FilteringResponse>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            vehicleServicesInterface.filter(token, filteredData)
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
 
 }

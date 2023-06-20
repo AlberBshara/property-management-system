@@ -12,7 +12,7 @@ data class SearchData(
     data class SearchResponse(
         @SerializedName(Keys.STATUS)
         val success: Boolean,
-        @SerializedName("Car")
+        @SerializedName("Posts")
         val vehiclesList : List<HomeVehiclesResponse.PostData>
         )
 }

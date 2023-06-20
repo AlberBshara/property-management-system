@@ -8,7 +8,7 @@ data class VehicleViewMoreData(
     val status : Boolean,
     @SerializedName("Car : ")
     val vehicle : VehicleData,
-    @SerializedName("Images : ")
+    @SerializedName("images : ")
     val imagesList : List<ImageData>,
     @SerializedName("Owner : ")
     val owner : Owner

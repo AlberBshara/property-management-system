@@ -34,6 +34,7 @@ import com.example.pms.R
 import com.example.pms.ui.theme.orange
 import com.example.pms.view.animation.ProgressAnimatedBar
 import com.example.pms.view.animation.ShowShimmerEffect
+import com.example.pms.view.utils.PricePicker
 import com.example.pms.view.utils.RefreshScreen
 import com.example.pms.view.vehicles_screen.vehicle_home.post_card.PagerIndicator
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.vehicle_home_vm.VehicleHomeConstants
@@ -56,121 +57,153 @@ fun VehiclesHomeScreen(
     val state = viewModel.state
 
 
-   Column(
-       horizontalAlignment = Alignment.CenterHorizontally,
-       verticalArrangement = Arrangement.Center,
-       modifier = Modifier
-           .fillMaxSize()
-   ) {
-       AnimatedVisibility(
-           visible = state.showSearchBar,
-           enter = slideInHorizontally(),
-       ) {
-           SearchBar(
-               query = state.query,
-               onCancelListener = {
-                   viewModel.onEvent(VehicleHomeEvents.OnCancelSearch(context))
-               },
-               onQueryListener = {
-                   viewModel.onEvent(VehicleHomeEvents.SearchQueryChanged(it))
-               } ,
-               onDone = {
-                   viewModel.onEvent(VehicleHomeEvents.OnDoneSearchQuery(it, context))
-               }
-           )
-       }
-       if (!state.showSearchBar) {
-           Row(
-               modifier = Modifier
-                   .fillMaxWidth()
-                   .height(48.dp)
-                   .background(color = noColor),
-               horizontalArrangement = Arrangement.SpaceBetween,
-               verticalAlignment = Alignment.CenterVertically
-           ) {
-               Row(
-                   horizontalArrangement = Arrangement.Center,
-                   verticalAlignment = Alignment.CenterVertically
-               ) {
-                   Image(
-                       painter = painterResource(id = R.drawable.logo),
-                       contentDescription = "",
-                       modifier = Modifier
-                           .size(45.dp)
-                           .clip(CircleShape)
-                           .padding(start = 10.dp),
-                       contentScale = ContentScale.Crop
-                   )
-                   Spacer(modifier = Modifier.width(10.dp))
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        AnimatedVisibility(
+            visible = state.showSearchBar,
+            enter = slideInHorizontally(),
+        ) {
+            SearchBar(
+                query = state.query,
+                onCancelListener = {
+                    viewModel.onEvent(VehicleHomeEvents.OnCancelSearch(context))
+                },
+                onQueryListener = {
+                    viewModel.onEvent(VehicleHomeEvents.SearchQueryChanged(it))
+                },
+                onDone = {
+                    viewModel.onEvent(VehicleHomeEvents.OnDoneSearchQuery(it, context))
+                }
+            )
+        }
+        if (!state.showSearchBar) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .background(color = noColor),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .size(45.dp)
+                            .clip(CircleShape)
+                            .padding(start = 10.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
 
-                   Text(
-                       text = stringResource(id = R.string.app_name_without_abbreviation),
-                       fontWeight = FontWeight.Bold,
-                       fontSize = 16.sp,
-                       color = Color.Black,
-                   )
-               }
-               IconButton(onClick = {
-                   viewModel.onEvent(VehicleHomeEvents.ShowSearchBar)
-               }) {
-                   Icon(
-                       imageVector = Icons.Filled.Search,
-                       contentDescription = null,
-                       tint = Color.Black
-                   )
-               }
-           }
-       }
-       if (state.isLoading) {
-           ShowShimmerEffect()
-       }
-       else {
-           RefreshScreen(needRefresh = state.needRefresh) {
-               viewModel.onEvent(VehicleHomeEvents.OnNeedRefresh(context))
-           }
-           if (!state.needRefresh) {
-               Column(
-                   horizontalAlignment = Alignment.CenterHorizontally,
-                   verticalArrangement = Arrangement.Center,
-                   modifier = Modifier
-                       .fillMaxSize()
-                       .padding(bottom = 53.dp)
-               ) {
-                   FilteringRow(titles =
-                   VehicleHomeConstants.listOfFiltering,
-                       onSelectedItem = {
-                           viewModel.onEvent(VehicleHomeEvents.ShowDropDownFilter(it))
-                       })
+                    Text(
+                        text = stringResource(id = R.string.app_name_without_abbreviation),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        color = Color.Black,
+                    )
+                }
+                IconButton(onClick = {
+                    viewModel.onEvent(VehicleHomeEvents.ShowSearchBar)
+                }) {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = null,
+                        tint = Color.Black
+                    )
+                }
+            }
+        }
+        if (state.isLoading) {
+            ShowShimmerEffect()
+        } else {
+            RefreshScreen(needRefresh = state.needRefresh) {
+                viewModel.onEvent(VehicleHomeEvents.OnNeedRefresh(context))
+            }
+            if (!state.needRefresh) {
+                val vehicleHomeConstants = VehicleHomeConstants(context)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 53.dp)
+                ) {
+                    FilteringRow(
+                        titles =
+                        vehicleHomeConstants.listOfFiltering,
+                        onSelectedItem = {
+                            viewModel.onEvent(VehicleHomeEvents.ShowDropDownFilter(it))
+                            viewModel.onEvent(
+                                VehicleHomeEvents.AdvancedFiltering(
+                                    vehicleHomeConstants.listOfFiltering[it].title.key
+                                )
+                            )
+                        },
+                        currentSelectedItem = state.filterId,
+                        onAdvanceFiltering = {
+                            viewModel.onEvent(VehicleHomeEvents.ShowAdvanceFiltering)
+                        }
+                    )
+                    AnimatedVisibility(
+                        visible = state.showDropDownFilter,
+                        enter = slideInVertically()
+                    ) {
 
-                   AnimatedVisibility(
-                       visible = state.showDropDownFilter,
-                       enter = slideInVertically()
-                   ) {
-
-                       DropdownMenu(
-                           expanded = state.showDropDownFilter,
-                           onDismissRequest = {
-                               viewModel.onEvent(VehicleHomeEvents.ShowDropDownFilter(state.filterId))
-                           }) {
-                           VehicleHomeConstants.listOfFiltering[state.filterId].items.forEach { item ->
-                               DropdownMenuItem(
-                                   onClick = {
-                                       viewModel.onEvent(VehicleHomeEvents.FilterTypeChanged(item))
-                                   }) {
-                                   Text(
-                                       text = item,
-                                       modifier = Modifier.padding(2.dp)
-                                   )
-                               }
-                           }
-                       }
-                   }
-                   ListContent(state = state, viewModel = viewModel, context = context, navController = navController)
-               }
-           }
-       }
-   }
-
+                        DropdownMenu(
+                            expanded = state.showDropDownFilter,
+                            onDismissRequest = {
+                                viewModel.onEvent(VehicleHomeEvents.ShowDropDownFilter(state.filterId))
+                            }) {
+                            vehicleHomeConstants.listOfFiltering[state.filterId].items.forEach { item ->
+                                DropdownMenuItem(
+                                    onClick = {
+                                        viewModel.onEvent(
+                                            VehicleHomeEvents.FilterTypeChanged(
+                                                context,
+                                                vehicleHomeConstants.listOfFiltering[state.filterId].title.key,
+                                                item
+                                            )
+                                        )
+                                    }) {
+                                    Text(
+                                        text = item,
+                                        modifier = Modifier.padding(2.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    ListContent(
+                        state = state,
+                        viewModel = viewModel,
+                        context = context,
+                        navController = navController
+                    )
+                    PricePicker(isPicking = state.pickingPrice,
+                        onPickedListener = { minimum, maximum ->
+                            viewModel.onEvent(
+                                VehicleHomeEvents.FilteringByPrice(
+                                    context, minimum, maximum
+                                )
+                            )
+                        })
+                }
+            }
+        }
+    }
+    AdvanceFiltering(isFiltering = state.showAdvanceFiltering,
+    onCancelDialog = {
+        viewModel.onEvent(VehicleHomeEvents.ShowAdvanceFiltering)
+    })
 }
 
 
@@ -179,7 +212,7 @@ fun VehiclesHomeScreen(
 private fun ListContent(
     state: VehicleHomeState,
     viewModel: VehicleHomeVM,
-    context: Context ,
+    context: Context,
     navController: NavHostController
 ) {
 
@@ -280,7 +313,7 @@ private fun ListContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text ="${item.vehicleData.price} S.P",
+                                text = "${item.vehicleData.price} S.P",
                                 style = MaterialTheme.typography.h4,
                                 modifier = Modifier
                                     .padding(start = 10.dp, end = 10.dp)
@@ -314,10 +347,12 @@ private fun ListContent(
                             }
                             Button(
                                 onClick = {
-                                   viewModel.onEvent(VehicleHomeEvents.OnViewMoreClicked(
-                                       carId = item.vehicleData.id,
-                                       navController = navController
-                                   ))
+                                    viewModel.onEvent(
+                                        VehicleHomeEvents.OnViewMoreClicked(
+                                            carId = item.vehicleData.id,
+                                            navController = navController
+                                        )
+                                    )
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -343,5 +378,4 @@ private fun ListContent(
             }
         }
     }
-
 }

@@ -104,15 +104,11 @@ class VehicleDetailsScreenVM(
                                         phoneNumber = owner.phoneNumber,
                                         userImage = owner.image ,
                                     )
-                                    try {
                                         if (it.data.imagesList.isNotEmpty()) {
                                             state = state.copy(
                                                 imagesList = it.data.imagesList.toMutableList()
                                             )
                                         }
-                                    } catch (e: Exception) {
-                                        e.printStackTrace()
-                                    }
                                 }
                             }
                         }

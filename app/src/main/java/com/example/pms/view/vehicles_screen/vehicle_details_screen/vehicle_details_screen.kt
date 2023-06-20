@@ -106,18 +106,6 @@ fun VehicleDetailsScreen(
                                     contentScale = ContentScale.FillWidth
                                 )
                             }
-                            FloatingActionButton(
-                                modifier = Modifier.align(Alignment.BottomEnd),
-                                backgroundColor = transparentGray,
-                                onClick = {
-                                    viewModel.onEvent(VehicleDetailsEvents.OnShareClicked(context))
-                                }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Share,
-                                    contentDescription = null,
-                                    tint = Color.LightGray
-                                )
-                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(2.dp))
@@ -125,7 +113,48 @@ fun VehicleDetailsScreen(
                         current_index = state.currentImageIndex,
                         length = state.imagesList.size
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            IconButton(
+                                onClick = {
+                                    //  viewModel.onEvent(PostVehicleEvents.LoveChanged)
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.love_icon),
+                                    contentDescription = "",
+                                    tint = Color.Gray
+                                    //if (it.loved) Color.Red else Color.Gray
+                                )
+                            }
+                            Text(text = "23",
+                                style = MaterialTheme.typography.caption,
+                                color = Color.Black ,
+                                modifier = Modifier
+                                    .padding(start = 2.dp , end = 10.dp)
+                            )
+                        }
+                        FloatingActionButton(
+                            backgroundColor = Color.White,
+                            onClick = {
+                                viewModel.onEvent(VehicleDetailsEvents.OnShareClicked(context))
+                            }) {
+                            Icon(
+                                imageVector = Icons.Filled.Share,
+                                contentDescription = null,
+                                tint = Color.DarkGray
+                            )
+                        }
+                    }
                     LazyColumn(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Top,
@@ -454,7 +483,7 @@ private fun OwnerCard(
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .padding(10.dp)
-                                .size(50.dp)
+                                .size(80.dp)
                                 .border(
                                     border = BorderStroke(
                                         2.dp,
@@ -471,7 +500,7 @@ private fun OwnerCard(
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .padding(10.dp)
-                                .size(50.dp)
+                                .size(80.dp)
                                 .border(
                                     border = BorderStroke(
                                         2.dp,

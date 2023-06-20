@@ -18,6 +18,12 @@
     <string name="enter_email">أدخل حساب المستخدم لطلب إعادة ضبط كلمة المرور</string>
     <string name="reset_link">أرسل رابط إعادة الضبط</string>
     <string name="login">تسجيل الدخول</string>
+    <string name="pick_price">حدد متوسط الاسعار التي تبحث عنها لنساعدك في ايجاد طلبك بشكل اسرع:</string>
+
+    <string name="advance_filtering">فلترة متقدمة</string>
+    <string name="filter_guidlines">من اجل وصول اسرع عن ما تبحث يمكنك الفلترة على اكتر من مواصفات.</string>
+    <string name="operation">نوع العملية</string>
+
 
 
     <string name="email_blank">يجب ادخال حساب الستخدم</string>
