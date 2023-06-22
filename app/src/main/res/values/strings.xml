@@ -10,6 +10,7 @@
     <string name="image_optional">Your photo is optional, if you do not want to share it go to next</string>
     <string name="done">Done</string>
 
+
     <string name="no_internet">May no internet connection</string>
     <string name="try_these_steps">Try these steps to get back online:</string>
     <string name="check_wifi">check your modem and router and reconnect to Wi-Fi</string>
@@ -87,7 +88,7 @@
     <string name="less_than2">the name should be at least 2 character</string>
 
   <string name="data_required">All the Data required</string>
-
+    <string name="updtaded_password">Your password has been updated</string>
     <string name="wifi_manually">Android 10 or more versions are recommended to manually turn on Wifi for security</string>
 
    <string name="additional_info_vehicle">Additional Info about the Vehicle</string>
@@ -126,6 +127,8 @@
 
 
     <string name="submit">Submit the Data</string>
+
+    <string name="reset_password">Reset Password</string>
 
 
 
@@ -176,7 +179,14 @@
     <string name="code"> Code</string>
     <string name="put_code_reset_password">put the code that we have been send you :</string>
 
+    <string name="added_successfully">Added successfully</string>
+    <string name="try_later">Try again later!</string>
+    <string name="added_info">the information has been updated successfully!</string>
 
+    <string name="attention">Attention!</string>
+    <string name="update_image">are you sure for updating your image?</string>
+    <string name="cancel">Cancel</string>
+    <string name="old_password">Old password</string>
 
 
     <string-array name="cities_array">

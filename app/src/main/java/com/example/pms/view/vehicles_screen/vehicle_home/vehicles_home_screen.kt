@@ -203,6 +203,9 @@ fun VehiclesHomeScreen(
     AdvanceFiltering(isFiltering = state.showAdvanceFiltering,
     onCancelDialog = {
         viewModel.onEvent(VehicleHomeEvents.ShowAdvanceFiltering)
+    },
+    onDone = {
+        viewModel.onEvent(VehicleHomeEvents.RunAdvanceFiltering(it , context))
     })
 }
 
@@ -313,7 +316,7 @@ private fun ListContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "${item.vehicleData.price} S.P",
+                                text = "${item.vehicleData.price.toInt()} S.P",
                                 style = MaterialTheme.typography.h4,
                                 modifier = Modifier
                                     .padding(start = 10.dp, end = 10.dp)
@@ -333,7 +336,9 @@ private fun ListContent(
                         ) {
                             IconButton(
                                 onClick = {
-                                    //  viewModel.onEvent(PostVehicleEvents.LoveChanged)
+                                  viewModel.onEvent(VehicleHomeEvents.LikeClicked(
+                                     item.vehicleData.id, context
+                                  ))
                                 },
                                 modifier = Modifier
                                     .padding(start = 10.dp, bottom = 10.dp)

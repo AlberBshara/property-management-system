@@ -41,16 +41,16 @@ class VehicleServicesImplementation(
                 fuelType = vehicle.fuelType.toRequestBody("text/plain".toMediaTypeOrNull()),
                 condition = vehicle.condition.toRequestBody("text/plain".toMediaTypeOrNull()),
                 drivingForce = vehicle.drivingForce.toRequestBody("text/plain".toMediaTypeOrNull()),
-                image1 = imagesList?.let { if (it.size > 0) it[0] else null },
-                image2 = imagesList?.let { if (it.size > 1) it[1] else null },
-                image3 = imagesList?.let { if (it.size > 2) it[2] else null },
-                image4 = imagesList?.let { if (it.size > 3) it[3] else null },
-                image5 = imagesList?.let { if (it.size > 4) it[4] else null },
-                image6 = imagesList?.let { if (it.size > 5) it[5] else null },
-                image7 = imagesList?.let { if (it.size > 6) it[6] else null },
-                image8 = imagesList?.let { if (it.size > 7) it[7] else null },
-                image9 = imagesList?.let { if (it.size > 8) it[8] else null },
-                image10 = imagesList?.let { if (it.size > 9) it[9] else null },
+                image  = imagesList?.let { if (it.size > 0) it[0] else null },
+                image1 = imagesList?.let { if (it.size > 1) it[1] else null },
+                image2 = imagesList?.let { if (it.size > 2) it[2] else null },
+                image3 = imagesList?.let { if (it.size > 3) it[3] else null },
+                image4 = imagesList?.let { if (it.size > 4) it[4] else null },
+                image5 = imagesList?.let { if (it.size > 5) it[5] else null },
+                image6 = imagesList?.let { if (it.size > 6) it[6] else null },
+                image7 = imagesList?.let { if (it.size > 7) it[7] else null },
+                image8 = imagesList?.let { if (it.size > 8) it[8] else null },
+                image9 = imagesList?.let { if (it.size > 9) it[9] else null },
             )
         } catch (e: IOException) {
             emit(Resource.Error(e.cause.toString()))
@@ -144,6 +144,30 @@ class VehicleServicesImplementation(
             emit(Resource.Error(message = e.toString()))
             null
         } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
+
+    suspend fun likesNumById(
+        token : String ,
+        likes : LikesData
+    ) : Flow<Resource<LikesData.LikesNumResponse>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            vehicleServicesInterface.likesNumById(
+                token , likes
+            )
+        }catch (e : IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        }catch (e : HttpException) {
             emit(Resource.Error(message = e.response().toString()))
             null
         }

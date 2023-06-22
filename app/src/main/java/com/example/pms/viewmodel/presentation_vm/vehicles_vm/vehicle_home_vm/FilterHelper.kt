@@ -99,4 +99,22 @@ class FilterHelper(
                 null
             }
         }
+
+    fun advanceFilteringType(
+        map : Map<String , String>
+    ) : FilteringData {
+        var filteredData = FilteringData(FILTERING_TYPE)
+        for ((key, value) in map) {
+            when (key) {
+                Keys.OPERATION_TYPE -> filteredData = filteredData.copy(operationType = value)
+                Keys.TRANSMISSION_TYPE -> filteredData = filteredData.copy(transmissionType = value)
+                Keys.FUEL_TYPE -> filteredData = filteredData.copy(fuelType = value)
+                Keys.CONDITION -> filteredData = filteredData.copy(condition = value)
+                Keys.DRIVING_FORCE -> filteredData = filteredData.copy(drivingForce = value)
+                Keys.BRAND -> filteredData = filteredData.copy(brand = value)
+                Keys.COLOR -> filteredData = filteredData.copy(color = value)
+            }
+        }
+        return filteredData
+    }
 }

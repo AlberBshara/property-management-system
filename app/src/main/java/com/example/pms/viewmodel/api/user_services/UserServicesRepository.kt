@@ -6,6 +6,7 @@ import com.example.pms.viewmodel.api.util.Resource
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import retrofit2.HttpException
@@ -185,4 +186,128 @@ class UserServicesRepository(
         emit(Resource.Loading(false))
     }
 
+    suspend fun postUpdateUserInfo(
+        token: String,
+        userInfo: EditUserProfileRequest
+    ): Flow<Resource<EditUserProfileResponse>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.updateUserInfo(token, userInfo)
+            } catch (e: HttpException) {
+                emit(Resource.Error(message = e.toString()))
+                null
+            } catch (e: java.lang.Exception) {
+                emit(Resource.Error(message = e.toString()))
+                null
+            }
+            response?.let {
+                emit(Resource.Success(data = it))
+                emit(Resource.Loading(false))
+            }
+            emit(Resource.Loading(false))
+        }
+    }
+
+    suspend fun postEditUserImage(
+        token: String,
+        image: MultipartBody.Part
+    ): Flow<Resource<EditUserImageResponse>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.updateUserImageProfile(token, image)
+            } catch (e: HttpException) {
+                emit(Resource.Error(message = e.toString()))
+                null
+            } catch (e: Exception) {
+                emit(Resource.Error(message = e.toString()))
+                null
+            }
+            response?.let {
+                emit(Resource.Success(data = it))
+                emit(Resource.Loading(false))
+            }
+            emit(Resource.Loading(false))
+        }
+    }
+
+
+    suspend fun getUserProfile(
+        token: String
+    ): Flow<Resource<GetUserProfileResponse>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.getUserProfile(token = token)
+            } catch (e: HttpException) {
+                emit(Resource.Error(message = e.toString()))
+                null
+            } catch (e: Exception) {
+                emit(Resource.Error(message = e.toString()))
+                null
+            }
+            response?.let {
+                emit(Resource.Success(data = it))
+                emit(Resource.Loading(false))
+            }
+            emit(Resource.Loading(false))
+        }
+    }
+
+    suspend fun resetPasswordWithToken(
+        token: String,
+        resetPassword: ResetPasswordWithTokenRequest
+    ): Flow<Resource<ResetPasswordWithTokenRequest.ResetPasswordWithTokenResponse>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.resetPasswordWithToken(
+                    token = token,
+                    resetPassword = resetPassword
+                )
+            } catch (e: HttpException) {
+                emit(Resource.Error(message = e.toString()))
+                null
+            } catch (e: Exception) {
+                emit(Resource.Error(message = e.toString()))
+                null
+            }
+            response?.let {
+                emit(Resource.Success(data = it))
+                emit(Resource.Loading(false))
+            }
+            emit(Resource.Loading(false))
+        }
+    }
+
+    suspend fun like(
+        token: String,
+        likeSenderData: LikeData
+    ): Flow<Resource<LikeData.LikedResponse>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            userServicesInterface.like(
+                token, likeSenderData
+            )
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
 }
+
+
+
+
+
+
+

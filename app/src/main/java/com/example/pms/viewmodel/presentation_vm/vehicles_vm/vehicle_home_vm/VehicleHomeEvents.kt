@@ -61,5 +61,15 @@ sealed class VehicleHomeEvents {
         val context: Context
     ) : VehicleHomeEvents()
 
+    data class RunAdvanceFiltering(
+        val filteringMap : Map<String , String>,
+        val context: Context
+    ) : VehicleHomeEvents()
+
+    data class LikeClicked(
+        val carId: Int,
+        val context: Context
+    ) : VehicleHomeEvents()
+
 
 }

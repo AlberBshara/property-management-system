@@ -21,6 +21,8 @@ val transparentGray = Color(0xC4C4C4C)
 val lightBlue = Color(0xFF7FAFD5)
 val darkBlue = Color(0xFF343541)
 val darkYellow = Color(0xDCFFA500)
+val darkRed = Color(0x80E20404)
+val darkRed2 = Color(0xC1E20404)
 
 val rainbowColors =  listOf(
     Color(0xFF9575CD),
@@ -60,4 +62,5 @@ val Red3 = Color(0xffef6b5d)
 val Blue1 = Color(0xff2c7be5)
 val Blue2 = Color(0xff3894f6)
 val Blue3 = Color(0xff4aa1ff)
+
 

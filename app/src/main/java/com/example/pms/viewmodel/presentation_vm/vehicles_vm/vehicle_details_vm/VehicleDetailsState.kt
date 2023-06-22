@@ -22,10 +22,13 @@ data class VehicleDetailsState(
     var description: String = "",
     var location: String = "",
     var timeOut: Boolean = false,
+    var likesNumber : Int = -1 ,
+    var isLiked : Boolean = false ,
+    var needRefresh : Boolean = false ,
     //user Info :
     var userId : Int = -1,
     var userName : String = "",
     var email : String = "" ,
     var phoneNumber : String = "",
-    var userImage : String ? = null
+    var userImage : String ? = null ,
 )

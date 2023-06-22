@@ -239,7 +239,7 @@ private fun CardsFavouritesPosts(
 
 
 @Composable
-private fun ShimmerProfileLoading() {
+ fun ShimmerProfileLoading() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

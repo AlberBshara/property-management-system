@@ -225,7 +225,6 @@ class PublishVehicleVM(
             )
 
 
-
             InternetConnection.run(context,
                 connected = {
                     viewModelScope.launch {
@@ -235,13 +234,9 @@ class PublishVehicleVM(
                         val listOfImagesFiles: MutableList<MultipartBody.Part> =
                             mutableListOf(image1)
                         for (i in 1 until state.enteredData.listOfSelectedImages.size) {
-                            listOfImagesFiles.add(
-                                ImageHelper.uriToMultipart(
-                                    context,
-                                    cd.listOfSelectedImages[i],
-                                    "image$i"
-                                )
-                            )
+                            val imagePart = ImageHelper.uriToMultipart(
+                                context, cd.listOfSelectedImages[i], "image$i")
+                            listOfImagesFiles.add(imagePart)
                         }
                         val response = vehicleApiRepo.publishingVehicle(
                             vehicle = vehicleData,

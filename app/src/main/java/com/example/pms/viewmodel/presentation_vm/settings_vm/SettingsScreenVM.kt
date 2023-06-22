@@ -20,7 +20,9 @@ class SettingsScreenVM(
 
     var state by mutableStateOf(SettingsState())
 
-    private val TAG: String = "SettingsScreenVM.kt"
+   companion object {
+       private const val TAG: String = "SettingsScreenVM.kt"
+   }
 
     fun onEvent(event: SettingsEvents) {
         when (event) {
@@ -42,10 +44,10 @@ class SettingsScreenVM(
 
             }
             is SettingsEvents.OnChangePasswordClicked -> {
-                    event.navController.navigate(Destination.ForgetPasswordDestination.route)
+                    event.navController.navigate(Destination.EditPasswordScreen.route)
             }
             is SettingsEvents.OnEditProfileClicked -> {
-
+                event.navController.navigate(Destination.EditProfileInfoDestination.route)
             }
             is SettingsEvents.OnPrivacyClicked -> {
 

@@ -34,7 +34,6 @@ object Keys {
     const val CAR: String = "Car"
     const val CREATION_DATE: String = "created_at"
     const val UPDATED_DATE: String = "updated_at"
-    const val IMAGES_LIST: String = "Images"
     const val PROPERTY_TYPE: String = "property_type"
     const val CAR_ID: String = "car_id"
     const val ESTATE_ID: String = "estate_id"

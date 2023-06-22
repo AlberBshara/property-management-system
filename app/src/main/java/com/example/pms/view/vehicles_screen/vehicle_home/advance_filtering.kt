@@ -1,6 +1,5 @@
 package com.example.pms.view.vehicles_screen.vehicle_home
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,17 +25,19 @@ import androidx.compose.ui.window.Dialog
 import com.example.pms.viewmodel.presentation_vm.vehicles_vm.vehicle_home_vm.VehicleHomeConstants
 import com.example.pms.R
 import com.example.pms.ui.theme.lightBlue
+import com.example.pms.viewmodel.api.util.Keys
 
 
 @Composable
 fun AdvanceFiltering(
     isFiltering: Boolean,
-    onCancelDialog: () -> Unit
+    onCancelDialog: () -> Unit,
+    onDone: (Map<String, String>) -> Unit
 ) {
 
     if (isFiltering) {
         val context = LocalContext.current
-        val selectedFilteringItem: Map<String, String> = mutableMapOf()
+        val selectedFilteringItem: MutableMap<String, String> = mutableMapOf()
 
         var colorShowing by remember {
             mutableStateOf(false)
@@ -54,6 +55,9 @@ fun AdvanceFiltering(
             mutableStateOf(false)
         }
         var transmissionShowing by remember {
+            mutableStateOf(false)
+        }
+        var fuelShowing by remember {
             mutableStateOf(false)
         }
 
@@ -126,7 +130,8 @@ fun AdvanceFiltering(
                                         colorShowing = !colorShowing
                                     }) {
                                         Icon(
-                                            painter = painterResource(id = R.drawable.arrow_downward_ic),
+                                            painter = if (colorShowing) painterResource(id = R.drawable.arrow_upward_ic)
+                                            else painterResource(id = R.drawable.arrow_downward_ic),
                                             contentDescription = null
                                         )
                                     }
@@ -170,7 +175,7 @@ fun AdvanceFiltering(
                                             checked = colorState,
                                             onCheckedChange = {
                                                 colorState = it
-
+                                                selectedFilteringItem[Keys.COLOR] = item
                                             },
                                             modifier = Modifier
                                                 .scale(0.8f)
@@ -245,6 +250,7 @@ fun AdvanceFiltering(
                                             checked = brandState,
                                             onCheckedChange = {
                                                 brandState = it
+                                                selectedFilteringItem[Keys.BRAND] = item
                                             },
                                             modifier = Modifier
                                                 .scale(0.8f)
@@ -321,6 +327,7 @@ fun AdvanceFiltering(
                                             checked = operationState,
                                             onCheckedChange = {
                                                 operationState = it
+                                                selectedFilteringItem[Keys.OPERATION_TYPE] = item
                                             },
                                             modifier = Modifier
                                                 .scale(0.8f)
@@ -388,6 +395,7 @@ fun AdvanceFiltering(
                                             checked = conditionState,
                                             onCheckedChange = {
                                                 conditionState = it
+                                                selectedFilteringItem[Keys.CONDITION] = item
                                             },
                                             modifier = Modifier
                                                 .scale(0.8f)
@@ -462,6 +470,7 @@ fun AdvanceFiltering(
                                             checked = transmissionState,
                                             onCheckedChange = {
                                                 transmissionState = it
+                                                selectedFilteringItem[Keys.TRANSMISSION_TYPE] = item
                                             },
                                             modifier = Modifier
                                                 .scale(0.8f)
@@ -529,6 +538,7 @@ fun AdvanceFiltering(
                                             checked = drivingForceState,
                                             onCheckedChange = {
                                                 drivingForceState = it
+                                                selectedFilteringItem[Keys.DRIVING_FORCE] = item
                                             },
                                             modifier = Modifier
                                                 .scale(0.8f)
@@ -539,10 +549,84 @@ fun AdvanceFiltering(
                             }
                         }
                     }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .padding(top = 10.dp, bottom = 10.dp)
+                            .fillMaxWidth()
+                    ) {
+                        LazyColumn {
+                            item {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Start
+                                ) {
+                                    IconButton(onClick = {
+                                        fuelShowing = !fuelShowing
+                                    }) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.arrow_downward_ic),
+                                            contentDescription = null
+                                        )
+                                    }
+                                    Text(
+                                        text = stringResource(id = R.string.fuel_type),
+                                        style = MaterialTheme.typography.subtitle1,
+                                        color = Color.Black,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(start = 10.dp, end = 10.dp, top = 10.dp),
+                                        textAlign = TextAlign.Start
+                                    )
+                                }
+                                Divider(
+                                    color = Color.LightGray,
+                                    thickness = 1.dp,
+                                    modifier = Modifier
+                                        .padding(start = 10.dp, end = 10.dp)
+                                        .fillMaxWidth()
+                                )
+                            }
+                            if (fuelShowing) {
+                                items(VehicleHomeConstants(context).listOfFiltering[3].items) { item ->
+                                    var fuelState by remember {
+                                        mutableStateOf(false)
+                                    }
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        modifier = Modifier
+                                            .padding(start = 10.dp, end = 10.dp)
+                                            .fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = item,
+                                            color = Color.DarkGray,
+                                            style = MaterialTheme.typography.body2
+                                        )
+                                        Checkbox(
+                                            checked = fuelState,
+                                            onCheckedChange = {
+                                                fuelState = it
+                                                selectedFilteringItem[Keys.FUEL_TYPE] = item
+                                            },
+                                            modifier = Modifier
+                                                .scale(0.8f)
+                                                .padding(start = 10.dp, end = 10.dp)
+                                        )
+                                    }
+                                }
+                            }
+
+                        }
+                    }
                 }
+
                 Button(
                     onClick = {
-
+                        onDone(selectedFilteringItem)
                     },
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(10.dp))

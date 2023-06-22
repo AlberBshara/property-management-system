@@ -26,4 +26,15 @@ sealed class VehicleDetailsEvents {
         val context: Context,
         val carId : Int
     ) : VehicleDetailsEvents()
+
+    data class LikeClicked(
+        val carId : Int ,
+        val context: Context
+    ) : VehicleDetailsEvents()
+
+    data class OnRefresh(
+        val carId: Int ,
+        val context: Context
+    ) : VehicleDetailsEvents()
+
 }

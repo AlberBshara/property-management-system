@@ -31,7 +31,10 @@ class RegisterPage3Vm(
 ) : ViewModel() {
 
     var state by mutableStateOf(RegisterPage3State())
-    private val TAG: String = "RegisterPage3Vm.ky"
+
+    companion object{
+        private val TAG: String = "RegisterPage3Vm.ky"
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun onEvent(event: RegPage3Events) {

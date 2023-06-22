@@ -12,7 +12,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.example.pms.model.FilteringData
 import com.example.pms.model.HomeVehiclesResponse
+import com.example.pms.model.LikeData
 import com.example.pms.model.SearchData
+import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 import com.example.pms.viewmodel.api.util.Keys
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.api.vehicels_services.VehicleServicesImplementation
@@ -30,7 +32,8 @@ import kotlinx.coroutines.withContext
  *                        and I will use it in filter function for the same purposes.
  */
 class VehicleHomeVM(
-    private val vehicleServicesImplementation: VehicleServicesImplementation = VehicleServicesImplementation()
+    private val vehicleServicesImplementation: VehicleServicesImplementation = VehicleServicesImplementation(),
+    private val userServicesRepository: UserServicesRepository = UserServicesRepository()
 ) : ViewModel() {
 
     companion object {
@@ -78,6 +81,9 @@ class VehicleHomeVM(
                     filterId = event.id
                 )
             }
+            is VehicleHomeEvents.LikeClicked -> {
+                like(event.carId, event.context)
+            }
             is VehicleHomeEvents.FilterTypeChanged -> {
                 state = state.copy(
                     showDropDownFilter = !state.showDropDownFilter,
@@ -91,7 +97,7 @@ class VehicleHomeVM(
                 )
             }
             is VehicleHomeEvents.AdvancedFiltering -> {
-                if (event.filterTitle == Keys.MAX_PRICE){
+                if (event.filterTitle == Keys.MAX_PRICE) {
                     state = state.copy(
                         pickingPrice = true
                     )
@@ -118,6 +124,9 @@ class VehicleHomeVM(
                 state = state.copy(
                     showAdvanceFiltering = !state.showAdvanceFiltering
                 )
+            }
+            is VehicleHomeEvents.RunAdvanceFiltering -> {
+                advanceFiltering(event.filteringMap, event.context)
             }
         }
     }
@@ -266,10 +275,10 @@ class VehicleHomeVM(
                             it.data?.let { searchResponse ->
                                 if (searchResponse.success) {
                                     val searchResult = it.data.vehiclesList
-                                        state.postsDataList.toMutableList().clear()
-                                        state = state.copy(
-                                            postsDataList = searchResult
-                                        )
+                                    state.postsDataList.toMutableList().clear()
+                                    state = state.copy(
+                                        postsDataList = searchResult
+                                    )
                                 }
                                 Log.d(TAG, "search: Success ${searchResponse.vehiclesList}")
                             }
@@ -302,7 +311,10 @@ class VehicleHomeVM(
         context: Context,
         filteringWith: Pair<String, ValueType>
     ) {
-        Log.d(TAG, "filter: FilterTitle ${filteringWith.first} FilteringType :${filteringWith.second}")
+        Log.d(
+            TAG,
+            "filter: FilterTitle ${filteringWith.first} FilteringType :${filteringWith.second}"
+        )
         when (filteringWith.first) {
             "All" -> {
                 state.postsDataList.toMutableList().clear()
@@ -316,7 +328,8 @@ class VehicleHomeVM(
                 viewModelScope.launch {
                     withContext(Dispatchers.IO) {
                         val filterHelper = FilterHelper(SEARCH_TYPE)
-                        val filteringData: FilteringData? = filterHelper.filteringType(filteringWith)
+                        val filteringData: FilteringData? =
+                            filterHelper.filteringType(filteringWith)
                         filteringData?.let {
                             val response = vehicleServicesImplementation.filter(
                                 TokenManager.getInstance(context).getToken(),
@@ -339,7 +352,10 @@ class VehicleHomeVM(
                                                     )
                                                 }
                                             }
-                                            Log.d(TAG, "filter: Success ${filteringResult.vehiclesList}")
+                                            Log.d(
+                                                TAG,
+                                                "filter: Success ${filteringResult.vehiclesList}"
+                                            )
                                         }
                                     }
                                     is Resource.Error -> {
@@ -361,45 +377,118 @@ class VehicleHomeVM(
     ) {
         this.isSearching = true
         viewModelScope.launch {
-           withContext(Dispatchers.IO) {
-               val response = vehicleServicesImplementation.filter(
-                   TokenManager.getInstance(context).getToken(),
-                   FilteringData(
-                       type = SEARCH_TYPE ,
-                       minimumPrice = minimumPrice ,
-                       maximumPrice = maximumPrice
-                   )
-               )
-               response.collect {
-                   when(it) {
-                       is Resource.Loading -> {
-                           state = state.copy(
-                               isLoading = it.isLoading
-                           )
-                       }
-                       is Resource.Success -> {
-                           it.data?.let { filteringResult ->
-                               if (filteringResult.success) {
-                                   if (filteringResult.vehiclesList.isNotEmpty()) {
-                                       state.postsDataList.toMutableList().clear()
-                                       state = state.copy(
-                                           postsDataList = filteringResult.vehiclesList
-                                       )
-                                   }
-                               }
-                               Log.d(TAG, "filterByPriceRange: Success ${filteringResult.vehiclesList}")
-                           }
-                       }
-                       is Resource.Error -> {
-                       }
-                   }
-               }
-           }
-       }
+            withContext(Dispatchers.IO) {
+                val response = vehicleServicesImplementation.filter(
+                    TokenManager.getInstance(context).getToken(),
+                    FilteringData(
+                        type = SEARCH_TYPE,
+                        minimumPrice = minimumPrice,
+                        maximumPrice = maximumPrice
+                    )
+                )
+                response.collect {
+                    when (it) {
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = it.isLoading
+                            )
+                        }
+                        is Resource.Success -> {
+                            it.data?.let { filteringResult ->
+                                if (filteringResult.success) {
+                                    if (filteringResult.vehiclesList.isNotEmpty()) {
+                                        state.postsDataList.toMutableList().clear()
+                                        state = state.copy(
+                                            postsDataList = filteringResult.vehiclesList
+                                        )
+                                    }
+                                }
+                                Log.d(
+                                    TAG,
+                                    "filterByPriceRange: Success ${filteringResult.vehiclesList}"
+                                )
+                            }
+                        }
+                        is Resource.Error -> {
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    private fun multipleFiltering() {
-
+    private fun advanceFiltering(
+        filteringMap: Map<String, String>,
+        context: Context
+    ) {
+        if (filteringMap.isEmpty()) {
+            return
+        } else {
+            this.isSearching = true
+            viewModelScope.launch {
+                val filteredData: FilteringData = FilterHelper(SEARCH_TYPE)
+                    .advanceFilteringType(filteringMap)
+                state = state.copy(
+                    showAdvanceFiltering = false
+                )
+                val response = vehicleServicesImplementation.filter(
+                    TokenManager.getInstance(context).getToken(),
+                    filteredData
+                )
+                response.collect {
+                    when (it) {
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = it.isLoading
+                            )
+                        }
+                        is Resource.Success -> {
+                            it.data?.let { filteringResult ->
+                                if (filteringResult.success) {
+                                    if (filteringResult.vehiclesList.isNotEmpty()) {
+                                        state.postsDataList.toMutableList().clear()
+                                        state = state.copy(
+                                            postsDataList = filteringResult.vehiclesList
+                                        )
+                                    }
+                                }
+                                Log.d(
+                                    TAG,
+                                    "advanceFiltering: Success ${filteringResult.vehiclesList}"
+                                )
+                            }
+                        }
+                        is Resource.Error -> {
+                        }
+                    }
+                }
+            }
+        }
     }
 
+    private fun like(
+        carId: Int, context: Context
+    ) {
+        viewModelScope.launch {
+            val response = userServicesRepository.like(
+                TokenManager.getInstance(context).getToken(),
+                LikeData(carId, SEARCH_TYPE)
+            )
+            response.collect {
+                when (it) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        it.data?.let { likedResponse ->
+                            if (likedResponse.success) {
+
+                            }
+                        }
+                    }
+                    is Resource.Error -> {
+                    }
+                }
+            }
+        }
+    }
 }

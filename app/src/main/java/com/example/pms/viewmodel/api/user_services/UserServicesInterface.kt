@@ -1,9 +1,6 @@
 package com.example.pms.viewmodel.api.user_services
 
-import com.example.pms.model.LoginUserRequest
-import com.example.pms.model.LogoutResponse
-import com.example.pms.model.ProfileData
-import com.example.pms.model.ResetPassword
+import com.example.pms.model.*
 import com.example.pms.viewmodel.api.util.Keys
 import com.example.pms.viewmodel.api.util.Urls
 import okhttp3.MultipartBody
@@ -54,10 +51,47 @@ interface UserServicesInterface {
         @Body reset_password: ResetPassword.SendResetRequest
     ): ResetPassword.SendResetResponse
 
-
     @GET(Urls.PROFILE_END_POINT)
     suspend fun getProfile(
-     @Header(Keys.AUTHORIZATION) authToken : String
-    ) : ProfileData
+        @Header(Keys.AUTHORIZATION) authToken: String
+    ): ProfileData
+
+    @POST(Urls.EDIT_USER_PROFILE_END_POINT)
+    suspend fun updateUserInfo(
+        @Header(Keys.AUTHORIZATION) token: String,
+        @Body updateInfo: EditUserProfileRequest
+    ): EditUserProfileResponse
+
+    @Multipart
+    @POST(Urls.EDIT_USER_IMAGE_END_POINT)
+    suspend fun updateUserImageProfile(
+        @Header(Keys.AUTHORIZATION) token: String,
+        @Part updateImage: MultipartBody.Part
+    ): EditUserImageResponse
+
+    @GET(Urls.GET_USER_PROFILE_END_POINT)
+    suspend fun getUserProfile(
+        @Header(Keys.AUTHORIZATION) token: String,
+    ): GetUserProfileResponse
+
+    @POST(Urls.RESET_PASSWORD_WITH_TOKEN_END_POINT)
+    suspend fun resetPasswordWithToken(
+        @Header(Keys.AUTHORIZATION) token: String,
+        @Body resetPassword: ResetPasswordWithTokenRequest
+    ): ResetPasswordWithTokenRequest.ResetPasswordWithTokenResponse
+
+
+    @POST(Urls.LIKE_END_POINT)
+    suspend fun like(
+        @Header(Keys.AUTHORIZATION) authToken: String,
+        @Body likeSenderData: LikeData
+    ): LikeData.LikedResponse
+
+    @POST(Urls.MY_FAV_LIST_END_POINT)
+    suspend fun fetchMyFavList(
+        @Header(Keys.AUTHORIZATION) authToken: String ,
+        @Body type : String
+    ) : MyFavResponse
+
 
 }

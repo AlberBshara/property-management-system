@@ -35,6 +35,7 @@ interface VehicleServicesInterface {
         @Part(Keys.FUEL_TYPE) fuelType: RequestBody,
         @Part(Keys.CONDITION) condition: RequestBody,
         @Part(Keys.DRIVING_FORCE) drivingForce: RequestBody,
+        @Part image: MultipartBody.Part? = null ,
         @Part image1: MultipartBody.Part? = null,
         @Part image2: MultipartBody.Part? = null,
         @Part image3: MultipartBody.Part? = null,
@@ -44,7 +45,6 @@ interface VehicleServicesInterface {
         @Part image7: MultipartBody.Part? = null,
         @Part image8: MultipartBody.Part? = null,
         @Part image9: MultipartBody.Part? = null,
-        @Part image10: MultipartBody.Part? = null,
     ): PublishVehicleData.PublishVehicleResponse
 
 
@@ -73,6 +73,13 @@ interface VehicleServicesInterface {
         @Header(Keys.AUTHORIZATION) authToken: String,
         @Body filteredData: FilteringData
     ): FilteringData.FilteringResponse
+
+    @POST(Urls.LIKES_NUM_END_POINT)
+    suspend fun likesNumById(
+        @Header(Keys.AUTHORIZATION) authToken: String ,
+        @Body likes : LikesData
+    ) : LikesData.LikesNumResponse
+
 
 
 

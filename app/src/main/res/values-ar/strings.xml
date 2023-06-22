@@ -26,6 +26,29 @@
 
 
 
+
+    <string name="added_successfully">تم الاضافة بنجاح</string>
+    <string name="try_later">حاول مرة اخرى</string>
+    <string name="added_info">تم تعديل على البيانات بنجاح.</string>
+    <string name="attention">أنتبه</string>
+    <string name="update_image">هل انت متأكد من تعديل صورة ؟</string>
+    <string name="cancel">الغاء</string>
+    <string name="reset_password">تغيير كلمة المرور</string>
+    <string name="old_password">كلمة المرور القديمة</string>
+    <string name="updtaded_password">تم تغيير كلمة المرور بنجاح</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string name="email_blank">يجب ادخال حساب الستخدم</string>
     <string name="unvalid_email">حساب المستخدم غير صالح!</string>
     <string name="password_less_than_eight">كلمة المرور يجب ان تكون على الاقل 8 محارف!</string>

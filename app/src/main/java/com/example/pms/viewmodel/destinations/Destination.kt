@@ -13,6 +13,8 @@ import com.example.pms.view.forgot_password_screen.ForgetPassword
 import com.example.pms.view.forgot_password_screen.ResetPasswordScreen
 import com.example.pms.view.login_screen.LoginScreen
 import com.example.pms.view.profile_screen.ProfileScreen
+import com.example.pms.view.profile_screen.edit_profile_info.EditScreen
+import com.example.pms.view.profile_screen.edit_profile_info.edit_password.EditPasswordScreen
 import com.example.pms.view.regisiter_screen.RegisterScreen
 import com.example.pms.view.settings_screen.SettingsScreen
 import com.example.pms.view.splashscreen.SplashScreen
@@ -41,6 +43,8 @@ sealed class Destination(
     object SettingsDestination : Destination("settings-screen-destination")
     object ResetPasswordScreen : Destination("reset_password_screen-destination")
     object SuggestionsDestination : Destination("suggestions-main-screen-destination")
+    object EditProfileInfoDestination: Destination("edit_profile_info_screen_destination")
+    object EditPasswordScreen: Destination("edit_password_screen_destination")
 
     companion object {
         const val CAR_ID_KEY: String = "carId"
@@ -112,6 +116,12 @@ fun PmsNavHost(
         }
         composable(Destination.SuggestionsDestination.route) {
             SuggestionMainScreen(navController)
+        }
+        composable(Destination.EditProfileInfoDestination.route){
+            EditScreen(navController = navController)
+        }
+        composable(Destination.EditPasswordScreen.route){
+            EditPasswordScreen(navHostController = navController)
         }
     }
 
