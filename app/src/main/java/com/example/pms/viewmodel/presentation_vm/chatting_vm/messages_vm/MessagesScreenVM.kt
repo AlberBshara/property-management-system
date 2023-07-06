@@ -6,5 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 class MessagesScreenVM : ViewModel() {
+
     var state by mutableStateOf(MessagesState())
+
+    fun onEvent(event: MessagesEvents) {
+
+    }
+
 }

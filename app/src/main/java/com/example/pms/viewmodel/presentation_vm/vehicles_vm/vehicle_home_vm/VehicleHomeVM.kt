@@ -470,6 +470,14 @@ class VehicleHomeVM(
         carId: Int, context: Context
     ) {
         viewModelScope.launch {
+            val updatedList = state.postsDataList.toMutableList()
+            updatedList.forEachIndexed { index , item ->
+               if ( item.vehicleData.id == carId){
+                   updatedList[index] = updatedList[index].copy(liked = !state.postsDataList[index].liked)
+               }
+            }
+            state = state.copy(postsDataList = updatedList)
+
             val response = userServicesRepository.like(
                 TokenManager.getInstance(context).getToken(),
                 LikeData(carId, SEARCH_TYPE)
@@ -481,11 +489,31 @@ class VehicleHomeVM(
                     is Resource.Success -> {
                         it.data?.let { likedResponse ->
                             if (likedResponse.success) {
-
+                                if (likedResponse.message.contains("un")) {
+                                    val updatedList1 = state.postsDataList.toMutableList()
+                                    updatedList1.forEachIndexed { index , item ->
+                                        if ( item.vehicleData.id == carId){
+                                            updatedList1[index] = updatedList1[index].copy(liked = true)
+                                        }
+                                    }
+                                }else{
+                                    val updatedList1 = state.postsDataList.toMutableList()
+                                    updatedList1.forEachIndexed { index,  item ->
+                                        if ( item.vehicleData.id == carId){
+                                            updatedList1[index] = updatedList1[index].copy(liked = false)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                     is Resource.Error -> {
+                        val updatedList1 = state.postsDataList.toMutableList()
+                        updatedList1.forEachIndexed { index, item ->
+                            if ( item.vehicleData.id == carId){
+                                updatedList1[index] = updatedList1[index].copy(liked = false)
+                            }
+                        }
                     }
                 }
             }

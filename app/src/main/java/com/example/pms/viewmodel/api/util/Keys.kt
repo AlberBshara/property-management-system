@@ -37,6 +37,7 @@ object Keys {
     const val PROPERTY_TYPE: String = "property_type"
     const val CAR_ID: String = "car_id"
     const val ESTATE_ID: String = "estate_id"
+    const val RATE : String = "rate"
 
 
     const val ERROR_MESSAGE: String = "ErrorMessage"
@@ -64,6 +65,4 @@ object Keys {
     const val MAX_PRICE: String = "max_price"
     const val MIN_PRICE: String = "min_price"
     const val MAX_KILOMETERS: String = "max_kilometers"
-
-
 }

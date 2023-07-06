@@ -56,7 +56,7 @@ fun ChattingItemCard(
                 modifier = Modifier
                     .size(50.dp)
                     .border(border = BorderStroke(4.dp, Brush.sweepGradient(rainbowColors)))
-                    .padding(4.dp)
+                    .padding(1.dp)
                     .clip(shape = CircleShape)
 
             )
@@ -69,7 +69,7 @@ fun ChattingItemCard(
                     .size(50.dp)
                     .border(border = BorderStroke(2.dp, Brush.sweepGradient(rainbowColors)),
                     shape = CircleShape)
-                    .padding(4.dp)
+                    .padding(1.dp)
                     .clip(shape = CircleShape)
             )
         }

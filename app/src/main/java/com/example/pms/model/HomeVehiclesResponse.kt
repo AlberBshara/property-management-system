@@ -22,7 +22,9 @@ data class HomeVehiclesResponse(
         @SerializedName(Keys.POST)
         val vehicleData: VehicleData,
         @SerializedName("images")
-        val images: List<VehicleViewMoreData.ImageData>
+        val images: List<VehicleViewMoreData.ImageData>,
+        @SerializedName("favorite")
+        val liked : Boolean
     )
 
     data class VehicleData(

@@ -44,7 +44,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 
-private const val NUMBER_OF_IMAGES: Int = 3
+internal const val NUMBER_OF_IMAGES: Int = 3
 
 @Composable
 fun VehiclesHomeScreen(
@@ -321,13 +321,6 @@ private fun ListContent(
                                 modifier = Modifier
                                     .padding(start = 10.dp, end = 10.dp)
                             )
-//                                Text(text = state.previousPrice,
-//                                    color = Color.Green,
-//                                    style = MaterialTheme.typography.caption,
-//                                    modifier = Modifier
-//                                        .padding(start= 10.dp, end= 10.dp),
-//                                    textDecoration = TextDecoration.LineThrough
-//                                )
                         }
                         Spacer(modifier = Modifier.height(10.dp))
                         Row(
@@ -346,8 +339,7 @@ private fun ListContent(
                                 Icon(
                                     painter = painterResource(id = R.drawable.love_icon),
                                     contentDescription = "",
-                                    tint = Color.Gray
-                                    //if (it.loved) Color.Red else Color.Gray
+                                    tint = if (item.liked) Color.Red else Color.Gray
                                 )
                             }
                             Button(

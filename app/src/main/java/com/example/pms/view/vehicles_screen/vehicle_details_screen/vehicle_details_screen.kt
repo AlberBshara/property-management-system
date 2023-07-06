@@ -199,6 +199,7 @@ fun VehicleDetailsScreen(
                    }
                    BottomItems(
                        onBookClinked = {
+                           viewModel.onEvent(VehicleDetailsEvents.OnRatingClicked)
                        },
                        modifier = Modifier
                            .padding(10.dp)
@@ -209,6 +210,16 @@ fun VehicleDetailsScreen(
                    )
                }
            }
+            RatingScreen(isShowing = state.showRating,
+                onResultListener = { ratingVal ->
+                    viewModel.onEvent(VehicleDetailsEvents.OnRatingPicked(
+                       carId , ratingVal , context
+                    ))
+                },
+                onDismissRequest = {
+                    viewModel.onEvent(VehicleDetailsEvents.OnRatingClicked)
+                }
+            )
         }
     }
 }
@@ -370,7 +381,7 @@ private fun VehicleCase(
                     tint = orange
                 )
             }
-            RatingBar(rating = 3, size = 18.dp)
+            RatingBar(rating = state.rateValue, size = 18.dp)
         }
     }
 }
@@ -608,7 +619,7 @@ private fun BottomItems(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "Book",
+                text = stringResource(id = R.string.rate),
                 color = Color.White,
                 style = MaterialTheme.typography.button,
                 textAlign = TextAlign.Center

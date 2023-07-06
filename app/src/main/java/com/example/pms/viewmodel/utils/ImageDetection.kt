@@ -34,7 +34,6 @@ object ImageDetection {
                 val predicatedLabels: MutableList<String> = mutableListOf()
                 var index = 0
 
-
                 labeler.process(currentImage)
                     .addOnSuccessListener {
                         for (labels in it) {
@@ -69,7 +68,6 @@ object ImageDetection {
                         )
                     }
                     .addOnFailureListener {
-
                     }
             } catch (e: Exception) {
                 e.printStackTrace()

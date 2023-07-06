@@ -10,6 +10,9 @@
     <string name="pick_image">أختار صورة</string>
     <string name="image_optional">صورتك اختيارية ، إذا كنت لا ترغب في مشاركتها ، فانتقل إلى التالي</string>
     <string name="done">تسجيل الحساب</string>
+    <string name="vehicles">عربات</string>
+    <string name="estates">عقارات</string>
+
 
     <string name="app_name_without_abbreviation">نظام إدارة الممتلكات</string>
     <string name="welcome">اهلا بعودتك!</string>
@@ -37,9 +40,11 @@
     <string name="old_password">كلمة المرور القديمة</string>
     <string name="updtaded_password">تم تغيير كلمة المرور بنجاح</string>
 
-
-
-
+    <string name="rate">تقييم</string>
+    <string name="rated_success">تم تقييم ينجاح</string>
+    <string name="rated_failed">حاول تقييم العربة مجددا</string>
+    <string name="message">رسالة</string>
+    <string name="start_chatting">أبدأ محادثة…</string>
 
 
 

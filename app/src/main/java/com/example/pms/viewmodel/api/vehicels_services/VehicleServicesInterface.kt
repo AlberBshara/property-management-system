@@ -35,7 +35,7 @@ interface VehicleServicesInterface {
         @Part(Keys.FUEL_TYPE) fuelType: RequestBody,
         @Part(Keys.CONDITION) condition: RequestBody,
         @Part(Keys.DRIVING_FORCE) drivingForce: RequestBody,
-        @Part image: MultipartBody.Part? = null ,
+        @Part image: MultipartBody.Part? = null,
         @Part image1: MultipartBody.Part? = null,
         @Part image2: MultipartBody.Part? = null,
         @Part image3: MultipartBody.Part? = null,
@@ -76,11 +76,22 @@ interface VehicleServicesInterface {
 
     @POST(Urls.LIKES_NUM_END_POINT)
     suspend fun likesNumById(
-        @Header(Keys.AUTHORIZATION) authToken: String ,
-        @Body likes : LikesData
-    ) : LikesData.LikesNumResponse
+        @Header(Keys.AUTHORIZATION) authToken: String,
+        @Body likes: LikesData
+    ): LikesData.LikesNumResponse
 
 
+    @POST(Urls.GET_RATE_EDN_POINT)
+    suspend fun rateResult(
+        @Header(Keys.AUTHORIZATION) authToken: String,
+        @Body rateData: RateVehicleData
+    ): RateVehicleData.RateVehicleResponse
+
+    @POST(Urls.ADD_VEHICLE_RATE_END_POINT)
+    suspend fun ratingVehicle(
+        @Header(Keys.AUTHORIZATION) authToken: String,
+        @Body ratingData: AddVehicleRateData
+    ): AddVehicleRateData.RatingVehicleResponse
 
 
 }

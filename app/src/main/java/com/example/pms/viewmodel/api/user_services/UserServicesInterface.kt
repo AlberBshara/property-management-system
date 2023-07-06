@@ -90,8 +90,14 @@ interface UserServicesInterface {
     @POST(Urls.MY_FAV_LIST_END_POINT)
     suspend fun fetchMyFavList(
         @Header(Keys.AUTHORIZATION) authToken: String ,
-        @Body type : String
+        @Body type : MyFavResponse.MyFavModel
     ) : MyFavResponse
+
+    @POST(Urls.MY_POSTS_END_POINT)
+    suspend fun fetchMyVehiclesPosts(
+        @Header(Keys.AUTHORIZATION) authToken : String ,
+        @Body vehiclesRequest : MyPostsModels.MyVehiclesPostResponse.MyVehiclesPostModel
+    ) : MyPostsModels.MyVehiclesPostResponse
 
 
 }

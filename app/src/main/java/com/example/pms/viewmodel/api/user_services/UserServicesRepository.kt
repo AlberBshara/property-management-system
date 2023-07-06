@@ -303,6 +303,51 @@ class UserServicesRepository(
         }
         emit(Resource.Loading(false))
     }
+
+    suspend fun fetchFavList(
+        token: String, type: MyFavResponse.MyFavModel
+    ): Flow<Resource<MyFavResponse>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            userServicesInterface.fetchMyFavList(
+                token, type
+            )
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
+    suspend fun fetchMyVehiclePosts(
+        token: String,
+        vehicleRequest: MyPostsModels.MyVehiclesPostResponse.MyVehiclesPostModel
+    ): Flow<Resource<MyPostsModels.MyVehiclesPostResponse>> = flow {
+        emit(Resource.Loading(true))
+        val vehiclesResponse = try {
+            userServicesInterface.fetchMyVehiclesPosts(
+                token, vehicleRequest
+            )
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.localizedMessage))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        vehiclesResponse?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
 }
 
 

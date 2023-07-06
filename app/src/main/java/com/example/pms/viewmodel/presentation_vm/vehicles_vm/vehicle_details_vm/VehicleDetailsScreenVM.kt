@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,8 +16,10 @@ import com.example.pms.viewmodel.api.vehicels_services.VehicleServicesImplementa
 import com.example.pms.viewmodel.utils.TokenManager
 import kotlinx.coroutines.launch
 import com.example.pms.R
+import com.example.pms.model.AddVehicleRateData
 import com.example.pms.model.LikeData
 import com.example.pms.model.LikesData
+import com.example.pms.model.RateVehicleData
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 
 
@@ -59,6 +62,18 @@ class VehicleDetailsScreenVM(
             is VehicleDetailsEvents.OnRefresh -> {
                 reload(event.context, event.carId)
             }
+            is VehicleDetailsEvents.OnRatingClicked -> {
+                state = state.copy(
+                    showRating = !state.showRating
+                )
+            }
+            is VehicleDetailsEvents.OnRatingPicked -> {
+                sendRating(
+                    event.carId,
+                    event.ratingVal,
+                    event.context
+                )
+            }
         }
     }
 
@@ -94,6 +109,7 @@ class VehicleDetailsScreenVM(
                                     val owner = it.data.owner
 
                                     var likesNumber = 0
+                                    var rateValue = 0
                                     vehicleApiImp.likesNumById(
                                         token, LikesData(carId, TYPE)
                                     ).collect { likesResponse ->
@@ -108,7 +124,21 @@ class VehicleDetailsScreenVM(
                                             is Resource.Error -> {}
                                         }
                                     }
-
+                                    vehicleApiImp.rateResult(
+                                        token, RateVehicleData(TYPE, carId)
+                                    ).collect { rateResponse ->
+                                        when (rateResponse) {
+                                            is Resource.Success -> {
+                                                rateResponse.data?.let { rating ->
+                                                    if (rating.success) {
+                                                        rateValue = rating.rate
+                                                        Log.d(TAG, "rating  $rateValue")
+                                                    }
+                                                }
+                                            }
+                                            else -> {}
+                                        }
+                                    }
                                     state = state.copy(
                                         ownerId = vehicle.ownerId,
                                         brand = vehicle.brand,
@@ -132,7 +162,9 @@ class VehicleDetailsScreenVM(
                                         email = owner.email,
                                         phoneNumber = owner.phoneNumber,
                                         userImage = owner.image,
-                                        likesNumber = likesNumber
+                                        likesNumber = likesNumber,
+                                        rateValue = rateValue,
+                                        isLiked = it.data.liked
                                     )
                                     if (it.data.imagesList.isNotEmpty()) {
                                         state = state.copy(
@@ -218,21 +250,21 @@ class VehicleDetailsScreenVM(
                     is Resource.Success -> {
                         it.data?.let { likedResponse ->
                             if (likedResponse.success) {
-                                if (likedResponse.message.contains("un")) {
-                                    state = state.copy(
+                                state = if (likedResponse.message.contains("un")) {
+                                    state.copy(
                                         isLiked = false
                                     )
                                 } else {
-                                    state = state.copy(
+                                    state.copy(
                                         isLiked = true
                                     )
                                 }
-                                likesNumber(context , carId ,
-                                onSuccessListener = { likesNumRes ->
-                                    state = state.copy(
-                                        likesNumber = likesNumRes
-                                    )
-                                })
+                                likesNumber(context, carId,
+                                    onSuccessListener = { likesNumRes ->
+                                        state = state.copy(
+                                            likesNumber = likesNumRes
+                                        )
+                                    })
                                 Log.d(TAG, " like : ${likedResponse.message}")
                             }
                         }
@@ -269,4 +301,78 @@ class VehicleDetailsScreenVM(
         }
     }
 
+    @SuppressLint("LongLogTag")
+    private fun sendRating(
+        carId: Int,
+        ratingVal: Int,
+        context: Context
+    ) {
+        state = state.copy(
+            showRating = false
+        )
+        if (ratingVal < 1) {
+            return
+        } else {
+            viewModelScope.launch {
+                val token = TokenManager.getInstance(context).getToken()
+                val ratingResponse = vehicleApiImp.ratingVehicle(
+                    token, AddVehicleRateData(
+                        TYPE, carId, ratingVal
+                    )
+                )
+                ratingResponse.collect {
+                    when (it) {
+                        is Resource.Success -> {
+                            it.data?.let { ratingRes ->
+                                if (ratingRes.success) {
+                                    Toast.makeText(
+                                        context.applicationContext,
+                                        context.getString(R.string.rated_success),
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                    var updatedRateVal: Int
+                                    vehicleApiImp.rateResult(
+                                        token,
+                                        RateVehicleData(TYPE, carId)
+                                    ).collect { rateResponse ->
+                                        when (rateResponse) {
+                                            is Resource.Success -> {
+                                                rateResponse.data?.let { rating ->
+                                                    if (rating.success) {
+                                                        updatedRateVal = rating.rate
+                                                        Log.d(TAG, "rating  $updatedRateVal")
+                                                        state = state.copy(
+                                                            rateValue = updatedRateVal
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                            else -> {}
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(
+                                        context.applicationContext,
+                                        context.getString(R.string.rated_failed),
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
+                            }
+                        }
+                        is Resource.Error -> {
+                            Toast.makeText(
+                                context.applicationContext,
+                                context.getString(R.string.rated_failed),
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
 }

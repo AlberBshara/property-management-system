@@ -15,6 +15,7 @@ import com.example.pms.view.login_screen.LoginScreen
 import com.example.pms.view.profile_screen.ProfileScreen
 import com.example.pms.view.profile_screen.edit_profile_info.EditScreen
 import com.example.pms.view.profile_screen.edit_profile_info.edit_password.EditPasswordScreen
+import com.example.pms.view.profile_screen.profile_helper_screen.ProfileHelperScreen
 import com.example.pms.view.regisiter_screen.RegisterScreen
 import com.example.pms.view.settings_screen.SettingsScreen
 import com.example.pms.view.splashscreen.SplashScreen
@@ -43,11 +44,17 @@ sealed class Destination(
     object SettingsDestination : Destination("settings-screen-destination")
     object ResetPasswordScreen : Destination("reset_password_screen-destination")
     object SuggestionsDestination : Destination("suggestions-main-screen-destination")
-    object EditProfileInfoDestination: Destination("edit_profile_info_screen_destination")
-    object EditPasswordScreen: Destination("edit_password_screen_destination")
+    object EditProfileInfoDestination : Destination("edit_profile_info_screen_destination")
+    object EditPasswordScreen : Destination("edit_password_screen_destination")
+    object ProfileHelperScreen : Destination("profile-helper-screen-destination") {
+        const val FROM_KEY: String = "from"
+        const val FROM_FAV_CLICKED: String = "favorite"
+        const val FROM_MY_POST_CLICKED: String = "my posts"
+    }
 
     companion object {
         const val CAR_ID_KEY: String = "carId"
+        const val ESTATE_ID_KEY: String = "estateId"
     }
 }
 
@@ -117,11 +124,22 @@ fun PmsNavHost(
         composable(Destination.SuggestionsDestination.route) {
             SuggestionMainScreen(navController)
         }
-        composable(Destination.EditProfileInfoDestination.route){
+        composable(Destination.EditProfileInfoDestination.route) {
             EditScreen(navController = navController)
         }
-        composable(Destination.EditPasswordScreen.route){
+        composable(Destination.EditPasswordScreen.route) {
             EditPasswordScreen(navHostController = navController)
+        }
+        composable(Destination.ProfileHelperScreen.route) {
+            val fromValue =
+                navController.previousBackStackEntry?.savedStateHandle
+                    ?.get<String>(
+                        Destination.ProfileHelperScreen.FROM_KEY
+                    )
+            ProfileHelperScreen(
+                navController = navController, from = fromValue
+                    ?: Destination.ProfileHelperScreen.FROM_FAV_CLICKED
+            )
         }
     }
 

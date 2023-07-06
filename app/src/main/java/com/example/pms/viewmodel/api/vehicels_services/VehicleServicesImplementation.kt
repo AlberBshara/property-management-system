@@ -41,7 +41,7 @@ class VehicleServicesImplementation(
                 fuelType = vehicle.fuelType.toRequestBody("text/plain".toMediaTypeOrNull()),
                 condition = vehicle.condition.toRequestBody("text/plain".toMediaTypeOrNull()),
                 drivingForce = vehicle.drivingForce.toRequestBody("text/plain".toMediaTypeOrNull()),
-                image  = imagesList?.let { if (it.size > 0) it[0] else null },
+                image = imagesList?.let { if (it.size > 0) it[0] else null },
                 image1 = imagesList?.let { if (it.size > 1) it[1] else null },
                 image2 = imagesList?.let { if (it.size > 2) it[2] else null },
                 image3 = imagesList?.let { if (it.size > 3) it[3] else null },
@@ -156,21 +156,67 @@ class VehicleServicesImplementation(
 
 
     suspend fun likesNumById(
-        token : String ,
-        likes : LikesData
-    ) : Flow<Resource<LikesData.LikesNumResponse>> = flow {
+        token: String,
+        likes: LikesData
+    ): Flow<Resource<LikesData.LikesNumResponse>> = flow {
         emit(Resource.Loading(true))
         val response = try {
             vehicleServicesInterface.likesNumById(
-                token , likes
+                token, likes
             )
-        }catch (e : IOException) {
+        } catch (e: IOException) {
             emit(Resource.Error(message = e.toString()))
             null
-        }catch (e : HttpException) {
+        } catch (e: HttpException) {
             emit(Resource.Error(message = e.response().toString()))
             null
         }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
+    suspend fun rateResult(
+        token: String, rateData: RateVehicleData
+    ): Flow<Resource<RateVehicleData.RateVehicleResponse>> = flow {
+        emit(Resource.Loading(false))
+        val response = try {
+            vehicleServicesInterface.rateResult(
+                token, rateData
+            )
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
+
+    suspend fun ratingVehicle(
+        token: String, ratingData: AddVehicleRateData
+    ): Flow<Resource<AddVehicleRateData.RatingVehicleResponse>> = flow {
+        emit(Resource.Loading(false))
+        val response = try {
+            vehicleServicesInterface.ratingVehicle(
+                token, ratingData
+            )
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+
         response?.let {
             emit(Resource.Success(data = it))
             emit(Resource.Loading(false))

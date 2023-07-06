@@ -6,7 +6,7 @@ sealed class VehicleDetailsEvents {
 
     data class OnStart(
         val context: Context,
-        val carId : Int
+        val carId: Int
     ) : VehicleDetailsEvents()
 
     data class OnCurrentImageIndexChanged(
@@ -24,17 +24,24 @@ sealed class VehicleDetailsEvents {
 
     data class OnReloadClicked(
         val context: Context,
-        val carId : Int
+        val carId: Int
     ) : VehicleDetailsEvents()
 
     data class LikeClicked(
-        val carId : Int ,
+        val carId: Int,
         val context: Context
     ) : VehicleDetailsEvents()
 
     data class OnRefresh(
-        val carId: Int ,
+        val carId: Int,
         val context: Context
     ) : VehicleDetailsEvents()
 
+    data class OnRatingPicked(
+        val carId: Int,
+        val ratingVal: Int,
+        val context: Context
+    ) : VehicleDetailsEvents()
+
+    object OnRatingClicked : VehicleDetailsEvents()
 }

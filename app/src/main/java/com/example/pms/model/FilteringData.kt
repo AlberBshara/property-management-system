@@ -39,6 +39,7 @@ data class FilteringData(
         @SerializedName(Keys.STATUS)
         val success: Boolean,
         @SerializedName("Posts")
-        val vehiclesList : List<HomeVehiclesResponse.PostData>
+        val vehiclesList: List<HomeVehiclesResponse.PostData>
     )
+
 }

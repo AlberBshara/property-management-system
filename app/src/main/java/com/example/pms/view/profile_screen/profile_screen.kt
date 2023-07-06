@@ -141,11 +141,15 @@ fun ProfileScreen(
                            CardsFavouritesPosts(
                                icon = R.drawable.love_icon2,
                                text = stringResource(id = R.string.my_fav),
-                               onClick = { viewModel.onEvent(ProfileEvents.PressOnFavourites(navController)) })
+                               onClick = {
+                                   viewModel.onEvent(ProfileEvents.PressOnFavourites(navController))
+                               })
                            CardsFavouritesPosts(
                                icon = R.drawable.posts_ic,
                                text = stringResource(id = R.string.my_posts),
-                               onClick = { viewModel.onEvent(ProfileEvents.PressOnPosts(navController)) })
+                               onClick = {
+                                   viewModel.onEvent(ProfileEvents.PressOnPosts(navController))
+                               })
                        }
                    }
                }

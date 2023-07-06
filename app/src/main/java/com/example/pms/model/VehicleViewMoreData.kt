@@ -11,7 +11,9 @@ data class VehicleViewMoreData(
     @SerializedName("images : ")
     val imagesList : List<ImageData>,
     @SerializedName("Owner : ")
-    val owner : Owner
+    val owner : Owner ,
+    @SerializedName("favorite")
+    val liked : Boolean
 ) {
     data class VehicleData(
         @SerializedName(Keys.ID)

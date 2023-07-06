@@ -101,10 +101,6 @@ dependencies {
     //jetpack Permission
     implementation 'com.google.accompanist:accompanist-permissions:0.25.0'
 
-//    // Paging
-//    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
-//    implementation "androidx.paging:paging-compose:1.0.0-alpha18"
-
     // Room
     implementation "androidx.room:room-ktx:2.5.1"
     kapt "androidx.room:room-compiler:2.5.1"
@@ -119,6 +115,13 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
     implementation "androidx.paging:paging-compose:1.0.0-alpha15"
 
+
+    //Pusher:
+    implementation 'com.pusher:pusher-java-client:1.6.0'
+
+
+    //Material 3:
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha16'
 
 
 }

@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.destinations.Destination
@@ -46,8 +47,10 @@ class ProfileScreenVM(
             is ProfileEvents.PressOnTwitter -> {
             }
             is ProfileEvents.PressOnFavourites -> {
+                showFavPosts(event.navHostController)
             }
             is ProfileEvents.PressOnPosts -> {
+                showMyPosts(event.navHostController)
             }
             is ProfileEvents.OnReloadClicked -> {
                reload(event.context)
@@ -118,6 +121,26 @@ class ProfileScreenVM(
         state = state.copy(
             timeOut = false
         )
+    }
+
+    private fun showFavPosts(
+        navController : NavHostController
+    ) {
+        navController.currentBackStackEntry?.savedStateHandle?.set(
+            Destination.ProfileHelperScreen.FROM_KEY ,
+            Destination.ProfileHelperScreen.FROM_FAV_CLICKED
+        )
+        navController.navigate(Destination.ProfileHelperScreen.route)
+    }
+
+    private fun showMyPosts(
+        navController: NavHostController
+    ) {
+        navController.currentBackStackEntry?.savedStateHandle?.set(
+            Destination.ProfileHelperScreen.FROM_KEY ,
+            Destination.ProfileHelperScreen.FROM_MY_POST_CLICKED
+        )
+        navController.navigate(Destination.ProfileHelperScreen.route)
     }
 
 }

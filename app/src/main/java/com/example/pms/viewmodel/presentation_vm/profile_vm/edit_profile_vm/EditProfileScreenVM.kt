@@ -174,7 +174,9 @@ class EditProfileScreenVM(
                                 val names = fullName.split(" ")
                                 val firstName = names[0]
                                 val secondName = names[1]
-                                onEvent(EditProfileEvents.ChangeImageReceive(imageReceive = it.data.user.image))
+                                it.data.user.image.let { image ->
+                                    onEvent(EditProfileEvents.ChangeImageReceive(imageReceive = image))
+                                }
                                 onEvent(EditProfileEvents.ChangePhoneNumber(phone = it.data.user.phoneNumber))
                                 onEvent(EditProfileEvents.ChangeFirstName(firstName = firstName))
                                 onEvent(EditProfileEvents.ChangeLastName(lastName = secondName))
