@@ -149,7 +149,7 @@
 
     <string name="submitted">your data has been submitted successfully</string>
 
-    <string name="no_messages">no messages yet</string>
+    <string name="no_messages">open to start messaging…</string>
 
     <string name="governorate">Governorate</string>
     <string name="vehicle_info">Vehicle Information:</string>

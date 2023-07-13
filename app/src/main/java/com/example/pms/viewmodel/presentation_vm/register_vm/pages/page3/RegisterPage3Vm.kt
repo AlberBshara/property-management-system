@@ -12,7 +12,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.example.pms.model.RegisterUserData
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
-import com.example.pms.viewmodel.api.util.Keys
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.destinations.RegisterPages
@@ -33,7 +32,7 @@ class RegisterPage3Vm(
     var state by mutableStateOf(RegisterPage3State())
 
     companion object{
-        private val TAG: String = "RegisterPage3Vm.ky"
+        private const val TAG: String = "RegisterPage3Vm.ky"
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

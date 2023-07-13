@@ -298,7 +298,7 @@ class PublishVehicleVM(
         if (state.enteredData.listOfSelectedImages.size <= MAX_IMAGES) {
             val newImagesList = state.enteredData.listOfSelectedImages
                 .toMutableList()
-            viewModelScope.launch {
+             viewModelScope.launch {
                 newImagesList += updatedImagesList
                 state = state.copy(
                     enteredData = state.enteredData.copy(

@@ -13,7 +13,10 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -23,14 +26,23 @@ import androidx.navigation.NavHostController
 import com.example.pms.R
 import com.example.pms.viewmodel.presentation_vm.chatting_vm.messages_vm.MessagesScreenVM
 import  androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.model.dto.ChatMessage
+import com.example.pms.model.dto.Sender
 import com.example.pms.ui.theme.lightBlue
-import com.example.pms.viewmodel.presentation_vm.chatting_vm.messages_vm.MessagesState.Sender
+import com.example.pms.view.animation.shimmerEffect
+import com.example.pms.viewmodel.presentation_vm.chatting_vm.messages_vm.MessagesEvents
 
 @Composable
 fun MessagesScreen(
     navController: NavHostController,
-    viewModel: MessagesScreenVM = viewModel()
+    viewModel: MessagesScreenVM = viewModel(),
+    receiverId: Int, receiverUserName: String
 ) {
+
+    val context = LocalContext.current
+    viewModel.onEvent(
+        MessagesEvents.OnStart(context, receiverId, receiverUserName)
+    )
     val state = viewModel.state
 
     Column(
@@ -42,7 +54,7 @@ fun MessagesScreen(
         verticalArrangement = Arrangement.Top
     ) {
         ChatAppBar(
-            title = "alber bshara",
+            title = state.username,
             description = "online",
             onUserNameClick = {
             }, onBackArrowClick = {
@@ -52,37 +64,53 @@ fun MessagesScreen(
             onMoreDropDownBlockUserClick = {
             }
         )
-        if (state.chatMessages.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-            ) {
-                items(state.chatMessages) {
+        if (state.isLoading) {
+            MessagesShimmerLoading(
+                modifier = Modifier.weight(1f)
+            )
+        } else {
+            if (state.chatMessages.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                ) {
+                    items(state.chatMessages) {
 //                val sdf = remember {
 //                    java.text.SimpleDateFormat("hh:mm", Locale.ROOT)
 //                }
-                    when (it.sender) {
-                        Sender.UserA -> SentMessage(it.text, "10:30")
-                        Sender.UserB -> ReceivedMessage(it.text, "10:40")
+                        when (it.sender) {
+                            Sender.UserA -> SentMessage(it, "10:30")
+                            Sender.UserB -> ReceivedMessage(it, "10:40")
+                        }
                     }
                 }
+            } else {
+                NoMessagesYetScreen(
+                    isAnimating = true,
+                    modifier = Modifier.weight(1f)
+                )
             }
-        } else {
-            NoMessagesYetScreen(isAnimating = true)
         }
-        InputMessage(onSendMessageListener = {})
+        InputMessage(
+            message = state.currentMessage,
+            onSendMessageListener = {
+                viewModel.onEvent(MessagesEvents.SendMessage(it, receiverId, context))
+            },
+            onMessageChanging = {
+                viewModel.onEvent(MessagesEvents.OnMessageChanging(it))
+            }
+        )
     }
 }
 
 @Composable
 private fun InputMessage(
     modifier: Modifier = Modifier,
-    onSendMessageListener: (message: String) -> Unit
+    message: String,
+    onSendMessageListener: (message: String) -> Unit,
+    onMessageChanging: (String) -> Unit
 ) {
-    var message by remember {
-        mutableStateOf("")
-    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -90,7 +118,9 @@ private fun InputMessage(
     ) {
         TextField(
             value = message,
-            onValueChange = { message = it },
+            onValueChange = {
+                onMessageChanging(it)
+            },
             placeholder = {
                 Text(
                     text = stringResource(R.string.message),
@@ -133,7 +163,7 @@ private fun InputMessage(
 
 @Composable
 private fun SentMessage(
-    message: String,
+    chatMessage: ChatMessage,
     time: String
 ) {
     Box(
@@ -149,26 +179,45 @@ private fun SentMessage(
                 )
                 .align(Alignment.CenterEnd)
         ) {
-           Column(
-               verticalArrangement = Arrangement.Center,
-               horizontalAlignment = Alignment.End
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.End
 
-           ) {
-               Text(
-                   text = message,
-                   style = MaterialTheme.typography.body1,
-                   color = Color.White,
-                   textAlign = TextAlign.End,
-                   modifier = Modifier
-                       .padding(top = 5.dp, bottom = 2.dp, start = 10.dp, end = 10.dp)
-               )
-               Text(
-                   text = time,
-                   color = Color.White,
-                   style = MaterialTheme.typography.caption,
-                   modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-               )
-           }
+            ) {
+                Text(
+                    text = chatMessage.text,
+                    style = MaterialTheme.typography.body1,
+                    color = Color.White,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier
+                        .padding(top = 5.dp, bottom = 2.dp, start = 10.dp, end = 10.dp)
+                )
+                Text(
+                    text = time,
+                    color = Color.White,
+                    style = MaterialTheme.typography.caption,
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+                )
+            }
+            if (chatMessage.isSending) {
+                Icon(
+                    painter = painterResource(id = R.drawable.is_sending_ic),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(14.dp)
+                        .align(Alignment.BottomEnd)
+                )
+            }
+            else if (chatMessage.sentSuccessfully){
+                Icon(
+                    painter = painterResource(id = R.drawable.sending_done_ic),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(14.dp)
+                        .align(Alignment.BottomEnd),
+                    tint = Color.Green
+                )
+            }
         }
     }
 }
@@ -176,7 +225,7 @@ private fun SentMessage(
 
 @Composable
 private fun ReceivedMessage(
-    message: String,
+    chatMessage: ChatMessage,
     time: String
 ) {
     Box(
@@ -192,26 +241,77 @@ private fun ReceivedMessage(
                 )
                 .align(Alignment.CenterStart)
         ) {
-           Column(
-               verticalArrangement = Arrangement.Center,
-               horizontalAlignment = Alignment.Start
-           ) {
-               Text(
-                   text = message,
-                   style = MaterialTheme.typography.body1,
-                   color = Color.White,
-                   textAlign = TextAlign.Start,
-                   modifier = Modifier
-                       .padding(top = 5.dp, bottom = 2.dp, start = 10.dp, end = 10.dp)
-               )
-               Text(
-                   text = time,
-                   color = Color.White,
-                   style = MaterialTheme.typography.caption,
-                   modifier = Modifier.padding(start = 10.dp , end = 10.dp)
-               )
-           }
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = chatMessage.text,
+                    style = MaterialTheme.typography.body1,
+                    color = Color.White,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .padding(top = 5.dp, bottom = 2.dp, start = 10.dp, end = 10.dp)
+                )
+                Text(
+                    text = time,
+                    color = Color.White,
+                    style = MaterialTheme.typography.caption,
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+                )
+            }
+            if (chatMessage.isSending) {
+                Icon(
+                    painter = painterResource(id = R.drawable.is_sending_ic),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(14.dp)
+                        .align(Alignment.BottomStart)
+                )
+            }
+            else if (chatMessage.sentSuccessfully){
+                Icon(
+                    painter = painterResource(id = R.drawable.sending_done_ic),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(14.dp)
+                        .align(Alignment.BottomStart),
+                    tint = Color.Green
+                )
+            }
         }
     }
 }
 
+
+@Composable
+private fun MessagesShimmerLoading(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        repeat(10) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = 150.dp)
+                    .height(10.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .shimmerEffect()
+                    .align(Alignment.Start)
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 10.dp, top = 10.dp, bottom = 10.dp, start = 150.dp)
+                    .height(10.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .shimmerEffect()
+                    .align(Alignment.End)
+            )
+        }
+    }
+}

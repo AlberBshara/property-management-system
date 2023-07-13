@@ -15,15 +15,14 @@ import com.example.pms.R
 
 @Composable
 fun NoMessagesYetScreen(
+    modifier: Modifier = Modifier,
     isAnimating: Boolean
 ) {
     if (isAnimating) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
+            modifier = modifier
         ) {
             AnimatedStartChatting(
                 modifier = Modifier

@@ -35,7 +35,6 @@ import com.example.pms.view.animation.shimmerEffect
 import com.example.pms.view.chatting_screen.messages_screen.NoMessagesYetScreen
 import com.example.pms.view.utils.RefreshScreen
 import com.example.pms.view.vehicles_screen.vehicle_home.SearchBar
-import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.presentation_vm.chatting_vm.ChattingEvents
 
 @Composable
@@ -130,16 +129,22 @@ fun ChattingMainScreen(
         } else {
             RefreshScreen(needRefresh = state.needRefresh,
                 onReloadListener = {
-                    viewModel.onEvent(ChattingEvents.OnRefreshClicked(
-                        context
-                    ))
+                    viewModel.onEvent(
+                        ChattingEvents.OnRefreshClicked(
+                            context
+                        )
+                    )
                 })
             NoMessagesYetScreen(isAnimating = state.noChattingYet)
             LazyColumn {
                 items(state.chattingItemList) {
                     ChattingItemCard(
-                        onClinkListener = {
-                            navController.navigate(Destination.MessagesDestination.route)
+                        onClinkListener = { userData ->
+                            viewModel.onEvent(
+                                ChattingEvents.OnUserClicked(
+                                    navController, userData
+                                )
+                            )
                         },
                         chattingItemData = it,
                         onCallingPhoneListener = {

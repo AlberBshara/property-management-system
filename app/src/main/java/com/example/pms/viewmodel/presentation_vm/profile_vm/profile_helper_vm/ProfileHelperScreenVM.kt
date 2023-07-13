@@ -96,6 +96,10 @@ class ProfileHelperScreenVM(
                                 state = state.copy(
                                     postsList = favResult.favList
                                 )
+                            }else{
+                                state = state.copy(
+                                    noResult = true
+                                )
                             }
                         }
                     }
@@ -133,9 +137,13 @@ class ProfileHelperScreenVM(
                                     TAG,
                                     "fetchMyPosts: Success : ${myPostResult.vehiclesPostsList}"
                                 )
-                                if (myPostResult.vehiclesPostsList.isNotEmpty()) {
-                                    state = state.copy(
+                                state = if (myPostResult.vehiclesPostsList.isNotEmpty()) {
+                                    state.copy(
                                         postsList = myPostResult.vehiclesPostsList
+                                    )
+                                }else{
+                                    state.copy(
+                                        noResult = true
                                     )
                                 }
                             }

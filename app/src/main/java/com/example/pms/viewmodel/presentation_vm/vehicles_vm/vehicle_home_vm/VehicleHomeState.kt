@@ -13,10 +13,10 @@ data class VehicleHomeState(
     var endReached: Boolean = false,
     var error: String? = null,
     var page: Int = 0,
-    var gettingNewPosts : Boolean = false,
-    var lastPage : Int = 0 ,
-    var noMoreData : Boolean = false,
-    var needRefresh : Boolean = false ,
-    var pickingPrice : Boolean = false ,
-    var showAdvanceFiltering : Boolean = false
+    var gettingNewPosts: Boolean = false,
+    var lastPage: Int = 0,
+    var noMoreData: Boolean = false,
+    var needRefresh: Boolean = false,
+    var pickingPrice: Boolean = false,
+    var showAdvanceFiltering: Boolean = false
 )

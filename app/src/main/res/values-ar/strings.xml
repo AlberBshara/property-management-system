@@ -163,7 +163,7 @@
     <string name="vehicle_caution_message">سوف نحذف الصور التي لاتحوي على عربات </string>
     <string name="vehicle_caution_message_con"> لمنع البيانات غير المناسبة مع غرض النظام</string>
 
-    <string name="no_messages">لايوجد تواصل بينكم بعد</string>
+    <string name="no_messages">ابدأ المحاثة…</string>
     <string name="vehicle_state">حالة العربة:</string>
 
     <string name="contact_info">معلومات التواصل:</string>

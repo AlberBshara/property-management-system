@@ -1,14 +1,17 @@
 package com.example.pms.viewmodel.presentation_vm.chatting_vm
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.example.pms.model.ChattingItemData
 import com.example.pms.viewmodel.api.chatting_services.ChattingServicesImpl
 import com.example.pms.viewmodel.api.util.Resource
+import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.utils.TokenManager
 import kotlinx.coroutines.launch
 
@@ -18,21 +21,19 @@ class ChattingScreenVM(
 
     var state by mutableStateOf(ChattingState())
 
+    companion object {
+        private const val TAG: String = "ChattingScreenVM.kt"
+    }
+
     private var counter = 0
 
     fun onEvent(event: ChattingEvents) {
         when (event) {
             is ChattingEvents.OnStart -> {
-                //fetchAllChatted(event.context)
-                val list = listOf(
-                    ChattingItemData(id = 1, username = "Alber bshara", phoneNumber = "09342"),
-                    ChattingItemData(id = 1, username = "Alber bshara", phoneNumber = "09342"),
-                    ChattingItemData(id = 1, username = "Alber bshara", phoneNumber = "09342"),
-                    ChattingItemData(id = 1, username = "Alber bshara", phoneNumber = "09342")
-                )
-                state = state.copy(
-                    chattingItemList = list
-                )
+                fetchAllChatted(event.context)
+            }
+            is ChattingEvents.OnUserClicked -> {
+                startChattingWith(event.navController, event.receiverData)
             }
             is ChattingEvents.OnRefreshClicked -> {
                 refresh(event.context)
@@ -61,6 +62,7 @@ class ChattingScreenVM(
                             state = state.copy(
                                 isLoading = it.isLoading
                             )
+                            Log.d(TAG, "fetchAllChatted: Loading ${it.isLoading}")
                         }
                         is Resource.Success -> {
                             it.data?.let { result ->
@@ -69,7 +71,7 @@ class ChattingScreenVM(
                                         state.copy(
                                             noChattingYet = true
                                         )
-                                    }else{
+                                    } else {
                                         val chattingItems = result.chattedList.map { list ->
                                             list.toChattingListItem()
                                         }
@@ -78,6 +80,7 @@ class ChattingScreenVM(
                                         )
                                     }
                                 }
+                                Log.d(TAG, "fetchAllChatted: Success ${result.chattedList}")
                             }
                         }
                         is Resource.Error -> {
@@ -99,5 +102,22 @@ class ChattingScreenVM(
             needRefresh = false
         )
         fetchAllChatted(context)
+    }
+
+    private fun startChattingWith(
+        navHostController: NavHostController,
+        receiverData: ChattingItemData
+    ) {
+       viewModelScope.launch {
+           navHostController.currentBackStackEntry?.savedStateHandle?.set(
+               Destination.MessagesDestination.USER_NAME_KEY, receiverData.username
+           )
+           navHostController.currentBackStackEntry?.savedStateHandle?.set(
+               Destination.MessagesDestination.RECEIVER_ID_KEY, receiverData.id
+           )
+           navHostController.navigate(
+               Destination.MessagesDestination.route
+           )
+       }
     }
 }

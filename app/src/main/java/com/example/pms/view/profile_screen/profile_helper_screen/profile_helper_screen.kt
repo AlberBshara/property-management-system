@@ -28,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pms.R
 import com.example.pms.ui.theme.lightBlue
 import com.example.pms.ui.theme.ligthGrey
+import com.example.pms.view.animation.NoResultAnimation
 import com.example.pms.view.animation.ShowShimmerEffect
 import com.example.pms.view.utils.RefreshScreen
 import com.example.pms.viewmodel.destinations.Destination
@@ -151,6 +152,11 @@ fun ProfileHelperScreen(
                         )
                     )
                 })
+            NoResultAnimation(
+                isAnimating = state.noResult,
+                modifier = Modifier
+                    .size(350.dp)
+            )
         }
     }
 }

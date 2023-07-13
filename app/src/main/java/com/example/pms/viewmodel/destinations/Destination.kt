@@ -39,7 +39,11 @@ sealed class Destination(
     object PublishCarDestination : Destination("publish-car-screen-destination")
     object VehiclesHomeDestination : Destination("vehicles-home-screen-destination")
     object ChattingMainDestination : Destination("chatting-main-screen-destination")
-    object MessagesDestination : Destination("messages-screen-destination")
+    object MessagesDestination : Destination("messages-screen-destination") {
+        const val USER_NAME_KEY: String = "username-key"
+        const val RECEIVER_ID_KEY: String = "receiverId-Key"
+    }
+
     object VehicleDetailsDestination : Destination("vehicle_details-screen-destination")
     object SettingsDestination : Destination("settings-screen-destination")
     object ResetPasswordScreen : Destination("reset_password_screen-destination")
@@ -108,7 +112,19 @@ fun PmsNavHost(
             ChattingMainScreen(navController)
         }
         composable(Destination.MessagesDestination.route) {
-            MessagesScreen(navController)
+            val receiverId =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int>(
+                    Destination.MessagesDestination.RECEIVER_ID_KEY
+                )
+            val receiverUserName =
+                navController.previousBackStackEntry?.savedStateHandle?.get<String>(
+                    Destination.MessagesDestination.USER_NAME_KEY
+                )
+            MessagesScreen(
+                navController,
+                receiverId = receiverId ?: -1,
+                receiverUserName = receiverUserName ?: "Not Valid"
+            )
         }
         composable(Destination.VehicleDetailsDestination.route) {
             val carId =

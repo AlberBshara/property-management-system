@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class AllChattedResponse(
     @SerializedName("status")
     val success: Boolean,
-    @SerializedName("Chatted_Person:")
+    @SerializedName("Chatted_Person :")
     val chattedList: List<ChattedPerson>
 ) {
     data class ChattedPerson(

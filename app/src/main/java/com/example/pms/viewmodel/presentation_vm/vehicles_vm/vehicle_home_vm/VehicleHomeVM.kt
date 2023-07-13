@@ -276,9 +276,9 @@ class VehicleHomeVM(
                                 if (searchResponse.success) {
                                     val searchResult = it.data.vehiclesList
                                     state.postsDataList.toMutableList().clear()
-                                    state = state.copy(
-                                        postsDataList = searchResult
-                                    )
+                                        state = state.copy(
+                                            postsDataList = searchResult
+                                        )
                                 }
                                 Log.d(TAG, "search: Success ${searchResponse.vehiclesList}")
                             }

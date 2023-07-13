@@ -7,5 +7,5 @@ data class ProfileHelperState(
     var isLoading: Boolean = false,
     var needRefresh: Boolean = false,
     var postsList: List<MyFavResponse.PostData> = emptyList(),
-     
+    var noResult : Boolean = false
 )
