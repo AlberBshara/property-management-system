@@ -16,9 +16,9 @@ sealed class ProfileHelperEvents {
     ) : ProfileHelperEvents()
 
     data class OnViewMoreClicked(
-        val type : String ,
-        val typeId : Int ,
-        val navController : NavHostController,
+        val type: String,
+        val typeId: Int,
+        val navController: NavHostController,
     ) : ProfileHelperEvents()
 
     data class GoBackClicked(
@@ -26,8 +26,15 @@ sealed class ProfileHelperEvents {
     ) : ProfileHelperEvents()
 
     data class LikeClicked(
-        val type : String ,
-        val typeId : Int ,
+        val type: String,
+        val typeId: Int,
+        val context: Context
+    ) : ProfileHelperEvents()
+
+    data class OnDeletingPost(
+        val from: String,
+        val vehicleIndex: Int,
+        val vehicleId: Int,
         val context: Context
     ) : ProfileHelperEvents()
 }

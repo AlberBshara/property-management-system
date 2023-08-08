@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.api.vehicels_services.VehicleServicesImplementation
 import com.example.pms.viewmodel.utils.TokenManager
@@ -21,6 +22,7 @@ import com.example.pms.model.LikeData
 import com.example.pms.model.LikesData
 import com.example.pms.model.RateVehicleData
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
+import com.example.pms.viewmodel.destinations.Destination
 
 
 class VehicleDetailsScreenVM(
@@ -72,6 +74,11 @@ class VehicleDetailsScreenVM(
                     event.carId,
                     event.ratingVal,
                     event.context
+                )
+            }
+            is VehicleDetailsEvents.OnStartMessagingClicked -> {
+                startMessaging(
+                    event.navController, event.receiverId, event.receiverUsername
                 )
             }
         }
@@ -373,6 +380,23 @@ class VehicleDetailsScreenVM(
                     }
                 }
             }
+        }
+    }
+
+    private fun startMessaging(
+        navController: NavHostController,
+        receiverId: Int, receiverUsername: String
+    ) {
+        viewModelScope.launch {
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                Destination.MessagesDestination.USER_NAME_KEY, receiverUsername
+            )
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                Destination.MessagesDestination.RECEIVER_ID_KEY, receiverId
+            )
+            navController.navigate(
+                Destination.MessagesDestination.route
+            )
         }
     }
 }

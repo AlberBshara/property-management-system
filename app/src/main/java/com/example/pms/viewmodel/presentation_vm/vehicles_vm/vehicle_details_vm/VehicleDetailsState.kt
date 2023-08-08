@@ -32,5 +32,5 @@ data class VehicleDetailsState(
     var userName: String = "",
     var email: String = "",
     var phoneNumber: String = "",
-    var userImage: String? = null,
+    var userImage: String? = null
 )

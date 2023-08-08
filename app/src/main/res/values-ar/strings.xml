@@ -12,6 +12,12 @@
     <string name="done">تسجيل الحساب</string>
     <string name="vehicles">عربات</string>
     <string name="estates">عقارات</string>
+    <string name="english">الأنجليزية</string>
+    <string name="arabic">العربية</string>
+    <string name="change_language">تغيير لغة:</string>
+    <string name="same_language">انت تختار نفس لغة النظام!</string>
+
+
 
 
     <string name="app_name_without_abbreviation">نظام إدارة الممتلكات</string>

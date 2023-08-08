@@ -118,13 +118,13 @@ fun ProfileScreen(
                            modifier = Modifier.fillMaxWidth(),
                            horizontalArrangement = Arrangement.End
                        ) {
-                           IconButtonProfile(
-                               icon = R.drawable.edit_ic,
-                               onClick = {
-                                   viewModel.onEvent(ProfileEvents.EditButton(navController))
-                               },
-                               color = Color.White
-                           )
+                              IconButtonProfile(
+                                  icon = R.drawable.edit_ic,
+                                  onClick = {
+                                      viewModel.onEvent(ProfileEvents.EditButton(navController))
+                                  },
+                                  color = Color.White
+                              )
                        }
                    }
 

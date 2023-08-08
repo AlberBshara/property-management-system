@@ -8,7 +8,7 @@ sealed class SettingsEvents {
     object OnNotificationsCaseChanged : SettingsEvents()
 
     data class OnLogoutClicked(
-        val context : Context ,
+        val context: Context,
         val navController: NavHostController
     ) : SettingsEvents()
 
@@ -25,7 +25,9 @@ sealed class SettingsEvents {
     ) : SettingsEvents()
 
     data class OnLanguageClicked(
-        val navController: NavHostController
+        val navController: NavHostController,
+        val context: Context,
+        val selectedLanguage: String
     ) : SettingsEvents()
 
     data class OnThemeClicked(

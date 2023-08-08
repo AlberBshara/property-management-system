@@ -93,5 +93,10 @@ interface VehicleServicesInterface {
         @Body ratingData: AddVehicleRateData
     ): AddVehicleRateData.RatingVehicleResponse
 
+    @GET(Urls.DELETE_MY_VEHICLE+"/{${Keys.ID}}")
+    suspend fun deleteMyVehicle(
+        @Header(Keys.AUTHORIZATION) authToken: String,
+        @Path(Keys.ID) vehicleId: Int
+    ): DeleteMyVehicle
 
 }

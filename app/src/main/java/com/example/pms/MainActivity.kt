@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.pms.ui.theme.PMSTheme
 import com.example.pms.viewmodel.destinations.PmsNavHost
+import com.example.pms.viewmodel.presentation_vm.settings_vm.settings_manager.SettingsManager
 
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -29,6 +30,10 @@ class MainActivity : ComponentActivity() {
                     //init the navigation component:
                     navController = rememberNavController()
                     PmsNavHost(navController = navController)
+
+                    //set the Settings to the app:
+                    val settingsManager = SettingsManager(this.applicationContext)
+                    settingsManager.setDefaultSettings(this.applicationContext)
                 }
             }
         }

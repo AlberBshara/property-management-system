@@ -14,13 +14,14 @@ import com.example.pms.model.MyFavResponse
 import com.example.pms.model.MyPostsModels
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 import com.example.pms.viewmodel.api.util.Resource
+import com.example.pms.viewmodel.api.vehicels_services.VehicleServicesImplementation
 import com.example.pms.viewmodel.destinations.Destination
-import com.example.pms.viewmodel.presentation_vm.vehicles_vm.vehicle_home_vm.VehicleHomeVM
 import com.example.pms.viewmodel.utils.TokenManager
 import kotlinx.coroutines.launch
 
 class ProfileHelperScreenVM(
-    private val userServicesRepository: UserServicesRepository = UserServicesRepository()
+    private val userServicesRepository: UserServicesRepository = UserServicesRepository(),
+    private val vehicleUserServicesRepository: VehicleServicesImplementation = VehicleServicesImplementation()
 ) : ViewModel() {
 
     companion object {
@@ -48,6 +49,9 @@ class ProfileHelperScreenVM(
             }
             is ProfileHelperEvents.LikeClicked -> {
                 like(event.type, event.typeId, event.context)
+            }
+            is ProfileHelperEvents.OnDeletingPost -> {
+                deletePost(event.from, event.context, event.vehicleId, event.vehicleIndex)
             }
         }
     }
@@ -92,12 +96,12 @@ class ProfileHelperScreenVM(
                     is Resource.Success -> {
                         it.data?.let { favResult ->
                             Log.d(TAG, "fetchFavPosts: ${favResult.favList}")
-                            if (favResult.favList.isNotEmpty()) {
-                                state = state.copy(
+                            state = if (favResult.favList.isNotEmpty()) {
+                                state.copy(
                                     postsList = favResult.favList
                                 )
-                            }else{
-                                state = state.copy(
+                            } else {
+                                state.copy(
                                     noResult = true
                                 )
                             }
@@ -141,7 +145,7 @@ class ProfileHelperScreenVM(
                                     state.copy(
                                         postsList = myPostResult.vehiclesPostsList
                                     )
-                                }else{
+                                } else {
                                     state.copy(
                                         noResult = true
                                     )
@@ -230,6 +234,48 @@ class ProfileHelperScreenVM(
                             if (item.vehicleData.id == typeId) {
                                 updatedList1[index] = updatedList1[index].copy(liked = false)
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * the following method will be applicable only with the current user's posts.
+     */
+    @SuppressLint("LongLogTag")
+    private fun deletePost(
+        from: String, context: Context,
+        vehicleId: Int, vehicleIndex: Int
+    ) {
+        if (from == Destination.ProfileHelperScreen.FROM_MY_POST_CLICKED) {
+            viewModelScope.launch {
+                val deletingResponse = vehicleUserServicesRepository.deleteMyVehicle(
+                    TokenManager.getInstance(context).getToken(),
+                    vehicleId
+                )
+                deletingResponse.collect {
+                    when (it) {
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isDeleting = it.isLoading
+                            )
+                        }
+                        is Resource.Success -> {
+                            it.data?.let { result ->
+                                if (result.success) {
+                                    Log.d(TAG, "deletePost: Success ${result.message}")
+                                    state.postsList.toMutableList().forEach { item ->
+                                        if (item.vehicleData.id == vehicleId)
+                                            state.postsList.toMutableList().removeAt(vehicleIndex)
+                                    }
+                                }
+                            }
+                        }
+                        is Resource.Error -> {
+                            Log.d(TAG, "deletePost: Error $it")
                         }
                     }
                 }

@@ -40,7 +40,7 @@ fun PublishingCarScreen(
     val state = viewModel.state
 
     val sheetState = rememberBottomSheetState(
-        initialValue = BottomSheetValue.Expanded
+        initialValue = BottomSheetValue.Collapsed
     )
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = sheetState

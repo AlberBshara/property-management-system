@@ -25,7 +25,7 @@ fun PricePicker(
     onPickedListener: (minimum: Double, maximum: Double) -> Unit
 ) {
     val range = remember {
-        mutableStateOf(0f..100000000f)
+        mutableStateOf(1000f..500000f)
     }
 
     if (isPicking) {
@@ -51,7 +51,7 @@ fun PricePicker(
                 )
 
                 Text(
-                    text = "between ${range.value.start.toInt()} -> ${range.value.endInclusive.toInt()}",
+                    text = "between ${range.value.start.toInt()}$ and  ${range.value.endInclusive.toInt()}$",
                     color = Color.LightGray,
                     style = MaterialTheme.typography.subtitle2,
                     modifier = Modifier
@@ -64,8 +64,8 @@ fun PricePicker(
                     onValueChange = {
                         range.value = it
                     },
-                    valueRange = 0f..10000000000f,
-                    steps = 1000,
+                    valueRange = 1000f..500000f,
+                    steps = 10,
                     modifier = Modifier.padding(horizontal = 16.dp),
                     colors = SliderDefaults.colors(
                         thumbColor = lightBlue,

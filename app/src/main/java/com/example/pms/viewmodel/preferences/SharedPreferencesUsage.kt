@@ -42,5 +42,4 @@ class SharedPreferencesUsage(
         sharedPreferences.editor.remove(key).apply()
     }
 
-
 }

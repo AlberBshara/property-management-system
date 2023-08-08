@@ -193,8 +193,10 @@
     <string name="update_image">are you sure for updating your image?</string>
     <string name="cancel">Cancel</string>
     <string name="old_password">Old password</string>
-
-
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="change_language">Change the language:</string>
+    <string name="same_language">you are selecting the same language of the app</string>
     <string-array name="cities_array">
         <item>Damascus</item>
         <item>Aleppo</item>

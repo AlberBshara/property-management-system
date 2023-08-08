@@ -1,7 +1,7 @@
 package com.example.pms.viewmodel.api.util
 
 object Urls {
-    const val BASE_URL: String = "https://28a2-188-133-9-81.ngrok-free.app"
+    const val BASE_URL: String = "https://a938-89-38-99-16.ngrok-free.app"
 
     const val REGISTER_END_POINT: String = "Register/SignUp"
     const val LOGIN_END_POINT: String = "Register/LogIn"
@@ -26,6 +26,7 @@ object Urls {
     const val LIKES_NUM_END_POINT: String = "PMS/Likes_number"
     const val GET_RATE_EDN_POINT: String = "PMS/Get_Rate"
     const val ADD_VEHICLE_RATE_END_POINT: String = "PMS/Give_Rate"
+    const val DELETE_MY_VEHICLE: String = "PMS/Remove_Car"
 
     const val SEND_MESSAGE_END_POINT: String = "PMS/sendMessage"
     const val CHATTED_PERSONS_END_POINT: String = "PMS/getChattedPersons"

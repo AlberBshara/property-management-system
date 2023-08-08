@@ -1,7 +1,7 @@
 package com.example.pms.viewmodel.presentation_vm.settings_vm
 
 import android.content.Context
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,16 +13,14 @@ import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.utils.TokenManager
 import kotlinx.coroutines.launch
+import com.example.pms.R
+import com.example.pms.viewmodel.presentation_vm.settings_vm.settings_manager.SettingsManager
 
 class SettingsScreenVM(
     private val userApiRepo: UserServicesRepository = UserServicesRepository()
 ) : ViewModel() {
 
     var state by mutableStateOf(SettingsState())
-
-   companion object {
-       private const val TAG: String = "SettingsScreenVM.kt"
-   }
 
     fun onEvent(event: SettingsEvents) {
         when (event) {
@@ -41,10 +39,10 @@ class SettingsScreenVM(
 
             }
             is SettingsEvents.OnLanguageClicked -> {
-
+                changeLanguage(event.context, event.selectedLanguage)
             }
             is SettingsEvents.OnChangePasswordClicked -> {
-                    event.navController.navigate(Destination.EditPasswordScreen.route)
+                event.navController.navigate(Destination.EditPasswordScreen.route)
             }
             is SettingsEvents.OnEditProfileClicked -> {
                 event.navController.navigate(Destination.EditProfileInfoDestination.route)
@@ -69,27 +67,40 @@ class SettingsScreenVM(
                         state = state.copy(
                             loadingLogout = it.isLoading
                         )
-                        Log.d(TAG, "logout: Loading : ${it.isLoading}")
                     }
                     is Resource.Success -> {
                         if (it.data != null) {
                             if (it.data.isSuccess) {
-                                Log.d(TAG, "logout: Success ${it.data.message}")
                                 TokenManager.getInstance(context).clear()
                                 navController.backQueue.clear()
                                 navController.navigate(Destination.SplashDestination.route)
-                            } else {
-                                Log.d(TAG, "logout: Success ${it.data.message}")
                             }
-                        } else {
-                            Log.d(TAG, "logout: Success with empty response")
                         }
                     }
                     is Resource.Error -> {
-                        Log.d(TAG, "logout: exception: ${it.data}")
+                        Toast.makeText(
+                            context, context.getString(R.string.try_later),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
+        }
+    }
+
+    private fun changeLanguage(
+        context: Context,
+        selectedLanguage: String
+    ) {
+        val settingsManager = SettingsManager(context)
+        if (selectedLanguage != settingsManager.currentLanguage()) {
+            settingsManager.changeLanguage(selectedLanguage)
+            settingsManager.restartApp(context)
+        } else {
+            Toast.makeText(
+                context, context.getString(R.string.same_language),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 }

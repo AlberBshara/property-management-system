@@ -224,5 +224,27 @@ class VehicleServicesImplementation(
         emit(Resource.Loading(false))
     }
 
+    suspend fun deleteMyVehicle(
+        token: String, vehicleId: Int
+    ): Flow<Resource<DeleteMyVehicle>> = flow {
+        emit(Resource.Loading(true))
+
+        val response = try {
+            vehicleServicesInterface.deleteMyVehicle(
+                token, vehicleId
+            )
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
 
 }

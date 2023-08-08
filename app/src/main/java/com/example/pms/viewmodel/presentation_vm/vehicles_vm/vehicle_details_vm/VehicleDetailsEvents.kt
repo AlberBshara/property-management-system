@@ -1,6 +1,7 @@
 package com.example.pms.viewmodel.presentation_vm.vehicles_vm.vehicle_details_vm
 
 import android.content.Context
+import androidx.navigation.NavHostController
 
 sealed class VehicleDetailsEvents {
 
@@ -44,4 +45,10 @@ sealed class VehicleDetailsEvents {
     ) : VehicleDetailsEvents()
 
     object OnRatingClicked : VehicleDetailsEvents()
+
+    data class OnStartMessagingClicked(
+        val navController : NavHostController,
+        val receiverId: Int,
+        val receiverUsername: String
+    ) : VehicleDetailsEvents()
 }

@@ -19,17 +19,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.pms.viewmodel.presentation_vm.profile_vm.profile_helper_vm.ProfileHelperScreenVM
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pms.R
-import com.example.pms.ui.theme.lightBlue
 import com.example.pms.ui.theme.ligthGrey
 import com.example.pms.view.animation.NoResultAnimation
 import com.example.pms.view.animation.ShowShimmerEffect
+import com.example.pms.view.utils.DialogLoading
 import com.example.pms.view.utils.RefreshScreen
 import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.presentation_vm.profile_vm.profile_helper_vm.ProfileHelperEvents
@@ -139,10 +138,17 @@ fun ProfileHelperScreen(
             ShowShimmerEffect()
         } else {
             ListVehicleContent(
+                from = from ,
                 state = state,
                 viewModel = viewModel,
                 context = context,
-                navController = navController
+                navController = navController,
+                 onDeleteClicked = { index: Int, id: Int ->
+                    viewModel.onEvent(ProfileHelperEvents.OnDeletingPost(
+                        from = from , vehicleIndex = index ,
+                        vehicleId = id , context = context
+                    ))
+                }
             )
             RefreshScreen(needRefresh = state.needRefresh,
                 onReloadListener = {
@@ -155,9 +161,13 @@ fun ProfileHelperScreen(
             NoResultAnimation(
                 isAnimating = state.noResult,
                 modifier = Modifier
+                    .fillMaxSize()
+                    .padding(30.dp)
                     .size(350.dp)
             )
         }
+        DialogLoading(isLoading = state.isDeleting)
     }
+
 }
 

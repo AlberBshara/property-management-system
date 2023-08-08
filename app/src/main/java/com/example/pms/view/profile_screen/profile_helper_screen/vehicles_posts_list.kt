@@ -2,11 +2,14 @@ package com.example.pms.view.profile_screen.profile_helper_screen
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +25,7 @@ import com.example.pms.R
 import com.example.pms.ui.theme.orange
 import com.example.pms.view.vehicles_screen.vehicle_home.NUMBER_OF_IMAGES
 import com.example.pms.view.vehicles_screen.vehicle_home.post_card.PagerIndicator
+import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.presentation_vm.profile_vm.profile_helper_vm.ProfileHelperEvents
 import com.example.pms.viewmodel.presentation_vm.profile_vm.profile_helper_vm.ProfileHelperScreenVM
 import com.example.pms.viewmodel.presentation_vm.profile_vm.profile_helper_vm.ProfileHelperState
@@ -34,12 +38,13 @@ import com.google.accompanist.pager.rememberPagerState
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ListVehicleContent(
+    from: String,
     state: ProfileHelperState,
     viewModel: ProfileHelperScreenVM,
     context: Context,
-    navController: NavHostController
+    navController: NavHostController,
+    onDeleteClicked: (index: Int, vehicleId: Int) -> Unit = {_, _ ->}
 ) {
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
@@ -63,6 +68,25 @@ fun ListVehicleContent(
                         modifier = Modifier
                             .wrapContentSize()
                     ) {
+                        if (from == Destination.ProfileHelperScreen.FROM_MY_POST_CLICKED) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .padding(start = 10.dp, end = 10.dp, top = 2.dp),
+                                contentAlignment = Alignment.BottomEnd
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = null,
+                                    tint = Color.Black,
+                                    modifier = Modifier
+                                        .clickable {
+                                            onDeleteClicked(index, item.vehicleData.id)
+                                        }
+                                )
+                            }
+                        }
                         val pagerState: PagerState =
                             if (item.images.size > NUMBER_OF_IMAGES) {
                                 rememberPagerState(pageCount = NUMBER_OF_IMAGES)

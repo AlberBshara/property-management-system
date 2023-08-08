@@ -199,25 +199,29 @@ private fun SentMessage(
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp)
                 )
             }
-            if (chatMessage.isSending) {
-                Icon(
-                    painter = painterResource(id = R.drawable.is_sending_ic),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(14.dp)
-                        .align(Alignment.BottomEnd)
-                )
+            /**
+             if (chatMessage.isSending) {
+            Icon(
+            painter = painterResource(id = R.drawable.is_sending_ic),
+            contentDescription = null,
+            modifier = Modifier
+            .size(14.dp)
+            .padding(2.dp)
+            .align(Alignment.BottomEnd)
+            )
             }
             else if (chatMessage.sentSuccessfully){
-                Icon(
-                    painter = painterResource(id = R.drawable.sending_done_ic),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(14.dp)
-                        .align(Alignment.BottomEnd),
-                    tint = Color.Green
-                )
+            Icon(
+            painter = painterResource(id = R.drawable.sending_done_ic),
+            contentDescription = null,
+            modifier = Modifier
+            .size(14.dp)
+            .padding(2.dp)
+            .align(Alignment.BottomEnd),
+            tint = Color.Black
+            )
             }
+             */
         }
     }
 }
@@ -260,25 +264,27 @@ private fun ReceivedMessage(
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp)
                 )
             }
+            /**
             if (chatMessage.isSending) {
-                Icon(
-                    painter = painterResource(id = R.drawable.is_sending_ic),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(14.dp)
-                        .align(Alignment.BottomStart)
-                )
+            Icon(
+            painter = painterResource(id = R.drawable.is_sending_ic),
+            contentDescription = null,
+            modifier = Modifier
+            .size(14.dp)
+            .align(Alignment.BottomStart)
+            )
             }
             else if (chatMessage.sentSuccessfully){
-                Icon(
-                    painter = painterResource(id = R.drawable.sending_done_ic),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(14.dp)
-                        .align(Alignment.BottomStart),
-                    tint = Color.Green
-                )
+            Icon(
+            painter = painterResource(id = R.drawable.sending_done_ic),
+            contentDescription = null,
+            modifier = Modifier
+            .size(14.dp)
+            .align(Alignment.BottomStart),
+            tint = Color.Green
+            )
             }
+             */
         }
     }
 }
