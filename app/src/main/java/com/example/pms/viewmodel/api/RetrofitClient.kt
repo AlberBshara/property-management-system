@@ -1,6 +1,7 @@
 package com.example.pms.viewmodel.api
 
 import com.example.pms.viewmodel.api.chatting_services.ChattingServicesInterface
+import com.example.pms.viewmodel.api.estates_services.EstateServicesInterface
 import com.example.pms.viewmodel.api.user_services.UserServicesInterface
 import com.example.pms.viewmodel.api.util.Urls
 import com.example.pms.viewmodel.api.vehicels_services.VehicleServicesInterface
@@ -26,5 +27,9 @@ object RetrofitClient {
 
     val chattingRepository : ChattingServicesInterface by lazy {
         client.create(ChattingServicesInterface::class.java)
+    }
+
+    val EstateRepository: EstateServicesInterface by lazy {
+        client.create(EstateServicesInterface::class.java)
     }
 }

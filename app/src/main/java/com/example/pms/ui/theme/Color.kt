@@ -24,6 +24,14 @@ val darkYellow = Color(0xDCFFA500)
 val darkRed = Color(0x80E20404)
 val darkRed2 = Color(0xC1E20404)
 
+val lightblue = Color(0xFF7FAFD5)
+val doublelightblue = Color(0xFFBED6EB)
+val LightBlue100 = Color(197, 255, 250, 255)
+val veryLightBlue = Color(230, 244, 255)
+
+
+
+
 val rainbowColors =  listOf(
     Color(0xFF9575CD),
     Color(0xFFBA68C8),

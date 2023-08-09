@@ -1,13 +1,19 @@
 package com.example.pms.viewmodel.utils
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 
 object ImageHelper {
 
@@ -53,6 +59,43 @@ object ImageHelper {
             }
         }
         return displayName
+    }
+
+
+
+    fun saveBitmapAsPng(context: Context, bitmap: Bitmap, displayName: String): Uri? {
+        val values = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, displayName)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+        }
+        val externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val resolver = context.contentResolver
+        var outputStream: OutputStream? = null
+        var imageUri: Uri? = null
+        try {
+            val insertUri = resolver.insert(externalUri, values)
+            if (insertUri != null) {
+                outputStream = resolver.openOutputStream(insertUri)
+                if (outputStream != null && bitmap.compress(
+                        Bitmap.CompressFormat.PNG,
+                        100,
+                        outputStream
+                    )
+                ) {
+                    imageUri = insertUri
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                outputStream?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return imageUri
     }
 
 

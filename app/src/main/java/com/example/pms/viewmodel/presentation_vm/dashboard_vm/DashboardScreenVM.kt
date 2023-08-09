@@ -30,6 +30,7 @@ class DashboardScreenVM : ViewModel() {
             is DashboardEvents.OnAboutUsClicked -> {
             }
             is DashboardEvents.OnEstateClicked -> {
+                event.nacController.navigate(Destination.EstatesMainDestination.route)
             }
         }
     }

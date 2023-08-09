@@ -262,4 +262,75 @@
     <item>شامبانيا</item>
     </string-array>
 
+
+    <string name="estate_type">نوع العقار </string>
+
+    <string name="Location"> الموقع</string>
+
+    <string name="Operation_type"> شراء أم أجار</string>
+    <string name="status_type"> الحالة</string>
+    <string name="Price_up_to"> السعر الاعلى</string>
+    <string name="Price_down_to"> السعر الادنى</string>
+    <string name="Space_up_to">  المساحة الاعلى</string>
+    <string name="Space_down_to"> المساحة الادنى</string>
+    <string name="Level_up_to"> المساحة الاعلى</string>
+    <string name="Level_down_to"> المساحة الادنى</string>
+    <string name="space">المساحة</string>
+
+    <string name="Damascus"> دمشق</string>
+    <string name="Aleppo"> حلب</string>
+    <string name="Homs"> حمص</string>
+    <string name="RifDimashq"> ريف دمشق</string>
+    <string name="Latakia"> اللاذقية</string>
+    <string name="Idlib"> ادلب</string>
+    <string name="Ḥamah"> حماة</string>
+    <string name="DayralZawr"> دير الزور</string>
+    <string name="Daraa"> درعا</string>
+    <string name="AlSuwayda"> السويداء</string>
+    <string name="AlRaqqah"> الرقة</string>
+    <string name="AlQunayṭirah"> القنيطرة</string>
+    <string name="AlḤasakah"> الحسكة</string>
+
+
+    <string name="land">أرض</string>
+    <string name="apartment">شقة</string>
+    <string name="villa">فيلا</string>
+    <string name="commercialShops">المحلات التجارية</string>
+    <string name="warehouses">المستودعات</string>
+    <string name="commercialRealEstate">العقارات التجارية</string>
+
+    <string name="sellEstate">بيع</string>
+
+    <string name="furnished">مفروش</string>
+    <string name="barebones">علعظم</string>
+
+    <string name="zero">0$ -> 1000$</string>
+    <string name="one">1000$ -> 2000$</string>
+
+
+    <string name="bed">غرف النوم</string>
+    <string name="baths">الحمام</string>
+    <string name="garage">الكراج</string>
+    <string name="level">الطابق</string>
+
+
+
+
+
+    <string name="estate_details"> تفاصيل العقار</string>
+
+    <string name="estate_type_view_more">نوع العقار</string>
+    <string name="operation_type">نوع العملية</string>
+    <string name="status_view_more"> حالة العقار</string>-->
+    <string name="operation_type_view_more">نوع العملية  : </string>
+    <string name="governorate_view_more">المحافظة : </string>
+    <string name="space_view_more">المساحة  : </string>
+    <string name="address_view_more">العنوان : </string>
+    <string name="additional_information_estate">معلومات إضافية عن العقار</string>
+    <string name="for_contacting">للتواصل</string>
+
+    <string name="add_rate">اضافة تقييم</string>
+
+
+
 </resources>

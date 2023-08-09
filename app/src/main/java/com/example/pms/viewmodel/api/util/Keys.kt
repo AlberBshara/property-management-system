@@ -65,4 +65,20 @@ object Keys {
     const val MAX_PRICE: String = "max_price"
     const val MIN_PRICE: String = "min_price"
     const val MAX_KILOMETERS: String = "max_kilometers"
+
+
+
+
+    const val IMAGES_LIST: String = "images"
+    const val OWNER: String = "owner"
+    const val FAVOURITE: String = "favorite"
+    const val ESTATE2: String = "estate"
+    const val ESTATE_TYPE: String = "estate_type"
+    const val ESTATE_STATUS: String = "status"
+    const val SPACE: String = "space"
+    const val BEDS: String = "beds"
+    const val BATHS: String = "baths"
+    const val GARAGE: String = "garage"
+    const val LEVEL: String = "level"
+
 }

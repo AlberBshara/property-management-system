@@ -9,6 +9,10 @@ import androidx.navigation.compose.composable
 import com.example.pms.view.chatting_screen.ChattingMainScreen
 import com.example.pms.view.chatting_screen.messages_screen.MessagesScreen
 import com.example.pms.view.dasboard_screen.DashboardScreen
+import com.example.pms.view.estates_screen.EstatesMainScreen
+import com.example.pms.view.estates_screen.estate_home.EstatesHomeScreen
+import com.example.pms.view.estates_screen.estate_viewMore.ViewMoreScreenEstate
+import com.example.pms.view.estates_screen.publish_estate.PublishingEstateScreen
 import com.example.pms.view.forgot_password_screen.ForgetPassword
 import com.example.pms.view.forgot_password_screen.ResetPasswordScreen
 import com.example.pms.view.login_screen.LoginScreen
@@ -61,6 +65,12 @@ sealed class Destination(
         const val CAR_ID_KEY: String = "carId"
         const val ESTATE_ID_KEY: String = "estateId"
     }
+
+    object EstatesMainDestination : Destination("estates-destination")
+    object EstatesHomeDestination : Destination("estate-home-screen-destination")
+    object PublishEstateDestination : Destination("publish-Estate-screen-destination")
+    object ViewMoreScreenEstate : Destination("viewMore_screen_estate")
+
 }
 
 
@@ -162,6 +172,25 @@ fun PmsNavHost(
                     ?: Destination.ProfileHelperScreen.FROM_FAV_CLICKED
             )
         }
+
+        composable(Destination.EstatesMainDestination.route) {
+            EstatesMainScreen(navController)
+        }
+        composable(Destination.EstatesHomeDestination.route) {
+            EstatesHomeScreen(navController)
+        }
+        composable(Destination.PublishEstateDestination.route) {
+            PublishingEstateScreen()
+        }
+
+        composable(Destination.ViewMoreScreenEstate.route) {
+
+            val estateId =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int>(Destination.ESTATE_ID_KEY)
+            ViewMoreScreenEstate(navHostController = navController, estate_id = estateId ?: -1)
+        }
+
+
     }
 
 }

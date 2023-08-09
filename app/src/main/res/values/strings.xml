@@ -166,7 +166,6 @@
     <string name="awd">AWD</string>
     <string name="account">Account</string>
     <string name="edit_account">Edit profile</string>
-    <string name="change_password">Change Password</string>
     <string name="privacy">Privacy</string>
     <string name="notifications">Notifications</string>
     <string name="language">Language</string>
@@ -383,5 +382,89 @@
         <item>Volkswagen</item>
         <item>Volvo</item>
     </string-array>
+
+
+
+
+
+
+
+
+
+
+
+    <string name="estate_type"> Estate type</string>
+
+    <string name="Location"> Location</string>
+    <string name="Operation_type"> Operation type</string>
+    <string name="status_type"> Status</string>
+    <string name="Price_up_to"> Price up to </string>
+    <string name="Price_down_to"> Price down to </string>
+    <string name="Space_up_to"> Space up to </string>
+    <string name="Space_down_to"> Space down to </string>
+    <string name="Level_up_to"> level up to </string>
+    <string name="Level_down_to"> level down to </string>
+    <string name="space">space</string>
+
+
+    <string name="Damascus"> Damascus</string>
+    <string name="Aleppo"> Aleppo</string>
+    <string name="Homs"> Homs</string>
+    <string name="RifDimashq"> Rif Dimashq</string>
+    <string name="Latakia"> Latakia</string>
+    <string name="Idlib"> Idlib</string>
+    <string name="Ḥamah"> Hamah</string>
+    <string name="DayralZawr"> Dayr al-Zawr</string>
+    <string name="Daraa"> Daraa</string>
+    <string name="AlSuwayda"> Al-Suwayda</string>
+    <string name="AlRaqqah"> Al-Raqqah</string>
+    <string name="AlQunayṭirah"> Al-Qunayṭirah</string>
+    <string name="AlḤasakah"> Al-Hasakah</string>
+
+
+    <string name="land">land</string>
+    <string name="apartment">apartment</string>
+    <string name="villa">villa</string>
+    <string name="commercialShops">commercial shops</string>
+    <string name="warehouses">warehouses</string>
+    <string name="commercialRealEstate">commercial real estate</string>
+
+    <string name="sellEstate">sell</string>
+
+    <string name="furnished">furnished</string>
+    <string name="barebones">barebones</string>
+
+    <string name="zero">0$ -> 1000$</string>
+    <string name="one">1000$ -> 2000$</string>
+
+    <string name="bed">Beds</string>
+    <string name="baths">Baths</string>
+    <string name="garage">Garage</string>
+    <string name="level">Levels</string>
+
+    <string name="change_password">tap here to reset the password </string>
+
+    <string name="operation_type">Operation Type  : </string>
+    <string name="estate_details">Estate Details </string>
+
+    <string name="estate_type_view_more">Estate Type  : </string>
+    <string name="operation_type_view_more">Operation Type  : </string>
+    <string name="status_view_more">Status  : </string>
+    <string name="space_view_more">Space  : </string>
+    <string name="address_view_more">Address : </string>
+    <string name="governorate_view_more">Governorate : </string>
+    <string name="additional_information_estate">Additional information about the Estate</string>
+    <string name="for_contacting">For Contacting:</string>
+
+    <string name="add_rate">add rate</string>
+
+
+
+
+
+
+
+
+
 
 </resources>

@@ -25,3 +25,18 @@ data class EditUserImageResponse(
     val message: String
 )
 
+data class EditSocialMediaRequest(
+    @SerializedName(Keys.FACEBOOK_LINK)
+    val faceBookUrl: String,
+    @SerializedName(Keys.INSTAGRAM_LINK)
+    val instagramUrl: String,
+    @SerializedName(Keys.TWITTER_LINK)
+    val twitterUrl: String
+) {
+    data class EditSocialMediaResponse(
+        @SerializedName(Keys.STATUS)
+        val status: Boolean,
+    )
+}
+
+

@@ -33,4 +33,16 @@ object Urls {
     const val CONVERSATION_END_POINT: String = "PMS/getConversation"
 
 
+
+    const val GET_ESTATE_BY_ID_END_POINT: String = "PMS/Get_Estate"
+   const val PUBLISH_NEW_ESTATE_END_POINT: String = "PMS/Add_Estate"
+    const val GET_ALL_ESTATE_HOME_END_POINT: String = "PMS/Estate_Home"
+    const val GET_Number_Likes_Estate: String = "PMS/Likes_number"
+    const val ADD_AND_REMOVE_FROM_FAVOURITES: String = "PMS/Add_To_Favorite"
+    const val GET_RATE_ESTATE: String = "PMS/Get_Rate"
+    const val SEARCH_ESTATE_END_POINT: String = "PMS/search"
+    const val ADD_RATE_ESTATE: String = "PMS/Give_Rate"
+    const val FILTER_ESTATE_END_POINTS = "PMS/filter"
+
+
 }
