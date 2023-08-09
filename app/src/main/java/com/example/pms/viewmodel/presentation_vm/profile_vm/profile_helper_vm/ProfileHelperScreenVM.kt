@@ -267,10 +267,11 @@ class ProfileHelperScreenVM(
                             it.data?.let { result ->
                                 if (result.success) {
                                     Log.d(TAG, "deletePost: Success ${result.message}")
-                                    state.postsList.toMutableList().forEach { item ->
-                                        if (item.vehicleData.id == vehicleId)
-                                            state.postsList.toMutableList().removeAt(vehicleIndex)
-                                    }
+                                      val updatedList = state.postsList.toMutableList()
+                                       updatedList.removeAt(vehicleIndex)
+                                       state = state.copy(
+                                           postsList = updatedList
+                                       )
                                 }
                             }
                         }

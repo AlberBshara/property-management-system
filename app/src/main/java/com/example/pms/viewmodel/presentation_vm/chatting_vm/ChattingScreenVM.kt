@@ -115,6 +115,9 @@ class ChattingScreenVM(
            navHostController.currentBackStackEntry?.savedStateHandle?.set(
                Destination.MessagesDestination.RECEIVER_ID_KEY, receiverData.id
            )
+           navHostController.currentBackStackEntry?.savedStateHandle?.set(
+               Destination.MessagesDestination.IMAGE_URL_KEY , receiverData.imageUrl
+           )
            navHostController.navigate(
                Destination.MessagesDestination.route
            )

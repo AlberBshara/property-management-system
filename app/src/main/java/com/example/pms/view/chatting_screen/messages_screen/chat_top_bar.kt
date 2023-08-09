@@ -24,9 +24,9 @@ import coil.compose.rememberAsyncImagePainter
 @Composable
 fun ChatAppBar(
     modifier: Modifier = Modifier,
-    title: String = "Title",
+    title: String,
     description: String = "Description",
-    pictureUrl: String? = null,
+    pictureUrl: String,
     onUserNameClick: (() -> Unit)? = null,
     onBackArrowClick: (() -> Unit)? = null,
     onUserProfilePictureClick: (() -> Unit)? = null,
@@ -44,7 +44,7 @@ fun ChatAppBar(
                     shape = CircleShape,
                     color = Color.LightGray
                 ) {
-                    if (pictureUrl != null) {
+                    if (pictureUrl != "not-valid") {
                         Image(
                             painter = rememberAsyncImagePainter(pictureUrl),
                             contentDescription = null,

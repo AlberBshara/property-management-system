@@ -18,6 +18,7 @@ import com.example.pms.model.LoginUserRequest
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.destinations.Destination
+import com.example.pms.viewmodel.preferences.UserPreferences
 import com.example.pms.viewmodel.presentation_vm.login_vm.validation.EmailState
 import com.example.pms.viewmodel.presentation_vm.login_vm.validation.PasswordState
 import com.example.pms.viewmodel.utils.InternetConnection
@@ -34,6 +35,10 @@ class LoginScreenVM(
     private lateinit var context: Context
     fun setContext(context: Context) {
         this.context = context
+    }
+
+    companion object {
+        private const val TAG: String = "LoginScreenVM.kt"
     }
 
     var state by mutableStateOf(LoginState())
@@ -115,7 +120,7 @@ class LoginScreenVM(
                         response.collect {
                             when (it) {
                                 is Resource.Loading -> {
-                                    Log.d("jojo", "submitDataLoading: ${it.isLoading}")
+                                    Log.d(TAG, "submitDataLoading: ${it.isLoading}")
                                     state = state.copy(progressBarIndicator = it.isLoading)
                                 }
                                 is Resource.Success -> {
@@ -124,7 +129,7 @@ class LoginScreenVM(
                                         if (apiResponse.status) {
                                             //TODO:(post request has been done successfully)
                                             Log.d(
-                                                "jojo",
+                                                TAG,
                                                 "submitData,Success: Success ${apiResponse.token}"
                                             )
                                             signedUpSuccessed(apiResponse, navController, context)
@@ -137,7 +142,7 @@ class LoginScreenVM(
                                     }
                                 }
                                 is Resource.Error -> {
-                                    Log.d("jojo", "submitData,ResourceError: Exception $it")
+                                    Log.d(TAG, "submitData,ResourceError: Exception $it")
                                 }
                             }
                         }
@@ -160,6 +165,12 @@ class LoginScreenVM(
     ) {
         TokenManager.getInstance(context)
             .save(apiResponse.token)
+        UserPreferences.saveUserData(
+            UserPreferences.UserDataPreference(
+                id = apiResponse.user.id,
+                email = apiResponse.user.email
+            ), context
+        )
         navController.popBackStack()
         navController.navigate(Destination.DashboardDestination.route)
     }

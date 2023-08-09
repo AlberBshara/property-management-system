@@ -197,6 +197,10 @@
     <string name="arabic">Arabic</string>
     <string name="change_language">Change the language:</string>
     <string name="same_language">you are selecting the same language of the app</string>
+
+
+    <string name="go_back">Back to Home</string>
+
     <string-array name="cities_array">
         <item>Damascus</item>
         <item>Aleppo</item>

@@ -158,7 +158,6 @@ class RegisterPage3Vm(
         UserPreferences.saveUserData(
             UserPreferences.UserDataPreference(
                 apiResponse.user.user_id,
-                apiResponse.user.name,
                 apiResponse.user.email
             ), context
         )

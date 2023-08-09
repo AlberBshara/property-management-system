@@ -34,6 +34,7 @@ import com.example.pms.R
 import com.example.pms.ui.theme.orange
 import com.example.pms.view.animation.ProgressAnimatedBar
 import com.example.pms.view.animation.ShowShimmerEffect
+import com.example.pms.view.utils.NoResultPage
 import com.example.pms.view.utils.PricePicker
 import com.example.pms.view.utils.RefreshScreen
 import com.example.pms.view.vehicles_screen.vehicle_home.post_card.PagerIndicator
@@ -128,7 +129,15 @@ fun VehiclesHomeScreen(
             RefreshScreen(needRefresh = state.needRefresh) {
                 viewModel.onEvent(VehicleHomeEvents.OnNeedRefresh(context))
             }
-            if (!state.needRefresh) {
+            NoResultPage(
+                isShowing = state.noResult,
+                goBack = {
+                    viewModel.onEvent(VehicleHomeEvents.OnGoBackClicked(context))
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp))
+            if (!state.needRefresh && !state.noResult) {
                 val vehicleHomeConstants = VehicleHomeConstants(context)
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -201,12 +210,12 @@ fun VehiclesHomeScreen(
         }
     }
     AdvanceFiltering(isFiltering = state.showAdvanceFiltering,
-    onCancelDialog = {
-        viewModel.onEvent(VehicleHomeEvents.ShowAdvanceFiltering)
-    },
-    onDone = {
-        viewModel.onEvent(VehicleHomeEvents.RunAdvanceFiltering(it , context))
-    })
+        onCancelDialog = {
+            viewModel.onEvent(VehicleHomeEvents.ShowAdvanceFiltering)
+        },
+        onDone = {
+            viewModel.onEvent(VehicleHomeEvents.RunAdvanceFiltering(it, context))
+        })
 }
 
 
@@ -316,7 +325,7 @@ private fun ListContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "${item.vehicleData.price.toInt()} S.P",
+                                text = "${item.vehicleData.price.toInt()} $",
                                 style = MaterialTheme.typography.h4,
                                 modifier = Modifier
                                     .padding(start = 10.dp, end = 10.dp)
@@ -329,9 +338,11 @@ private fun ListContent(
                         ) {
                             IconButton(
                                 onClick = {
-                                  viewModel.onEvent(VehicleHomeEvents.LikeClicked(
-                                     item.vehicleData.id, context
-                                  ))
+                                    viewModel.onEvent(
+                                        VehicleHomeEvents.LikeClicked(
+                                            item.vehicleData.id, context
+                                        )
+                                    )
                                 },
                                 modifier = Modifier
                                     .padding(start = 10.dp, bottom = 10.dp)

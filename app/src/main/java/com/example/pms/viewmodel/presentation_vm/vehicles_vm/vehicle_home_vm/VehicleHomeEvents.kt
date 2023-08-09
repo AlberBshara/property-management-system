@@ -71,5 +71,8 @@ sealed class VehicleHomeEvents {
         val context: Context
     ) : VehicleHomeEvents()
 
+    data class OnGoBackClicked(
+        val context: Context
+    ) : VehicleHomeEvents()
 
 }

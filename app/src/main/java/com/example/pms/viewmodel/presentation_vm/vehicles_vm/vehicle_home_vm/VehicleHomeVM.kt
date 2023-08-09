@@ -128,6 +128,9 @@ class VehicleHomeVM(
             is VehicleHomeEvents.RunAdvanceFiltering -> {
                 advanceFiltering(event.filteringMap, event.context)
             }
+            is VehicleHomeEvents.OnGoBackClicked -> {
+                goBack(event.context)
+            }
         }
     }
 
@@ -276,9 +279,9 @@ class VehicleHomeVM(
                                 if (searchResponse.success) {
                                     val searchResult = it.data.vehiclesList
                                     state.postsDataList.toMutableList().clear()
-                                        state = state.copy(
-                                            postsDataList = searchResult
-                                        )
+                                    state = state.copy(
+                                        postsDataList = searchResult
+                                    )
                                 }
                                 Log.d(TAG, "search: Success ${searchResponse.vehiclesList}")
                             }
@@ -345,10 +348,15 @@ class VehicleHomeVM(
                                     is Resource.Success -> {
                                         it.data?.let { filteringResult ->
                                             if (filteringResult.success) {
-                                                if (filteringResult.vehiclesList.isNotEmpty()) {
+                                                state = if (filteringResult.vehiclesList.isNotEmpty()) {
                                                     state.postsDataList.toMutableList().clear()
-                                                    state = state.copy(
+                                                    state.copy(
                                                         postsDataList = filteringResult.vehiclesList
+                                                    )
+                                                } else {
+                                                    state.postsDataList.toMutableList().clear()
+                                                    state.copy(
+                                                        noResult = !state.noResult
                                                     )
                                                 }
                                             }
@@ -359,6 +367,9 @@ class VehicleHomeVM(
                                         }
                                     }
                                     is Resource.Error -> {
+                                        state = state.copy(
+                                            needRefresh = !state.needRefresh
+                                        )
                                     }
                                 }
                             }
@@ -396,10 +407,15 @@ class VehicleHomeVM(
                         is Resource.Success -> {
                             it.data?.let { filteringResult ->
                                 if (filteringResult.success) {
-                                    if (filteringResult.vehiclesList.isNotEmpty()) {
+                                    state = if (filteringResult.vehiclesList.isNotEmpty()) {
                                         state.postsDataList.toMutableList().clear()
-                                        state = state.copy(
+                                        state.copy(
                                             postsDataList = filteringResult.vehiclesList
+                                        )
+                                    } else {
+                                        state.postsDataList.toMutableList().clear()
+                                        state.copy(
+                                            noResult = !state.noResult
                                         )
                                     }
                                 }
@@ -410,6 +426,9 @@ class VehicleHomeVM(
                             }
                         }
                         is Resource.Error -> {
+                            state = state.copy(
+                                needRefresh = !state.needRefresh
+                            )
                         }
                     }
                 }
@@ -445,10 +464,15 @@ class VehicleHomeVM(
                         is Resource.Success -> {
                             it.data?.let { filteringResult ->
                                 if (filteringResult.success) {
-                                    if (filteringResult.vehiclesList.isNotEmpty()) {
+                                    state = if (filteringResult.vehiclesList.isNotEmpty()) {
                                         state.postsDataList.toMutableList().clear()
-                                        state = state.copy(
+                                        state.copy(
                                             postsDataList = filteringResult.vehiclesList
+                                        )
+                                    } else {
+                                        state.postsDataList.toMutableList().clear()
+                                        state.copy(
+                                            noResult = !state.noResult
                                         )
                                     }
                                 }
@@ -459,6 +483,9 @@ class VehicleHomeVM(
                             }
                         }
                         is Resource.Error -> {
+                            state = state.copy(
+                                needRefresh = !state.needRefresh
+                            )
                         }
                     }
                 }
@@ -471,10 +498,11 @@ class VehicleHomeVM(
     ) {
         viewModelScope.launch {
             val updatedList = state.postsDataList.toMutableList()
-            updatedList.forEachIndexed { index , item ->
-               if ( item.vehicleData.id == carId){
-                   updatedList[index] = updatedList[index].copy(liked = !state.postsDataList[index].liked)
-               }
+            updatedList.forEachIndexed { index, item ->
+                if (item.vehicleData.id == carId) {
+                    updatedList[index] =
+                        updatedList[index].copy(liked = !state.postsDataList[index].liked)
+                }
             }
             state = state.copy(postsDataList = updatedList)
 
@@ -491,16 +519,18 @@ class VehicleHomeVM(
                             if (likedResponse.success) {
                                 if (likedResponse.message.contains("un")) {
                                     val updatedList1 = state.postsDataList.toMutableList()
-                                    updatedList1.forEachIndexed { index , item ->
-                                        if ( item.vehicleData.id == carId){
-                                            updatedList1[index] = updatedList1[index].copy(liked = true)
+                                    updatedList1.forEachIndexed { index, item ->
+                                        if (item.vehicleData.id == carId) {
+                                            updatedList1[index] =
+                                                updatedList1[index].copy(liked = true)
                                         }
                                     }
-                                }else{
+                                } else {
                                     val updatedList1 = state.postsDataList.toMutableList()
-                                    updatedList1.forEachIndexed { index,  item ->
-                                        if ( item.vehicleData.id == carId){
-                                            updatedList1[index] = updatedList1[index].copy(liked = false)
+                                    updatedList1.forEachIndexed { index, item ->
+                                        if (item.vehicleData.id == carId) {
+                                            updatedList1[index] =
+                                                updatedList1[index].copy(liked = false)
                                         }
                                     }
                                 }
@@ -510,7 +540,7 @@ class VehicleHomeVM(
                     is Resource.Error -> {
                         val updatedList1 = state.postsDataList.toMutableList()
                         updatedList1.forEachIndexed { index, item ->
-                            if ( item.vehicleData.id == carId){
+                            if (item.vehicleData.id == carId) {
                                 updatedList1[index] = updatedList1[index].copy(liked = false)
                             }
                         }
@@ -518,5 +548,16 @@ class VehicleHomeVM(
                 }
             }
         }
+    }
+
+    private fun goBack(context: Context) {
+        state = state.copy(
+            noResult = !state.noResult
+        )
+        this.isSearching = false
+        this.counter = 0
+        state.postsDataList.toMutableList().clear()
+        this.pageNumber.value = DEFAULT_PAGE_NUMBER
+        fetchAllVehicles(context)
     }
 }

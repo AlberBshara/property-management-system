@@ -214,7 +214,7 @@ fun VehicleDetailsScreen(
                             .fillMaxWidth()
                             .heightIn(max = 50.dp)
                             .align(Alignment.BottomCenter),
-                        price = "${state.price.toInt()} s.p "
+                        price = "${state.price.toInt()} $ "
                     )
                 }
             }

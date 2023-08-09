@@ -42,6 +42,7 @@ sealed class Destination(
     object MessagesDestination : Destination("messages-screen-destination") {
         const val USER_NAME_KEY: String = "username-key"
         const val RECEIVER_ID_KEY: String = "receiverId-Key"
+        const val IMAGE_URL_KEY: String = "image-url-key"
     }
 
     object VehicleDetailsDestination : Destination("vehicle_details-screen-destination")
@@ -120,10 +121,14 @@ fun PmsNavHost(
                 navController.previousBackStackEntry?.savedStateHandle?.get<String>(
                     Destination.MessagesDestination.USER_NAME_KEY
                 )
+            val imageUrl = navController.previousBackStackEntry?.savedStateHandle?.get<String>(
+                Destination.MessagesDestination.IMAGE_URL_KEY
+            )
             MessagesScreen(
                 navController,
                 receiverId = receiverId ?: -1,
-                receiverUserName = receiverUserName ?: "Not Valid"
+                receiverUserName = receiverUserName ?: "Not Valid",
+                imageURl = imageUrl ?: "not-valid"
             )
         }
         composable(Destination.VehicleDetailsDestination.route) {

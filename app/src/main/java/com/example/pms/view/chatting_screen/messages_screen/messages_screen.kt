@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +35,8 @@ import com.example.pms.viewmodel.presentation_vm.chatting_vm.messages_vm.Message
 fun MessagesScreen(
     navController: NavHostController,
     viewModel: MessagesScreenVM = viewModel(),
-    receiverId: Int, receiverUserName: String
+    receiverId: Int, receiverUserName: String ,
+    imageURl : String
 ) {
 
     val context = LocalContext.current
@@ -55,7 +55,8 @@ fun MessagesScreen(
     ) {
         ChatAppBar(
             title = state.username,
-            description = "online",
+            description = "",
+            pictureUrl = imageURl,
             onUserNameClick = {
             }, onBackArrowClick = {
                 navController.popBackStack()
@@ -73,15 +74,13 @@ fun MessagesScreen(
                 LazyColumn(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    reverseLayout = true
                 ) {
-                    items(state.chatMessages) {
-//                val sdf = remember {
-//                    java.text.SimpleDateFormat("hh:mm", Locale.ROOT)
-//                }
+                    items(state.chatMessages.reversed()) {
                         when (it.sender) {
-                            Sender.UserA -> SentMessage(it, "10:30")
-                            Sender.UserB -> ReceivedMessage(it, "10:40")
+                            Sender.UserA -> SentMessage(it, "")
+                            Sender.UserB -> ReceivedMessage(it, "")
                         }
                     }
                 }
