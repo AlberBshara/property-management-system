@@ -21,7 +21,6 @@ fun SplashScreen(
     viewModel: SplashScreenVM = viewModel()
 ) {
     val context = LocalContext.current
-
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

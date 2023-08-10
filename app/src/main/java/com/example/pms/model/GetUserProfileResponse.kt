@@ -13,6 +13,6 @@ data class GetUserProfileResponse(
         @SerializedName(Keys.PHONE_NUMBER)
         val phoneNumber: String,
         @SerializedName(Keys.IMAGE)
-        val image: String
+        val image: String? = null
     )
 }

@@ -28,7 +28,6 @@ class ViewMoreEstateScreenVM(
     private var counter = 0
 
     fun onEvent(event: ViewMoreEstateEvents) {
-
         when (event) {
 
             is ViewMoreEstateEvents.ChangeImage -> {
@@ -65,11 +64,7 @@ class ViewMoreEstateScreenVM(
                 addRateEstate(estateId = event.estateId, rate = event.rate, context = event.context)
 
             }
-
-
         }
-
-
     }
 
     @SuppressLint("LongLogTag")
@@ -114,6 +109,8 @@ class ViewMoreEstateScreenVM(
                                         number = it.data.owner.phone_number,
                                         loved = it.data.favourite
                                     )
+                                    getNumberOfLikesFromServer(context, estateId)
+                                    getRateFromServer(context, estateId)
                                     try {
                                         if (it.data.images.isNotEmpty()) {
                                             state = state.copy(
@@ -133,45 +130,30 @@ class ViewMoreEstateScreenVM(
                     }
                 }
             }
-
-
-            getNumberOfLikesFromServer(context, estateId)
-
-            getRateFromServer(context, estateId)
-
-
         }
-
-
     }
 
     private fun getRateFromServer(context: Context, estateId: Int) {
         //GetRate
         viewModelScope.launch {
-
             val responseRate = estateApiRepo.getRateEstate(
                 token = TokenManager.getInstance(context).getToken(),
                 rate = RateEstate.GetRateEstateRequest(type = "estate", estateId = estateId)
             )
             responseRate.collect {
                 when (it) {
-
                     is Resource.Loading -> {
-
+                        state = state.copy(
+                            isLoading = it.isLoading
+                        )
                     }
-
                     is Resource.Success -> {
                         if (it.data?.status == true) {
                             state = state.copy(rate = it.data.rate)
                         }
-
                     }
-
                     is Resource.Error -> {
-
                     }
-
-
                 }
             }
 
@@ -182,7 +164,6 @@ class ViewMoreEstateScreenVM(
     private fun addRateEstate(context: Context, estateId: Int, rate: Int) {
         //AddRate
         viewModelScope.launch {
-
             val responseRate = estateApiRepo.addRateEstate(
                 token = TokenManager.getInstance(context).getToken(),
                 rate = RateEstate.AddRateEstateRequest(
@@ -195,9 +176,7 @@ class ViewMoreEstateScreenVM(
                 when (it) {
 
                     is Resource.Loading -> {
-
                     }
-
                     is Resource.Success -> {
                         if (it.data?.status == true) {
                             Toast.makeText(context, "rated Successfully", Toast.LENGTH_SHORT).show()
@@ -262,35 +241,21 @@ class ViewMoreEstateScreenVM(
                     type = "estate"
                 )
             )
-
             response.collect {
                 when (it) {
-
                     is Resource.Loading -> {
-
                     }
-
                     is Resource.Success -> {
-
                         if (it.data?.status == true) {
                             state = state.copy(loved = !state.loved)
                             getNumberOfLikesFromServer(context, estateId)
                         }
-
                     }
-
                     is Resource.Error -> {
-
                     }
-
                 }
-
-
             }
-
         }
-
-
     }
 
 

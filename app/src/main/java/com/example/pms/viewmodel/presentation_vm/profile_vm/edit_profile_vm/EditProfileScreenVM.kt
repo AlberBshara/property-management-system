@@ -34,7 +34,6 @@ class EditProfileScreenVM(
     private var count = 0
     var state by mutableStateOf(EditProfileState())
 
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun onEvent(event: EditProfileEvents) {
         when (event) {
@@ -174,7 +173,7 @@ class EditProfileScreenVM(
                                 val names = fullName.split(" ")
                                 val firstName = names[0]
                                 val secondName = names[1]
-                                it.data.user.image.let { image ->
+                                it.data.user.image?.let { image ->
                                     onEvent(EditProfileEvents.ChangeImageReceive(imageReceive = image))
                                 }
                                 onEvent(EditProfileEvents.ChangePhoneNumber(phone = it.data.user.phoneNumber))

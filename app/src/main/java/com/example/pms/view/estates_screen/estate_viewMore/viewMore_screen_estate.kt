@@ -33,6 +33,7 @@ import coil.compose.AsyncImage
 import com.example.pms.R
 import com.example.pms.ui.theme.*
 import com.example.pms.view.estates_screen.PagerIndicator
+import com.example.pms.view.vehicles_screen.vehicle_details_screen.ShimmerViewMoreDetails
 import com.example.pms.viewmodel.presentation_vm.estates_vm.view_more_estate_vm.RoomsViewMore
 import com.example.pms.viewmodel.presentation_vm.estates_vm.view_more_estate_vm.ViewMoreEstateEvents
 import com.example.pms.viewmodel.presentation_vm.estates_vm.view_more_estate_vm.ViewMoreEstateScreenVM
@@ -47,11 +48,8 @@ fun ViewMoreScreenEstate(
     navHostController: NavHostController,
     viewModel: ViewMoreEstateScreenVM = androidx.lifecycle.viewmodel.compose.viewModel(),
     estate_id: Int = -1
-
 ) {
-
     val context = LocalContext.current
-
     viewModel.onEvent(
         ViewMoreEstateEvents.OnGetDataFromServer(
             context = context,
@@ -60,322 +58,284 @@ fun ViewMoreScreenEstate(
     )
     val state = viewModel.state
 
-    val pagerState = rememberPagerState(pageCount = state.imagesList.size, initialPage = 0)
+   if(state.isLoading) {
+       ShimmerViewMoreDetails()
+   }else{
+       val pagerState = rememberPagerState(pageCount = state.imagesList.size, initialPage = 0)
+       Column(
+           modifier = Modifier
+               .fillMaxSize()
+               .verticalScroll(rememberScrollState()),
+       ) {
+           Column {
+               if (state.imagesList.isNotEmpty()) {
+                   HorizontalPager(
+                       state = pagerState,
+                       modifier = Modifier
+                           .onFocusChanged { }
+                   ) { current_image_index ->
+                       AsyncImage(
+                           model = state.imagesList[current_image_index].imageUrl,
+                           contentDescription = "Image",
+                           modifier = Modifier
+                               .fillMaxWidth()
+                               .height(200.dp),
+                           contentScale = ContentScale.Crop
+                           //contentScale = ContentScale.FillWidth
+                       )
+                       viewModel.onEvent(ViewMoreEstateEvents.ChangeImage(indexOfImage = pagerState.currentPage))
+                   }
+                   Column(modifier = Modifier.padding(start = 10.dp, end = 10.dp)) {
+                       Row(
+                           horizontalArrangement = Arrangement.SpaceBetween,
+                           modifier = Modifier
+                               .fillMaxWidth(),
+                           verticalAlignment = Alignment.CenterVertically
+                       ) {
+                           Row(
+                               horizontalArrangement = Arrangement.Center,
+                               verticalAlignment = Alignment.CenterVertically
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+                           ) {
+                               IconButton(
+                                   onClick = {
+                                       viewModel.onEvent(
+                                           ViewMoreEstateEvents.OnLikeClicked(
+                                               context,
+                                               estate_id
+                                           )
+                                       )
+                                   },
+                               ) {
+                                   if (state.loved) {
+                                       Icon(
+                                           painter = painterResource(id = R.drawable.love_icon),
+                                           contentDescription = "",
+                                           tint = Color.Red,
+                                           modifier = Modifier.size(25.dp)
+                                       )
+                                   } else {
+                                       Icon(
+                                           painter = painterResource(id = R.drawable.love_icon2),
+                                           contentDescription = "",
+                                           tint = darkRed,
+                                           modifier = Modifier.size(25.dp)
+                                       )
+                                   }
+                               }
 
-        ) {
-        Column {
-            if (state.imagesList.isNotEmpty()) {
+                               Text(text = state.numberOfLikes.toString(), fontSize = 12.sp)
 
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier
-                        .onFocusChanged { }
-                ) { current_image_index ->
+                           }
+                           PagerIndicator(
+                               current_index = pagerState.currentPage,
+                               state.imagesList.size
+                           )
+                           IconButton(onClick = { /*TODO*/ }) {
+                               Icon(
+                                   painter = painterResource(id = R.drawable.share_ic),
+                                   contentDescription = null,
+                                   tint = lightblue,
+                                   modifier = Modifier.clickable {
+                                       viewModel.onEvent(ViewMoreEstateEvents.OnShareClicked(context))
+                                   }
+                               )
+                           }
 
+                       }
+                   }
+               }
+               Divider(
+                   modifier = Modifier.padding(bottom = 10.dp),
+                   thickness = 1.dp,
+                   color = Color.LightGray
+               )
+               Row(
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .padding(top = 10.dp, bottom = 10.dp),
+                   horizontalArrangement = Arrangement.SpaceBetween,
+                   verticalAlignment = Alignment.CenterVertically
+               ) {
+                   Row(
+                       horizontalArrangement = Arrangement.Start,
+                       verticalAlignment = Alignment.CenterVertically
+                   ) {
+                       if (state.operationType == "sell") {
+                           Text(
+                               text = state.price.toString() + " $",
+                               style = MaterialTheme.typography.h5,
+                               modifier = Modifier
+                                   .padding(start = 10.dp, end = 5.dp)
+                           )
+                       } else {
+                           Text(
+                               text = state.price.toString(),
+                               style = MaterialTheme.typography.h4,
+                               modifier = Modifier
+                                   .padding(start = 10.dp, end = 5.dp)
+                           )
+                           Text(
+                               text = " $/month",
+                               fontSize = 15.sp
+                           )
+                       }
+                   }
+                   RatingBar(size = 18.dp, rating = state.rate)
+               }
+               Row(modifier = Modifier.fillMaxWidth(), Arrangement.End) {
+                   Text(
+                       text = stringResource(id = R.string.add_rate),
+                       color = lightblue,
+                       style = MaterialTheme.typography.overline,
+                       modifier = Modifier
+                           .padding(end = 30.dp)
+                           .clickable {
+                               viewModel.onEvent(ViewMoreEstateEvents.OnChangeShowRateScreen)
 
-                    AsyncImage(
-                        model = state.imagesList[current_image_index].imageUrl,
-                        contentDescription = "Image",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentScale = ContentScale.Crop
-                        //contentScale = ContentScale.FillWidth
-                    )
-                    viewModel.onEvent(ViewMoreEstateEvents.ChangeImage(indexOfImage = pagerState.currentPage))
-                }
+                           },
+                       fontWeight = FontWeight.Bold,
+                       textDecoration = TextDecoration.Underline
+                   )
 
-                Column(modifier = Modifier.padding(start = 10.dp, end = 10.dp)) {
+               }
 
+               Spacer(modifier = Modifier.height(10.dp))
+               Row(
+                   verticalAlignment = Alignment.CenterVertically,
+                   horizontalArrangement = Arrangement.Start,
+               ) {
 
-                    //Likes and share icon
+                   Icon(
+                       painter = painterResource(id = R.drawable.location_icon),
+                       contentDescription = "",
+                       modifier = Modifier
+                           .padding(5.dp)
+                           .size(25.dp),
+                       tint = Color.Black
 
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                   )
+                   Text(
+                       text = state.governorate,
+                       fontSize = 15.sp
+                   )
+               }
+               Spacer(modifier = Modifier.height(10.dp))
+               Row(
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .padding(10.dp),
+                   horizontalArrangement = Arrangement.SpaceBetween,
 
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
+                   ) {
 
-                        ) {
-                            IconButton(
-                                onClick = {
-                                    viewModel.onEvent(
-                                        ViewMoreEstateEvents.OnLikeClicked(
-                                            context,
-                                            estate_id
-                                        )
-                                    )
-                                },
-                            ) {
+                   RoomsViewMore(state = state).listOfRooms.forEachIndexed { _, oneRoom ->
 
-                                if (state.loved) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.love_icon),
-                                        contentDescription = "",
-                                        tint = Color.Red,
-                                        modifier = Modifier.size(25.dp)
-                                    )
-                                } else {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.love_icon2),
-                                        contentDescription = "",
-                                        tint = darkRed,
-                                        modifier = Modifier.size(25.dp)
-                                    )
-                                }
-                            }
+                       Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-                            Text(text = state.numberOfLikes.toString(), fontSize = 12.sp)
+                           Row {
+                               Icon(
+                                   painter = painterResource(id = oneRoom.image),
+                                   contentDescription = null,
+                                   tint = Color.Gray
+                               )
+                               Text(
+                                   text = oneRoom.number.toString(),
+                                   modifier = Modifier.padding(start = 5.dp)
+                               )
+                           }
+                           Text(text = oneRoom.name, color = Color.Gray)
 
-                        }
-
-
-                        PagerIndicator(
-                            current_index = pagerState.currentPage,
-                            state.imagesList.size
-                        )
-
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.share_ic),
-                                contentDescription = null,
-                                tint = lightblue,
-                                modifier = Modifier.clickable {
-                                    viewModel.onEvent(ViewMoreEstateEvents.OnShareClicked(context))
-                                }
-                            )
-                        }
-
-                    }
-                }
-
-
-            }
-            Divider(
-                modifier = Modifier.padding(bottom = 10.dp),
-                thickness = 1.dp,
-                color = Color.LightGray
-            )
-
-
-//price and rating
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp, bottom = 10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-
-                verticalAlignment = Alignment.CenterVertically
-
-            ) {
-                Row(
-
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    if (state.operationType == "sell") {
-                        Text(
-                            text = state.price.toString() + " $",
-                            style = MaterialTheme.typography.h5,
-                            modifier = Modifier
-                                .padding(start = 10.dp, end = 5.dp)
-                        )
-
-                    } else {
-                        Text(
-                            text = state.price.toString(),
-                            style = MaterialTheme.typography.h4,
-                            modifier = Modifier
-                                .padding(start = 10.dp, end = 5.dp)
-                        )
-                        Text(
-                            text = " $/month",
-                            fontSize = 15.sp
-
-                        )
-                    }
-
-
-                }
-
-                //rating
-
-
-                RatingBar(size = 18.dp, rating = state.rate)
-
-
-            }
-//add rate
-            Row(modifier = Modifier.fillMaxWidth(), Arrangement.End) {
-                Text(
-                    text = stringResource(id = R.string.add_rate),
-                    color = lightblue,
-                    style = MaterialTheme.typography.overline,
-                    modifier = Modifier
-                        .padding(end = 30.dp)
-                        .clickable {
-                            viewModel.onEvent(ViewMoreEstateEvents.OnChangeShowRateScreen)
-
-                        },
-                    fontWeight = FontWeight.Bold,
-                    textDecoration = TextDecoration.Underline
-                )
-
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-            ) {
-
-                Icon(
-                    painter = painterResource(id = R.drawable.location_icon),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .size(25.dp),
-                    tint = Color.Black
-
-                )
-                Text(
-                    text = state.governorate,
-                    fontSize = 15.sp
-                )
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
+                       }
 
 
-//beds ,baths ,garage and level
+                   }
+               }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-
-                ) {
-
-                RoomsViewMore(state = state).listOfRooms.forEachIndexed { _, oneRoom ->
-
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-                        Row {
-                            Icon(
-                                painter = painterResource(id = oneRoom.image),
-                                contentDescription = null,
-                                tint = Color.Gray
-                            )
-                            Text(
-                                text = oneRoom.number.toString(),
-                                modifier = Modifier.padding(start = 5.dp)
-                            )
-                        }
-                        Text(text = oneRoom.name, color = Color.Gray)
-
-                    }
-
-
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
+               Spacer(modifier = Modifier.height(10.dp))
 //table
-            MyTable(state)
+               MyTable(state)
 
 //more info
-            Text(
-                text = stringResource(id = R.string.additional_information_estate),
-                color = Color.Black,
-                style = MaterialTheme.typography.subtitle1,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                textAlign = TextAlign.Start
-            )
+               Text(
+                   text = stringResource(id = R.string.additional_information_estate),
+                   color = Color.Black,
+                   style = MaterialTheme.typography.subtitle1,
+                   fontWeight = FontWeight.Bold,
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .padding(10.dp),
+                   textAlign = TextAlign.Start
+               )
 
-            OutlinedTextField(
-                value = state.description,
-                onValueChange = {},
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth(),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    backgroundColor = transparentGray,
-                    focusedBorderColor = lightblue,
-                    unfocusedBorderColor = transparentGray,
-                    cursorColor = lightblue
-                ),
-                shape = RoundedCornerShape(10.dp),
-                singleLine = false,
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.description_ic),
-                        contentDescription = null,
-                        tint = lightblue
-                    )
-                },
-                readOnly = true
-            )
+               OutlinedTextField(
+                   value = state.description,
+                   onValueChange = {},
+                   modifier = Modifier
+                       .padding(10.dp)
+                       .fillMaxWidth(),
+                   colors = TextFieldDefaults.outlinedTextFieldColors(
+                       backgroundColor = transparentGray,
+                       focusedBorderColor = lightblue,
+                       unfocusedBorderColor = transparentGray,
+                       cursorColor = lightblue
+                   ),
+                   shape = RoundedCornerShape(10.dp),
+                   singleLine = false,
+                   leadingIcon = {
+                       Icon(
+                           painter = painterResource(id = R.drawable.description_ic),
+                           contentDescription = null,
+                           tint = lightblue
+                       )
+                   },
+                   readOnly = true
+               )
 
 
 //OwnerCard
-            OwnerCard(
-                state,
-                onVisitProfileListener = {
-                    viewModel.onEvent(ViewMoreEstateEvents.OnVisitProfileClicked(navHostController))
+               OwnerCard(
+                   state,
+                   onVisitProfileListener = {
+                       viewModel.onEvent(ViewMoreEstateEvents.OnVisitProfileClicked(navHostController))
 
-                },
-                onChattingListener = {
+                   },
+                   onChattingListener = {
 
-                },
-                onCallPhoneListener = {
-                    viewModel.onEvent(
-                        ViewMoreEstateEvents.OnCallPhoneClicked(
-                            it,
-                            context
-                        )
-                    )
-                }
-            )
-
-
-        }
+                   },
+                   onCallPhoneListener = {
+                       viewModel.onEvent(
+                           ViewMoreEstateEvents.OnCallPhoneClicked(
+                               it,
+                               context
+                           )
+                       )
+                   }
+               )
 
 
-        //RateScreen
-        RatingScreen(
-            isShowing = state.isShowingRateScreen,
-            onResultListener = {
-                viewModel.onEvent(
-                    ViewMoreEstateEvents.OnAddRateEstate(
-                        estateId = estate_id,
-                        rate = it,
-                        context = context
-                    )
-                )
-            },
-            onDismissRequest = {
-                viewModel.onEvent(ViewMoreEstateEvents.OnChangeShowRateScreen)
-            })
+           }
 
 
-    }
+           //RateScreen
+           RatingScreen(
+               isShowing = state.isShowingRateScreen,
+               onResultListener = {
+                   viewModel.onEvent(
+                       ViewMoreEstateEvents.OnAddRateEstate(
+                           estateId = estate_id,
+                           rate = it,
+                           context = context
+                       )
+                   )
+               },
+               onDismissRequest = {
+                   viewModel.onEvent(ViewMoreEstateEvents.OnChangeShowRateScreen)
+               })
 
 
+       }
+   }
 }
 
 
@@ -610,7 +570,9 @@ private fun OwnerCard(
                     )
                 }
                 IconButton(onClick = {
-                    onChattingListener()
+
+
+
                 }) {
                     Icon(
                         imageVector = Icons.Filled.Message,

@@ -14,6 +14,7 @@ import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.utils.TokenManager
 import kotlinx.coroutines.launch
 import com.example.pms.R
+import com.example.pms.viewmodel.preferences.UserPreferences
 import com.example.pms.viewmodel.presentation_vm.settings_vm.settings_manager.SettingsManager
 
 class SettingsScreenVM(
@@ -72,6 +73,7 @@ class SettingsScreenVM(
                         if (it.data != null) {
                             if (it.data.isSuccess) {
                                 TokenManager.getInstance(context).clear()
+                                UserPreferences.clear(context)
                                 navController.backQueue.clear()
                                 navController.navigate(Destination.SplashDestination.route)
                             }

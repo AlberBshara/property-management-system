@@ -41,5 +41,4 @@ class SharedPreferencesUsage(
     fun clearDataOfKey(key: String) {
         sharedPreferences.editor.remove(key).apply()
     }
-
 }

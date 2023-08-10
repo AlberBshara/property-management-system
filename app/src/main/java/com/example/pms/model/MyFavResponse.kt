@@ -18,6 +18,21 @@ data class MyFavResponse(
 
     data class MyFavModel(
         @SerializedName(Keys.TYPE)
-        val type : String
+        val type: String
+    )
+}
+
+
+data class MyFavResponseEstate(
+    @SerializedName("favorite_estates : ")
+    val favList: List<PostData>
+) {
+    data class PostData(
+        @SerializedName(Keys.POST)
+        val estateData: GetAllEstateResponse.EstateData,
+        @SerializedName("images")
+        val images: List<EstateViewMoreData.ListOfImages>,
+        @SerializedName("favorite")
+        val liked: Boolean
     )
 }

@@ -11,5 +11,12 @@ data class ProfileState(
     var instagramLink: String? = null,
     var twitterLink: String? = null,
     var isRefreshing: Boolean = false,
-    var timeOut: Boolean = false
+    var timeOut: Boolean = false,
+
+
+    val faceBookPress: Boolean = false,
+    val instagramPress: Boolean = false,
+    val twitterPress: Boolean = false,
+    val loading: Boolean = false,
+
 )

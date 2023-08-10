@@ -11,12 +11,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.example.pms.model.LikeData
 import com.example.pms.model.MyFavResponse
+import com.example.pms.model.MyFavResponseEstate
 import com.example.pms.model.MyPostsModels
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.api.vehicels_services.VehicleServicesImplementation
 import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.utils.TokenManager
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 class ProfileHelperScreenVM(
@@ -36,7 +38,7 @@ class ProfileHelperScreenVM(
     fun onEvent(event: ProfileHelperEvents) {
         when (event) {
             is ProfileHelperEvents.OnStart -> {
-                onStart(event.from, event.context)
+                onStart(event.from, event.context, event.type)
             }
             is ProfileHelperEvents.OnRefresh -> {
                 onRefresh(event.from, event.context)
@@ -53,17 +55,23 @@ class ProfileHelperScreenVM(
             is ProfileHelperEvents.OnDeletingPost -> {
                 deletePost(event.from, event.context, event.vehicleId, event.vehicleIndex)
             }
+            is ProfileHelperEvents.OnVehiclePostsClicked -> {
+                vehicleClicked(event.context, event.from)
+            }
+            is ProfileHelperEvents.OnEstatePostsClicked -> {
+                estateClicked(event.context, event.from)
+            }
         }
     }
 
     private fun onStart(
-        from: String, context: Context
+        from: String, context: Context, type: String
     ) {
         if (counter == 0) {
             counter++
             when (from) {
-                Destination.ProfileHelperScreen.FROM_FAV_CLICKED -> fetchFavPosts(context, "car")
-                Destination.ProfileHelperScreen.FROM_MY_POST_CLICKED -> fetchMyPosts(context, "car")
+                Destination.ProfileHelperScreen.FROM_FAV_CLICKED -> fetchFavPosts(context, type)
+                Destination.ProfileHelperScreen.FROM_MY_POST_CLICKED -> fetchMyPosts(context, type)
             }
         }
     }
@@ -71,22 +79,35 @@ class ProfileHelperScreenVM(
     private fun onRefresh(
         from: String, context: Context
     ) {
+        // this.counter = 0
+        // onStart(from, context)
+    }
+
+    private fun vehicleClicked(
+        context: Context, from: String
+    ) {
+       this.counter = 0
+        onStart(from, context , VEHICLE)
+    }
+
+    private fun estateClicked(
+        context: Context , from: String
+    ) {
         this.counter = 0
-        onStart(from, context)
+        onStart(from, context , ESTATE)
     }
 
     @SuppressLint("LongLogTag")
-    private fun fetchFavPosts(
+    private fun fetchMyPosts(
         context: Context,
         type: String
     ) {
-
         viewModelScope.launch {
-            val favResponse = userServicesRepository.fetchFavList(
+            val myPostResponse = userServicesRepository.fetchMyVehiclePosts(
                 TokenManager.getInstance(context).getToken(),
-                MyFavResponse.MyFavModel(type)
+                MyPostsModels.MyVehiclesPostResponse.MyVehiclesPostModel(type)
             )
-            favResponse.collect {
+            myPostResponse.collect {
                 when (it) {
                     is Resource.Loading -> {
                         state = state.copy(
@@ -94,16 +115,46 @@ class ProfileHelperScreenVM(
                         )
                     }
                     is Resource.Success -> {
-                        it.data?.let { favResult ->
-                            Log.d(TAG, "fetchFavPosts: ${favResult.favList}")
-                            state = if (favResult.favList.isNotEmpty()) {
-                                state.copy(
-                                    postsList = favResult.favList
-                                )
-                            } else {
-                                state.copy(
-                                    noResult = true
-                                )
+                        it.data?.let { myPostResult ->
+                            val gson = Gson()
+                            when (type) {
+                                VEHICLE -> {
+                                    val vehiclesPosts = gson.fromJson(
+                                        myPostResult.charStream(),
+                                        MyPostsModels.MyVehiclesPostResponse::class.java
+                                    )
+                                    state = if (vehiclesPosts.success) {
+                                       state.copy(
+                                            estatesPostsList = emptyList(),
+                                            vehiclesPostsList = vehiclesPosts.vehiclesPostsList
+                                        )
+                                    }else{
+                                        state.copy(
+                                            noResult = true
+                                        )
+                                    }
+                                    Log.d(TAG, "fetchMyPosts: VEHICLES ${vehiclesPosts.vehiclesPostsList}")
+                                }
+                                ESTATE -> {
+                                    val estatesPosts = gson.fromJson(
+                                        myPostResult.charStream(),
+                                        MyPostsModels.MyEstatesPostResponse::class.java
+                                    )
+                                    state = if (estatesPosts.success) {
+                                     state.copy(
+                                            vehiclesPostsList = emptyList(),
+                                            estatesPostsList = estatesPosts.estatesPostsList
+                                        )
+                                    }else{
+                                        state.copy(
+                                            noResult = true
+                                        )
+                                    }
+                                    Log.d(TAG, "fetchMyPosts: ESTATES ${estatesPosts.estatesPostsList}")
+                                }
+                                else -> {
+                                    Log.d(TAG, "fetchMyPosts: something went wrong!")
+                                }
                             }
                         }
                     }
@@ -118,45 +169,79 @@ class ProfileHelperScreenVM(
     }
 
     @SuppressLint("LongLogTag")
-    private fun fetchMyPosts(
+    private fun fetchFavPosts(
         context: Context,
         type: String
     ) {
         viewModelScope.launch {
-            val myPostResponse = userServicesRepository.fetchMyVehiclePosts(
-                TokenManager.getInstance(context).getToken(),
-                MyPostsModels.MyVehiclesPostResponse.MyVehiclesPostModel()
-            )
-            myPostResponse.collect {
-                when (it) {
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = it.isLoading
-                        )
-                    }
-                    is Resource.Success -> {
-                        it.data?.let { myPostResult ->
-                            if (myPostResult.success) {
-                                Log.d(
-                                    TAG,
-                                    "fetchMyPosts: Success : ${myPostResult.vehiclesPostsList}"
-                                )
-                                state = if (myPostResult.vehiclesPostsList.isNotEmpty()) {
-                                    state.copy(
-                                        postsList = myPostResult.vehiclesPostsList
-                                    )
-                                } else {
-                                    state.copy(
-                                        noResult = true
-                                    )
+            viewModelScope.launch {
+                val myPostResponse = userServicesRepository.fetchFavList(
+                    TokenManager.getInstance(context).getToken(),
+                   MyFavResponse.MyFavModel(type)
+                )
+                myPostResponse.collect {
+                    when (it) {
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = it.isLoading
+                            )
+                        }
+                        is Resource.Success -> {
+                            it.data?.let { myPostResult ->
+                                val gson = Gson()
+                                when (type) {
+                                    VEHICLE -> {
+                                        val vehiclesPosts = gson.fromJson(
+                                            myPostResult.charStream(),
+                                           MyFavResponse::class.java
+                                        )
+                                       state = if (vehiclesPosts.favList.isNotEmpty()) {
+                                            state.copy(
+                                                estatesPostsList = emptyList(),
+                                                vehiclesPostsList = vehiclesPosts.favList
+                                            )
+                                        }else{
+                                            state.copy(
+                                                noResult = true
+                                            )
+                                        }
+                                        Log.d(TAG, "fetchMyFav: VEHICLES ${vehiclesPosts.favList}")
+                                    }
+                                    ESTATE -> {
+                                        val estatesPosts = gson.fromJson(
+                                            myPostResult.charStream(),
+                                            MyFavResponseEstate::class.java
+                                        )
+                                        if (estatesPosts.favList.isNotEmpty()) {
+                                            val estateFavList = estatesPosts.favList.map { dto ->
+                                                MyPostsModels.MyEstatesPostResponse.PostDataEstates(
+                                                    estateData = dto.estateData ,
+                                                    images = dto.images,
+                                                    liked = dto.liked
+                                                )
+                                            }
+                                            state = state.copy(
+                                                vehiclesPostsList = emptyList(),
+                                                estatesPostsList = estateFavList
+                                            )
+                                            Log.d(TAG, "fetchMyFav: ESTATES $estateFavList")
+                                        } else {
+                                            state = state.copy(
+                                                noResult = true
+                                            )
+                                        }
+                                    }
+                                    else -> {
+                                        Log.d(TAG, "fetchMyFav: something went wrong!")
+                                    }
                                 }
                             }
                         }
-                    }
-                    is Resource.Error -> {
-                        state = state.copy(
-                            needRefresh = true
-                        )
+                        is Resource.Error -> {
+                            state = state.copy(
+                                needRefresh = true
+                            )
+                        }
                     }
                 }
             }
@@ -176,11 +261,13 @@ class ProfileHelperScreenVM(
                 navController.navigate(Destination.VehicleDetailsDestination.route)
             }
             ESTATE -> {
-
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    Destination.ESTATE_ID_KEY, typeId
+                )
+                navController.navigate(Destination.ViewMoreScreenEstate.route)
             }
         }
     }
-
 
     private fun like(
         type: String = "car",
@@ -188,14 +275,14 @@ class ProfileHelperScreenVM(
         context: Context
     ) {
         viewModelScope.launch {
-            val updatedList = state.postsList.toMutableList()
+            val updatedList = state.vehiclesPostsList.toMutableList()
             updatedList.forEachIndexed { index, item ->
                 if (item.vehicleData.id == typeId) {
                     updatedList[index] =
-                        updatedList[index].copy(liked = !state.postsList[index].liked)
+                        updatedList[index].copy(liked = !state.vehiclesPostsList[index].liked)
                 }
             }
-            state = state.copy(postsList = updatedList)
+            state = state.copy(vehiclesPostsList = updatedList)
 
             val response = userServicesRepository.like(
                 TokenManager.getInstance(context).getToken(),
@@ -209,7 +296,7 @@ class ProfileHelperScreenVM(
                         it.data?.let { likedResponse ->
                             if (likedResponse.success) {
                                 if (likedResponse.message.contains("un")) {
-                                    val updatedList1 = state.postsList.toMutableList()
+                                    val updatedList1 = state.vehiclesPostsList.toMutableList()
                                     updatedList1.forEachIndexed { index, item ->
                                         if (item.vehicleData.id == typeId) {
                                             updatedList1[index] =
@@ -217,7 +304,7 @@ class ProfileHelperScreenVM(
                                         }
                                     }
                                 } else {
-                                    val updatedList1 = state.postsList.toMutableList()
+                                    val updatedList1 = state.vehiclesPostsList.toMutableList()
                                     updatedList1.forEachIndexed { index, item ->
                                         if (item.vehicleData.id == typeId) {
                                             updatedList1[index] =
@@ -229,7 +316,7 @@ class ProfileHelperScreenVM(
                         }
                     }
                     is Resource.Error -> {
-                        val updatedList1 = state.postsList.toMutableList()
+                        val updatedList1 = state.vehiclesPostsList.toMutableList()
                         updatedList1.forEachIndexed { index, item ->
                             if (item.vehicleData.id == typeId) {
                                 updatedList1[index] = updatedList1[index].copy(liked = false)
@@ -240,7 +327,6 @@ class ProfileHelperScreenVM(
             }
         }
     }
-
 
     /**
      * the following method will be applicable only with the current user's posts.
@@ -267,11 +353,11 @@ class ProfileHelperScreenVM(
                             it.data?.let { result ->
                                 if (result.success) {
                                     Log.d(TAG, "deletePost: Success ${result.message}")
-                                      val updatedList = state.postsList.toMutableList()
-                                       updatedList.removeAt(vehicleIndex)
-                                       state = state.copy(
-                                           postsList = updatedList
-                                       )
+                                    val updatedList = state.vehiclesPostsList.toMutableList()
+                                    updatedList.removeAt(vehicleIndex)
+                                    state = state.copy(
+                                        vehiclesPostsList = updatedList
+                                    )
                                 }
                             }
                         }
@@ -283,5 +369,4 @@ class ProfileHelperScreenVM(
             }
         }
     }
-
 }

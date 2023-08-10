@@ -7,7 +7,7 @@ object MyPostsModels {
 
     data class MyVehiclesPostResponse(
         @SerializedName(Keys.STATUS)
-        val success: Boolean,
+        val success: Boolean ,
         @SerializedName("Cars")
         val vehiclesPostsList: List<MyFavResponse.PostData>
     ) {
@@ -21,11 +21,15 @@ object MyPostsModels {
         @SerializedName(Keys.STATUS)
         val success: Boolean,
         @SerializedName("Estates")
-        val estatesPostsList: List<MyFavResponse.PostData>
-    ) {
-        data class MyEstatesPostModel(
-            @SerializedName(Keys.TYPE)
-            val type: String = "estate"
+        val estatesPostsList: List<PostDataEstates>
+    ){
+        data class PostDataEstates(
+            @SerializedName(Keys.POST)
+            val estateData: GetAllEstateResponse.EstateData,
+            @SerializedName("images")
+            val images: List<EstateViewMoreData.ListOfImages>,
+            @SerializedName("favorite")
+            val liked: Boolean
         )
     }
 }

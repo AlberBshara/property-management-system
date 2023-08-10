@@ -49,7 +49,6 @@ data class EstateViewMoreData(
 
 
     data class OwnerDetails(
-
         @SerializedName(Keys.NAME)
         val name: String,
         @SerializedName(Keys.PHONE_NUMBER)

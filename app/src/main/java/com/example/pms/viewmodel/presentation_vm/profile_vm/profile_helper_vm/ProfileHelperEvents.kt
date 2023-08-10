@@ -7,7 +7,8 @@ sealed class ProfileHelperEvents {
 
     data class OnStart(
         val from: String,
-        val context: Context
+        val context: Context,
+        val type: String
     ) : ProfileHelperEvents()
 
     data class OnRefresh(
@@ -36,5 +37,15 @@ sealed class ProfileHelperEvents {
         val vehicleIndex: Int,
         val vehicleId: Int,
         val context: Context
+    ) : ProfileHelperEvents()
+
+    data class OnVehiclePostsClicked(
+        val context: Context,
+        val from: String
+    ) : ProfileHelperEvents()
+
+    data class OnEstatePostsClicked(
+        val context: Context,
+        val from : String
     ) : ProfileHelperEvents()
 }

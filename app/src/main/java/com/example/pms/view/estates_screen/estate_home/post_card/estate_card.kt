@@ -66,21 +66,17 @@ fun EstateCard(
             .padding(12.dp),
         elevation = 5.dp
     ) {
-
-
         Column(
             modifier = Modifier
                 .wrapContentSize(),
 
             ) {
-
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
                     .padding(5.dp)
                     .onFocusChanged { }
             ) { current_image_index ->
-
                 if (current_image_index < lengthOfPagerIndicator) {
                     AsyncImage(
                         model = images[current_image_index].imageUrl,
@@ -142,13 +138,9 @@ fun EstateCard(
                         Text(
                             text = " /month",
                             fontSize = 15.sp
-
                         )
                     }
-
-
                 }
-
                 Row {
                     IconButton(
                         onClick = {
@@ -162,7 +154,6 @@ fun EstateCard(
                         modifier = Modifier
                             .padding(start = 10.dp, bottom = 10.dp)
                     ) {
-
                         if (loved) {
                             Icon(
                                 painter = painterResource(id = R.drawable.love_icon),

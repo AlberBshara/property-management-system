@@ -306,7 +306,7 @@ class UserServicesRepository(
 
     suspend fun fetchFavList(
         token: String, type: MyFavResponse.MyFavModel
-    ): Flow<Resource<MyFavResponse>> = flow {
+    ): Flow<Resource<ResponseBody>> = flow {
         emit(Resource.Loading(true))
         val response = try {
             userServicesInterface.fetchMyFavList(
@@ -329,10 +329,10 @@ class UserServicesRepository(
     suspend fun fetchMyVehiclePosts(
         token: String,
         vehicleRequest: MyPostsModels.MyVehiclesPostResponse.MyVehiclesPostModel
-    ): Flow<Resource<MyPostsModels.MyVehiclesPostResponse>> = flow {
+    ): Flow<Resource<ResponseBody>> = flow {
         emit(Resource.Loading(true))
         val vehiclesResponse = try {
-            userServicesInterface.fetchMyVehiclesPosts(
+            userServicesInterface.fetchMyPostsWithType(
                 token, vehicleRequest
             )
         } catch (e: IOException) {
@@ -348,6 +348,37 @@ class UserServicesRepository(
         }
         emit(Resource.Loading(false))
     }
+
+    suspend fun editSocialMediaUrl(
+        token: String,
+        url: EditSocialMediaRequest
+    ): Flow<Resource<EditSocialMediaRequest.EditSocialMediaResponse>> {
+        return flow {
+
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.editSocialMediaUrl(token = token, url = url)
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message.toString()))
+                null
+            } catch (e: Exception) {
+                emit(Resource.Error(e.message.toString()))
+                null
+            }
+
+            response?.let {
+                emit(Resource.Success(data = response))
+                emit(Resource.Loading(false))
+            }
+
+            emit((Resource.Loading(false)))
+
+
+        }
+    }
+
+
+
 }
 
 

@@ -55,7 +55,7 @@ fun ListVehicleContent(
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxSize()
         ) {
-            itemsIndexed(state.postsList) { index, item ->
+            itemsIndexed(state.vehiclesPostsList) { index, item ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()

@@ -24,14 +24,13 @@ import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 
-
 class RegisterPage3Vm(
     private val userApiRepo: UserServicesRepository = UserServicesRepository()
 ) : ViewModel() {
 
     var state by mutableStateOf(RegisterPage3State())
 
-    companion object{
+    companion object {
         private const val TAG: String = "RegisterPage3Vm.ky"
     }
 
@@ -127,10 +126,11 @@ class RegisterPage3Vm(
                                 } else {
                                     Log.d(
                                         TAG,
-                                        "submitData: Success with false ${it.data.toString()}"
+                                        "submitData: Success with false ${it.data?.charStream()?.toString()}"
                                     )
                                     //TODO: duplicated email:
-                                    signedUpFailed()
+                                    it.data?.charStream()?.toString()
+                                        ?.let { it1 -> signedUpFailed(it1) }
                                 }
                             }
                             is Resource.Error -> {
@@ -165,11 +165,21 @@ class RegisterPage3Vm(
         navController.navigate(Destination.DashboardDestination.route)
     }
 
-    private fun signedUpFailed() {
-        state = state.copy(
-            emailDuplicated = true
-        )
+    private fun signedUpFailed(jsonResponse: String) {
+        val gson = Gson()
+        try {
+            val errorResponse = gson.fromJson(jsonResponse, RegisterUserData.ErrorRegister::class.java)
+            if (errorResponse.validation.message.isNotEmpty()) {
+                val errorMessage = errorResponse.validation.message[0]
+                if (errorMessage == "The email has already been taken.") {
+                    state = state.copy(
+                        emailDuplicated = true
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            // Handle JSON parsing exception
+            Log.e(TAG, "Error parsing error response JSON: $jsonResponse")
+        }
     }
-
-
 }

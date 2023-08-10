@@ -322,6 +322,7 @@ class EstateHomeVM(
         context: Context
     ) {
         this.counter = 0
+        this.pageNumber=DEFAULT_PAGE_NUMBER
         getAllEstates(context)
         state = state.copy(
             timeOut = false

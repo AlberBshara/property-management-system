@@ -91,13 +91,19 @@ interface UserServicesInterface {
     suspend fun fetchMyFavList(
         @Header(Keys.AUTHORIZATION) authToken: String ,
         @Body type : MyFavResponse.MyFavModel
-    ) : MyFavResponse
+    ) : ResponseBody
 
     @POST(Urls.MY_POSTS_END_POINT)
-    suspend fun fetchMyVehiclesPosts(
+    suspend fun fetchMyPostsWithType(
         @Header(Keys.AUTHORIZATION) authToken : String ,
         @Body vehiclesRequest : MyPostsModels.MyVehiclesPostResponse.MyVehiclesPostModel
-    ) : MyPostsModels.MyVehiclesPostResponse
+    ) : ResponseBody
 
+
+    @POST(Urls.EDIT_USER_PROFILE_END_POINT)
+    suspend fun editSocialMediaUrl(
+        @Header(Keys.AUTHORIZATION) token: String,
+        @Body url: EditSocialMediaRequest
+    ): EditSocialMediaRequest.EditSocialMediaResponse
 
 }

@@ -42,8 +42,9 @@ fun ProfileHelperScreen(
 ) {
 
     val context = LocalContext.current
-    viewModel.onEvent(ProfileHelperEvents.OnStart(from, context))
+    viewModel.onEvent(ProfileHelperEvents.OnStart(from, context, ProfileHelperScreenVM.VEHICLE))
     val state = viewModel.state
+
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -103,6 +104,7 @@ fun ProfileHelperScreen(
                     .weight(0.5f)
                     .clip(shape = RoundedCornerShape(10.dp))
                     .clickable {
+                        viewModel.onEvent(ProfileHelperEvents.OnVehiclePostsClicked(context, from))
                     }
                     .background(
                         color = ligthGrey
@@ -121,6 +123,7 @@ fun ProfileHelperScreen(
                     .weight(0.5f)
                     .clip(shape = RoundedCornerShape(10.dp))
                     .clickable {
+                        viewModel.onEvent(ProfileHelperEvents.OnEstatePostsClicked(context, from))
                     }
                     .background(
                         color = ligthGrey
@@ -137,19 +140,34 @@ fun ProfileHelperScreen(
         if (state.isLoading) {
             ShowShimmerEffect()
         } else {
-            ListVehicleContent(
-                from = from ,
-                state = state,
-                viewModel = viewModel,
-                context = context,
-                navController = navController,
-                 onDeleteClicked = { index: Int, id: Int ->
-                    viewModel.onEvent(ProfileHelperEvents.OnDeletingPost(
-                        from = from , vehicleIndex = index ,
-                        vehicleId = id , context = context
-                    ))
-                }
-            )
+            if (state.vehiclesPostsList.isNotEmpty()){
+                ListVehicleContent(
+                    from = from,
+                    state = state,
+                    viewModel = viewModel,
+                    context = context,
+                    navController = navController,
+                    onDeleteClicked = { index: Int, id: Int ->
+                        viewModel.onEvent(
+                            ProfileHelperEvents.OnDeletingPost(
+                                from = from, vehicleIndex = index,
+                                vehicleId = id, context = context
+                            )
+                        )
+                    }
+                )
+            }
+            else if (state.estatesPostsList.isNotEmpty()){
+                ListEstatesContent(
+                    from = from,
+                    state = state ,
+                    viewModel = viewModel,
+                    context = context,
+                    navController = navController,
+                    onDeleteClicked = { index: Int, id: Int ->
+                    }
+                )
+            }
             RefreshScreen(needRefresh = state.needRefresh,
                 onReloadListener = {
                     viewModel.onEvent(
