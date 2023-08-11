@@ -14,10 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pms.model.EstatePublishNewPostRequest
 import com.example.pms.viewmodel.api.estates_services.EstateServiceImplementation
 import com.example.pms.viewmodel.api.util.Resource
-import com.example.pms.viewmodel.utils.ImageDetectionForEstates
-import com.example.pms.viewmodel.utils.ImageHelper
-import com.example.pms.viewmodel.utils.InternetConnection
-import com.example.pms.viewmodel.utils.TokenManager
+import com.example.pms.viewmodel.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,43 +24,33 @@ class PublishEstateVM(
    private val estateApiRepo: EstateServiceImplementation = EstateServiceImplementation()
 ) : ViewModel() {
 
-
     var state by mutableStateOf(PublishEstateState())
-
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun onEvent(event: PublishEstateEvents) {
 
         when (event) {
-
             is PublishEstateEvents.OnGovernorateTypeChanged -> {
                 state =
                     state.copy(enteredData = state.enteredData.copy(governorate = event.governorate))
             }
-
             is PublishEstateEvents.OnAddressChanged -> {
                 state = state.copy(enteredData = state.enteredData.copy(address = event.address))
             }
-
-
             is PublishEstateEvents.OnEstateTypeChanged -> {
                 state =
                     state.copy(enteredData = state.enteredData.copy(estateType = event.estateType))
             }
-
             is PublishEstateEvents.OnOperationTypeChanged -> {
                 state =
                     state.copy(enteredData = state.enteredData.copy(operationType = event.operationType))
             }
-
             is PublishEstateEvents.OnPriceChanged -> {
                 state = state.copy(enteredData = state.enteredData.copy(price = event.price))
             }
-
             is PublishEstateEvents.OnSpaceChanged -> {
                 state = state.copy(enteredData = state.enteredData.copy(space = event.space))
             }
-
             is PublishEstateEvents.OnStatusChanged -> {
                 state =
                     state.copy(enteredData = state.enteredData.copy(statusOFEstate = event.status))
@@ -89,8 +76,6 @@ class PublishEstateVM(
             is PublishEstateEvents.OnDone -> {
                 submitData(context = event.context)
             }
-
-
             is PublishEstateEvents.OnImageIndexChanged -> {
                 state = state.copy(indexOfCurrentImage = event.index)
             }
@@ -113,12 +98,9 @@ class PublishEstateVM(
                     dataInvalid = false
                 )
             }
-
             is PublishEstateEvents.OnDoneSuccessSendDataClicked -> {
                 state = state.copy(successSendData = false)
             }
-
-
             is PublishEstateEvents.WifiCase.Confirm -> {
                 state = state.copy(
                     showInternetAlert = false
@@ -129,11 +111,15 @@ class PublishEstateVM(
                     showInternetAlert = false
                 )
             }
-
-
+            is PublishEstateEvents.ShowLocationPermission -> {
+                state = state.copy(
+                    showLocationPermission = !state.showLocationPermission
+                )
+            }
+            is PublishEstateEvents.OnGetLocation -> {
+                getLocation(event.context)
+            }
         }
-
-
     }
 
     private fun updateImagesList(
@@ -211,10 +197,8 @@ class PublishEstateVM(
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun submitData(context: Context) {
-
         InternetConnection.run(context,
             connected = {
-
                 if (isValid() && state.enteredData.listOfSelectedImages.isNotEmpty()) {
                     val estate = EstatePublishNewPostRequest(
                         operation_type = state.enteredData.operationType,
@@ -249,25 +233,18 @@ class PublishEstateVM(
                                 )
                             )
                         }
-
                     }
-
-
                     viewModelScope.launch {
                         val response = estateApiRepo.postPublishNewEstate(
                             token = TokenManager.getInstance(context = context).getToken(),
                             estate = estate,
                             imageList = listOfImagesFiles
                         )
-
                         response.collect {
                             when (it) {
-
                                 is Resource.Loading -> {
                                     onEvent(PublishEstateEvents.IsLoadingChanged(isLoading = it.isLoading))
-
                                 }
-
                                 is Resource.Success -> {
                                     if (it.data != null) {
 
@@ -287,25 +264,16 @@ class PublishEstateVM(
                                                     levels = "0",
                                                     description = "",
                                                     statusOFEstate = "",
-                                                    listOfSelectedImages = emptyList()
-
-                                                )
+                                                    listOfSelectedImages = emptyList())
                                             )
-
-
                                         }
                                     }
                                 }
-
                                 is Resource.Error -> {
-
-
                                 }
                             }
                         }
-
                     }
-
                 } else {
                     state = state.copy(
                         dataInvalid = true
@@ -317,8 +285,6 @@ class PublishEstateVM(
                     showInternetAlert = true
                 )
             })
-
-
     }
 
 
@@ -330,7 +296,38 @@ class PublishEstateVM(
                 state.enteredData.description.isNotEmpty() &&
                 state.enteredData.price.isNotEmpty() &&
                 state.enteredData.statusOFEstate.isNotEmpty()
+    }
 
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun getLocation(context: Context) {
+        viewModelScope.launch {
+            InternetConnection.run(
+                context,
+                connected = {
+                    state = state.copy(
+                        isLoading = true
+                    )
+                    launch {
+                        LocationHelper.getCurrentLocation(context,
+                            onLocationListener = { result ->
+                                state = state.copy(
+                                    enteredData = state.enteredData.copy(
+                                        address = result.address
+                                    ),
+                                    showLocationPermission = false,
+                                    isLoading = false
+                                )
+                            })
+                    }
+                },
+                unconnected = {
+                    state = state.copy(
+                        showInternetAlert = true
+                    )
+                }
+            )
+        }
     }
 
 

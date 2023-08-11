@@ -7,11 +7,14 @@ data class ProfileState(
     var phone: String = "",
     var location: String = "",
     var imageUrl: String? = null,
-    var facebookLink: String? = null,
-    var instagramLink: String? = null,
-    var twitterLink: String? = null,
+    var faceBookURL: String = "",
+    var instagramURL: String = "",
+    var twitterURL: String = "",
     var isRefreshing: Boolean = false,
     var timeOut: Boolean = false,
+
+
+
 
 
     val faceBookPress: Boolean = false,
@@ -19,4 +22,4 @@ data class ProfileState(
     val twitterPress: Boolean = false,
     val loading: Boolean = false,
 
-)
+    )

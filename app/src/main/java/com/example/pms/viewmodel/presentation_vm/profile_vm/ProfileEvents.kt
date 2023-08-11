@@ -2,6 +2,7 @@ package com.example.pms.viewmodel.presentation_vm.profile_vm
 
 import android.content.Context
 import androidx.navigation.NavHostController
+import com.example.pms.model.EditSocialMediaRequest
 
 sealed class ProfileEvents {
 
@@ -18,17 +19,19 @@ sealed class ProfileEvents {
         val navHostController: NavHostController
     ) : ProfileEvents()
 
-    data class PressOnFacebook(
-        val navHostController: NavHostController
-    ) : ProfileEvents()
+    object PressOnFacebook : ProfileEvents()
+    data class ChangeFaceBookURL(val url: String) : ProfileEvents()
 
-    data class PressOnInstagram(
-        val navHostController: NavHostController
-    ) : ProfileEvents()
+    object PressOnInstagram : ProfileEvents()
 
-    data class PressOnTwitter(
-        val navHostController: NavHostController
-    ) : ProfileEvents()
+    data class ChangeInstagramURL(val url: String) : ProfileEvents()
+
+
+    object PressOnTwitter : ProfileEvents()
+
+    data class ChangeTwitterURL(val url: String) : ProfileEvents()
+
+    data class OnDoneSendUrl(val urls: EditSocialMediaRequest, val context: Context) : ProfileEvents()
 
     data class PressOnFavourites(
         val navHostController: NavHostController

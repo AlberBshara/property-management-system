@@ -11,8 +11,7 @@ data class PublishEstateState(
     var dataInvalid: Boolean = false,
     var successSendData: Boolean = false,
     var showInternetAlert: Boolean = false,
-
-
+    var showLocationPermission: Boolean = false
     ) {
 
 
@@ -30,7 +29,6 @@ data class PublishEstateState(
         val levels: String = "0",
         val description: String = "",
         val statusOFEstate: String = ""
-
     )
 
 }

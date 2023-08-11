@@ -13,6 +13,6 @@ data class ConversationMessageModel(
     val receiverId : Int ,
     @SerializedName("message")
     val message: String ,
-//    @SerializedName(Keys.CREATION_DATE)
-//    val time : String
+    @SerializedName(Keys.CREATION_DATE)
+    val time : String
 )

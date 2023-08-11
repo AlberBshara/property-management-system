@@ -7,6 +7,7 @@ data class ChatMessage(
     val tryAgain: Boolean,
     val isSending: Boolean,
     val sentSuccessfully: Boolean,
+    val time : String
 )
 
 /**

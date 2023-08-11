@@ -78,7 +78,8 @@ class VehicleDetailsScreenVM(
             }
             is VehicleDetailsEvents.OnStartMessagingClicked -> {
                 startMessaging(
-                    event.navController, event.receiverId, event.receiverUsername
+                    event.navController, event.receiverId, event.receiverUsername,
+                    event.receiverImageUrl
                 )
             }
         }
@@ -385,7 +386,8 @@ class VehicleDetailsScreenVM(
 
     private fun startMessaging(
         navController: NavHostController,
-        receiverId: Int, receiverUsername: String
+        receiverId: Int, receiverUsername: String,
+        receiverImageUrl : String?
     ) {
         viewModelScope.launch {
             navController.currentBackStackEntry?.savedStateHandle?.set(
@@ -393,6 +395,9 @@ class VehicleDetailsScreenVM(
             )
             navController.currentBackStackEntry?.savedStateHandle?.set(
                 Destination.MessagesDestination.RECEIVER_ID_KEY, receiverId
+            )
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                Destination.MessagesDestination.IMAGE_URL_KEY , receiverImageUrl
             )
             navController.navigate(
                 Destination.MessagesDestination.route

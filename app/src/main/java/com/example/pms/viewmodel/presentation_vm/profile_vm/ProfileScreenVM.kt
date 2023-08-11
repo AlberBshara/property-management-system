@@ -2,12 +2,14 @@ package com.example.pms.viewmodel.presentation_vm.profile_vm
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.example.pms.model.EditSocialMediaRequest
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.destinations.Destination
@@ -41,10 +43,28 @@ class ProfileScreenVM(
                   event.navHostController.navigate(Destination.EditProfileInfoDestination.route)
             }
             is ProfileEvents.PressOnFacebook -> {
+                state = state.copy(faceBookPress = !state.faceBookPress)
             }
             is ProfileEvents.PressOnInstagram -> {
+                state = state.copy(instagramPress = !state.instagramPress)
             }
             is ProfileEvents.PressOnTwitter -> {
+                state = state.copy(twitterPress = !state.twitterPress)
+            }
+
+            is ProfileEvents.ChangeFaceBookURL -> {
+                state = state.copy(faceBookURL = event.url)
+            }
+
+            is ProfileEvents.ChangeInstagramURL -> {
+                state = state.copy(instagramURL = event.url)
+            }
+
+            is ProfileEvents.ChangeTwitterURL -> {
+                state = state.copy(twitterURL = event.url)
+            }
+            is ProfileEvents.OnDoneSendUrl -> {
+                editSocialMedia(event.urls, event.context)
             }
             is ProfileEvents.PressOnFavourites -> {
                 showFavPosts(event.navHostController)
@@ -85,9 +105,9 @@ class ProfileScreenVM(
                                     phone = user.phoneNumber,
                                     location = "syria, Damascus",
                                     imageUrl = user.profileImage,
-                                    facebookLink = user.facebookLink,
-                                    instagramLink = user.instagramLink,
-                                    twitterLink = user.twitterLink,
+                                    faceBookURL = user.facebookLink?:"",
+                                    instagramURL = user.instagramLink?:"",
+                                    twitterURL = user.twitterLink?:"",
                                 )
                                 Log.d(TAG, "fetchProfileData: Success ${it.data.user}")
                             }
@@ -141,6 +161,43 @@ class ProfileScreenVM(
             Destination.ProfileHelperScreen.FROM_MY_POST_CLICKED
         )
         navController.navigate(Destination.ProfileHelperScreen.route)
+    }
+
+
+    private fun editSocialMedia(Urls: EditSocialMediaRequest, context: Context) {
+
+        viewModelScope.launch {
+
+            val response = userServicesRepository.editSocialMediaUrl(
+                token = TokenManager.getInstance(context).getToken(),
+                url = Urls
+            )
+
+            response.collect {
+
+                when (it) {
+                    is Resource.Loading -> {
+                        state = state.copy(loading = it.isLoading)
+                    }
+                    is Resource.Success -> {
+                        if (it.data?.status == true) {
+                            Toast.makeText(
+                                context,
+                                "the URL has been added successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(context, "there is an error!", Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+
+            }
+
+
+        }
     }
 
 }

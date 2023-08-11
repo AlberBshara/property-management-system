@@ -29,6 +29,7 @@ import com.example.pms.view.utils.SuccessDialog
 import com.example.pms.viewmodel.presentation_vm.estates_vm.publish_estate_vm.PublishEstateEvents
 import com.example.pms.viewmodel.presentation_vm.estates_vm.publish_estate_vm.PublishEstateVM
 import com.example.pms.viewmodel.utils.ImageHelper
+import com.example.pms.viewmodel.utils.LocationPermission
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -101,7 +102,9 @@ fun PublishingEstateScreen(
                         permission.launchPermissionRequest()
                     }
                 },
-                onLocationListener = { },
+                onLocationListener = {
+                       viewModel.onEvent(PublishEstateEvents.ShowLocationPermission)
+                },
                 onFileListener = { },
                 onCameraListener = {
                     if (ContextCompat.checkSelfPermission(
@@ -117,17 +120,10 @@ fun PublishingEstateScreen(
                     } else {
                         loadImage.launch(null)
                     }
-
-
                 }
-
             )
-
         }
-
-
     ) {
-
         ScreenContent(
             viewModel = viewModel,
             state = state
@@ -149,17 +145,18 @@ fun PublishingEstateScreen(
 
     }
 
+    if (state.showLocationPermission){
+        LocationPermission(onGrantedLocation = {
+            viewModel.onEvent(PublishEstateEvents.OnGetLocation(context))
+        })
+    }
 
     InternetAlertDialog(
         onConfirm = { viewModel.onEvent(PublishEstateEvents.WifiCase.Confirm) },
         onDeny = { viewModel.onEvent(PublishEstateEvents.WifiCase.Deny) },
         openDialog = state.showInternetAlert
     )
-
-
     DialogLoading(isLoading = state.isLoading)
-
-
     SuccessDialog(showIt = state.successSendData,
         onOkButtonListener = {
             viewModel.onEvent(PublishEstateEvents.OnDoneSuccessSendDataClicked)

@@ -9,6 +9,7 @@
     <string name="pick_image">Pick an image</string>
     <string name="image_optional">Your photo is optional, if you do not want to share it go to next</string>
     <string name="done">Done</string>
+    <string name="copy_paste">copy and paste the URL here :</string>
 
 
     <string name="no_internet">May no internet connection</string>

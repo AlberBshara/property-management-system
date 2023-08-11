@@ -30,17 +30,6 @@ data class RegisterUserData(
         val errorMessage: String? = null,
     )
 
-    data class ErrorRegister(
-        @SerializedName(Keys.STATUS)
-        val status: Boolean,
-        @SerializedName("Validation Error")
-        val validation: ValidationError
-    ) {
-        data class ValidationError(
-            @SerializedName(Keys.EMAIL)
-            val message: List<String>
-        )
-    }
 }
 
 

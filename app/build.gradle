@@ -70,9 +70,8 @@ dependencies {
     def nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
-   
     //Coil for image loading
-    implementation 'io.coil-kt:coil-compose:2.1.0'
+   implementation 'io.coil-kt:coil-compose:2.1.0'
 
     // Compose dependencies
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
@@ -115,13 +114,9 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
     implementation "androidx.paging:paging-compose:1.0.0-alpha15"
 
-
     //Pusher:
     implementation 'com.pusher:pusher-java-client:1.6.0'
 
-
     //Material 3:
     implementation 'androidx.compose.material3:material3:1.0.0-alpha16'
-
-
 }

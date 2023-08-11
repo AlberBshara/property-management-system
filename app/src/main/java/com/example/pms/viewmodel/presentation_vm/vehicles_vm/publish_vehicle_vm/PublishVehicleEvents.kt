@@ -93,6 +93,7 @@ sealed class PublishVehicleEvents {
 
     object ShowLocationPermission : PublishVehicleEvents()
 
+
     sealed class WifiCase : PublishVehicleEvents() {
         data class Confirm(
             val context: Context

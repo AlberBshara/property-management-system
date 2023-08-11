@@ -79,8 +79,8 @@ class ProfileHelperScreenVM(
     private fun onRefresh(
         from: String, context: Context
     ) {
-        // this.counter = 0
-        // onStart(from, context)
+         this.counter = 0
+         onStart(from, context, VEHICLE)
     }
 
     private fun vehicleClicked(

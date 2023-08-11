@@ -136,7 +136,7 @@ class LoginScreenVM(
                                         } else {
                                             //TODO:(post request has been failed for)
                                             state =
-                                                state.copy(errorMessage = apiResponse.errorMessage)
+                                                state.copy(errorMessage = "Invalid Data !")
                                             onEvent(LoginEvents.ShowDialog)
                                         }
                                     }

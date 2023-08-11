@@ -1,7 +1,7 @@
 package com.example.pms.viewmodel.api.util
 
 object Urls {
-    const val BASE_URL: String = "https://a5cf-5-0-29-132.ngrok-free.app"
+    const val BASE_URL: String = "https://7a4e-31-9-181-169.ngrok-free.app"
 
     const val REGISTER_END_POINT: String = "Register/SignUp"
     const val LOGIN_END_POINT: String = "Register/LogIn"

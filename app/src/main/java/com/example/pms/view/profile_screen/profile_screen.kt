@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import com.example.pms.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.pms.model.EditSocialMediaRequest
 import com.example.pms.ui.theme.lightBlue
 import com.example.pms.view.animation.shimmerEffect
 import com.example.pms.view.utils.RefreshScreen
@@ -102,13 +103,17 @@ fun ProfileScreen(
                            ) {
                                CardSocialMedia(
                                    facebookClickable = {
-                                       viewModel.onEvent(ProfileEvents.PressOnFacebook(navController))
+                                       viewModel.onEvent(ProfileEvents.PressOnFacebook)
+
                                    },
                                    instagramClickable = {
-                                       viewModel.onEvent(ProfileEvents.PressOnInstagram(navController))
+                                       viewModel.onEvent(ProfileEvents.PressOnInstagram)
+
+
                                    },
                                    twitterClickable = {
-                                       viewModel.onEvent(ProfileEvents.PressOnTwitter(navController))
+                                       viewModel.onEvent(ProfileEvents.PressOnTwitter)
+
                                    }
                                )
                            }
@@ -156,6 +161,72 @@ fun ProfileScreen(
            }
        }
     }
+
+
+
+
+
+
+    if (state.faceBookPress) {
+        AlertDialogSocialMedia(
+            onValueChanged = { viewModel.onEvent(ProfileEvents.ChangeFaceBookURL(it)) },
+            onDismissRequest = {viewModel.onEvent(ProfileEvents.PressOnFacebook) },
+            onDoneRequest = {
+                val urls = EditSocialMediaRequest(
+                    faceBookUrl = state.faceBookURL,
+                    instagramUrl = state.instagramURL,
+                    twitterUrl = state.twitterURL
+                )
+                viewModel.onEvent(ProfileEvents.OnDoneSendUrl(urls, context))
+            },
+            loading = state.loading,
+            url = state.faceBookURL
+        )
+    }
+
+    if (state.instagramPress) {
+        AlertDialogSocialMedia(
+            onValueChanged = { viewModel.onEvent(ProfileEvents.ChangeInstagramURL(it)) },
+            onDismissRequest = { viewModel.onEvent(ProfileEvents.PressOnInstagram) },
+            onDoneRequest = {
+                val urls = EditSocialMediaRequest(
+                    faceBookUrl = state.faceBookURL,
+                    instagramUrl = state.instagramURL,
+                    twitterUrl = state.twitterURL
+                )
+                viewModel.onEvent(ProfileEvents.OnDoneSendUrl(urls, context))
+            },
+            loading = state.loading,
+            url = state.instagramURL
+        )
+    }
+
+    if (state.twitterPress) {
+        AlertDialogSocialMedia(
+            onValueChanged = { viewModel.onEvent(ProfileEvents.ChangeTwitterURL(it)) },
+            onDismissRequest = { viewModel.onEvent(ProfileEvents.PressOnTwitter) },
+            onDoneRequest = {
+                val urls = EditSocialMediaRequest(
+                    faceBookUrl = state.faceBookURL,
+                    instagramUrl = state.instagramURL,
+                    twitterUrl = state.twitterURL
+                )
+                viewModel.onEvent(ProfileEvents.OnDoneSendUrl(urls, context))
+            },
+            loading = state.loading,
+            url = state.twitterURL
+        )
+    }
+
+
+
+
+
+
+
+
+
+
 }
 
 

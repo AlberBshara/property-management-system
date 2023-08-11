@@ -1,6 +1,7 @@
 package com.example.pms.viewmodel.presentation_vm.settings_vm
 
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -97,7 +98,12 @@ class SettingsScreenVM(
         val settingsManager = SettingsManager(context)
         if (selectedLanguage != settingsManager.currentLanguage()) {
             settingsManager.changeLanguage(selectedLanguage)
-            settingsManager.restartApp(context)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                settingsManager.changeLanguageForTiramisu(context, selectedLanguage)
+                settingsManager.restartApp(context)
+            }else{
+                settingsManager.restartApp(context)
+            }
         } else {
             Toast.makeText(
                 context, context.getString(R.string.same_language),

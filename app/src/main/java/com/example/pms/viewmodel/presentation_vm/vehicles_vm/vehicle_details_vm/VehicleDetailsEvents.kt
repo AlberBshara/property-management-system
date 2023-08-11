@@ -49,6 +49,7 @@ sealed class VehicleDetailsEvents {
     data class OnStartMessagingClicked(
         val navController : NavHostController,
         val receiverId: Int,
-        val receiverUsername: String
+        val receiverUsername: String,
+        val receiverImageUrl : String?
     ) : VehicleDetailsEvents()
 }

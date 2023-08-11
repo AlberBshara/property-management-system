@@ -182,9 +182,7 @@ fun PmsNavHost(
         composable(Destination.PublishEstateDestination.route) {
             PublishingEstateScreen()
         }
-
         composable(Destination.ViewMoreScreenEstate.route) {
-
             val estateId =
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int>(Destination.ESTATE_ID_KEY)
             ViewMoreScreenEstate(navHostController = navController, estate_id = estateId ?: -1)

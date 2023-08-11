@@ -1,5 +1,6 @@
 package com.example.pms.view.utils
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,9 +26,8 @@ fun PricePicker(
     onPickedListener: (minimum: Double, maximum: Double) -> Unit
 ) {
     val range = remember {
-        mutableStateOf(1000f..500000f)
+        mutableStateOf(1000f..1000000f)
     }
-
     if (isPicking) {
         Dialog(onDismissRequest = { true }) {
             Column(
@@ -50,22 +50,19 @@ fun PricePicker(
                         .padding(10.dp),
                 )
 
-                Text(
-                    text = "between ${range.value.start.toInt()}$ and  ${range.value.endInclusive.toInt()}$",
-                    color = Color.LightGray,
-                    style = MaterialTheme.typography.subtitle2,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
+                val stepSize = 10000f
+                val rangeStart = range.value.start.toInt()
+                val roundedStart = (rangeStart / stepSize).toInt() * stepSize
+                val rangeEnd = range.value.endInclusive.toInt()
+                val roundedEnd = (rangeEnd / stepSize).toInt() * stepSize
 
                 RangeSlider(
                     values = range.value,
                     onValueChange = {
                         range.value = it
                     },
-                    valueRange = 1000f..500000f,
-                    steps = 10,
+                    valueRange = 1000f..1000000f,
+                    steps = ((1000000 - 1000) / stepSize).toInt(),
                     modifier = Modifier.padding(horizontal = 16.dp),
                     colors = SliderDefaults.colors(
                         thumbColor = lightBlue,
@@ -73,6 +70,14 @@ fun PricePicker(
                     )
                 )
 
+                Text(
+                    text = "between $roundedStart$ and $roundedEnd",
+                    color = Color.LightGray,
+                    style = MaterialTheme.typography.subtitle2,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
                 Button(
                     onClick = {
                         onPickedListener(
@@ -94,7 +99,6 @@ fun PricePicker(
                             .padding(8.dp)
                     )
                 }
-
             }
         }
     }

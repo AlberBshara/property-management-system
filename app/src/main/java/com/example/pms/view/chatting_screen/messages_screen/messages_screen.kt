@@ -79,8 +79,8 @@ fun MessagesScreen(
                 ) {
                     items(state.chatMessages.reversed()) {
                         when (it.sender) {
-                            Sender.UserA -> SentMessage(it, "")
-                            Sender.UserB -> ReceivedMessage(it, "")
+                            Sender.UserA -> SentMessage(it, it.time)
+                            Sender.UserB -> ReceivedMessage(it, it.time)
                         }
                     }
                 }

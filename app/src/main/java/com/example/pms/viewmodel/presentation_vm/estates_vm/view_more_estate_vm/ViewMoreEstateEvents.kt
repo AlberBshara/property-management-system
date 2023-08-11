@@ -39,5 +39,10 @@ sealed class ViewMoreEstateEvents {
     data class OnAddRateEstate(val estateId: Int, val rate: Int, val context: Context) :
         ViewMoreEstateEvents()
 
-
+    data class OnChattingClicked(
+        val navController : NavHostController ,
+        val receiverId : Int ,
+        val receiverUsername : String ,
+        val receiverImageUrl : String?
+    ) : ViewMoreEstateEvents()
 }

@@ -96,7 +96,7 @@ class RegisterPage3Vm(
                 image = file
             )
         }
-
+        Log.d(TAG, "submitData: ${user.name} \n ${user.email} ${user.phone_number}")
         InternetConnection.run(context,
             connected = {
                 viewModelScope.launch {
@@ -124,13 +124,7 @@ class RegisterPage3Vm(
                                         navController
                                     )
                                 } else {
-                                    Log.d(
-                                        TAG,
-                                        "submitData: Success with false ${it.data?.charStream()?.toString()}"
-                                    )
                                     //TODO: duplicated email:
-                                    it.data?.charStream()?.toString()
-                                        ?.let { it1 -> signedUpFailed(it1) }
                                 }
                             }
                             is Resource.Error -> {
@@ -166,20 +160,6 @@ class RegisterPage3Vm(
     }
 
     private fun signedUpFailed(jsonResponse: String) {
-        val gson = Gson()
-        try {
-            val errorResponse = gson.fromJson(jsonResponse, RegisterUserData.ErrorRegister::class.java)
-            if (errorResponse.validation.message.isNotEmpty()) {
-                val errorMessage = errorResponse.validation.message[0]
-                if (errorMessage == "The email has already been taken.") {
-                    state = state.copy(
-                        emailDuplicated = true
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            // Handle JSON parsing exception
-            Log.e(TAG, "Error parsing error response JSON: $jsonResponse")
-        }
+
     }
 }

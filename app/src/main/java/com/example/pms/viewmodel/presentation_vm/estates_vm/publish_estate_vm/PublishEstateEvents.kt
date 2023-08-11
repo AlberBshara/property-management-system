@@ -54,4 +54,10 @@ sealed class PublishEstateEvents {
     }
 
 
+    object ShowLocationPermission : PublishEstateEvents()
+
+    data class OnGetLocation(
+        val context: Context
+    ) : PublishEstateEvents()
+
 }

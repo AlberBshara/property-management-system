@@ -21,6 +21,10 @@ import com.example.pms.viewmodel.utils.TokenManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class MessagesScreenVM(
     private val chattingServicesImpl: ChattingServicesImpl = ChattingServicesImpl()
@@ -51,7 +55,6 @@ class MessagesScreenVM(
             }
         }
     }
-
 
     private fun showPreviousConversation(
         context: Context,
@@ -86,21 +89,22 @@ class MessagesScreenVM(
                                 )
                                 apiResponse?.let { messagesList ->
                                     if (messagesList.isNotEmpty()) {
-
                                         val finalMessagesList = messagesList.map { mappedList ->
                                             if (receiverId == mappedList.senderId) {
                                                 ChatMessage(
                                                     mappedList.message, Sender.UserB,
                                                     tryAgain = false,
                                                     isSending = false,
-                                                    sentSuccessfully = true
+                                                    sentSuccessfully = true,
+                                                    time = "10:30"
                                                 )
                                             } else {
                                                 ChatMessage(
                                                     mappedList.message, Sender.UserA,
                                                     tryAgain = false,
                                                     isSending = false,
-                                                    sentSuccessfully = true
+                                                    sentSuccessfully = true,
+                                                    time = "10:40"
                                                 )
                                             }
                                         }
@@ -153,14 +157,12 @@ class MessagesScreenVM(
                                             isSending = false,
                                             sentSuccessfully = true
                                         )
-
                                     }
                                 }
                                 Log.d(TAG, "sendMessage: Success ${res.string()}")
                             }
                         }
                         is Resource.Error -> {
-
                         }
                     }
                 }
@@ -177,7 +179,8 @@ class MessagesScreenVM(
                 message, Sender.UserA,
                 tryAgain = false,
                 isSending = true,
-                sentSuccessfully = false
+                sentSuccessfully = false,
+                time = ""
             )
         )
         state = state.copy(
@@ -186,23 +189,25 @@ class MessagesScreenVM(
         )
     }
 
-
     private fun openChannel(
         context: Context
     ) {
-        val popMessage : MediaPlayer = MediaPlayer.create(context , R.raw.pop_message)
+        val popMessage: MediaPlayer = MediaPlayer.create(context, R.raw.pop_message)
         viewModelScope.launch {
             PusherController.openChannel(context,
                 onReceiveMessageListener = {
                     popMessage.start()
                     Log.d(TAG, "openChannel: ${it.message}")
                     val updatedList = ArrayList(state.chatMessages)
-                    updatedList.add(ChatMessage(
-                        text = it.message, sender = Sender.UserB,
-                        tryAgain = false,
-                        isSending = true,
-                        sentSuccessfully = true
-                    ))
+                    updatedList.add(
+                        ChatMessage(
+                            text = it.message, sender = Sender.UserB,
+                            tryAgain = false,
+                            isSending = true,
+                            sentSuccessfully = true,
+                            time = "10:20"
+                        )
+                    )
                     state = state.copy(
                         chatMessages = updatedList
                     )
@@ -210,4 +215,18 @@ class MessagesScreenVM(
                 })
         }
     }
+
+    private fun time(createdAt: String): String {
+        val splitting = createdAt.removeRange(0..10)
+        return splitting.removeRange(5..15)
+    }
+
+   private fun getCurrentTimeUsingLocalTime(): String {
+       val calendar = Calendar.getInstance()
+       val hour = calendar.get(Calendar.HOUR_OF_DAY)
+       val minute = calendar.get(Calendar.MINUTE)
+
+       return String.format("%02d:%02d", hour, minute)
+    }
+
 }

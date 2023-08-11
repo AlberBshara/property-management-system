@@ -195,10 +195,11 @@ fun VehicleDetailsScreen(
                                     onVisitProfileListener = {
 
                                     },
-                                    onChattingListener = { receiverId: Int, receiverUsername: String ->
+                                    onChattingListener = { receiverId: Int, receiverUsername: String
+                                        , receiverImageUrl : String? ->
                                         viewModel.onEvent(
                                             VehicleDetailsEvents.OnStartMessagingClicked(
-                                                navController, receiverId, receiverUsername
+                                                navController, receiverId, receiverUsername, receiverImageUrl
                                             )
                                         )
                                     })
@@ -468,7 +469,7 @@ private fun ContactInfo(
 private fun OwnerCard(
     state: VehicleDetailsState,
     onVisitProfileListener: () -> Unit,
-    onChattingListener: (receiverId: Int, receiverUsername: String) -> Unit
+    onChattingListener: (receiverId: Int, receiverUsername: String, receiverImageUrl : String?) -> Unit
 ) {
 
     Card(
@@ -552,7 +553,7 @@ private fun OwnerCard(
                     )
                 }
                 IconButton(onClick = {
-                    onChattingListener(state.userId, state.userName)
+                    onChattingListener(state.userId, state.userName, state.userImage)
                 }) {
                     Icon(
                         imageVector = Icons.Filled.Message,

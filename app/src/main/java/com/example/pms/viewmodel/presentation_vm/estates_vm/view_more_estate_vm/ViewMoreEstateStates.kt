@@ -20,11 +20,12 @@ data class ViewMoreEstateStates(
     val description: String = "",
     val name: String = "",
     val number: String = "",
+    val userId: Int = -1,
+    val userImageUrl: String? = null,
     val numberOfLikes: Int = 0,
     var imagesList: List<EstateViewMoreData.ListOfImages> = emptyList(),
     var currentImageIndex: Int = 0,
     var isLoading: Boolean = false,
     var isShowingRateScreen: Boolean = false
-
 
 )

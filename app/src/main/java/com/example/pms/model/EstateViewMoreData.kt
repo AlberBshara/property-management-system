@@ -47,12 +47,15 @@ data class EstateViewMoreData(
         val imageUrl: String,
     )
 
-
     data class OwnerDetails(
+        @SerializedName(Keys.ID)
+        val id : Int ,
         @SerializedName(Keys.NAME)
         val name: String,
         @SerializedName(Keys.PHONE_NUMBER)
         val phone_number: String,
+        @SerializedName(Keys.IMAGE)
+        val image : String ?
     )
 
 }

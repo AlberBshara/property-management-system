@@ -11,6 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
+import com.example.pms.R
 import com.example.pms.model.FavouriteEstates
 import com.example.pms.model.RateEstate
 import com.example.pms.viewmodel.api.estates_services.EstateServiceImplementation
@@ -29,15 +31,12 @@ class ViewMoreEstateScreenVM(
 
     fun onEvent(event: ViewMoreEstateEvents) {
         when (event) {
-
             is ViewMoreEstateEvents.ChangeImage -> {
                 state = state.copy(currentImageIndex = event.indexOfImage)
             }
-
             is ViewMoreEstateEvents.OnGetDataFromServer -> {
                 getEstateDataById(context = event.context, estateId = event.estateId)
             }
-
             is ViewMoreEstateEvents.OnCallPhoneClicked -> {
                 makingCall(event.phoneNumber, event.context)
             }
@@ -50,19 +49,22 @@ class ViewMoreEstateScreenVM(
                 addOrRemoveFromFavourites(context = event.context, estateId = event.estateId)
             }
             is ViewMoreEstateEvents.OnShareClicked -> {
-
+                shareEstateData(event.context)
             }
             is ViewMoreEstateEvents.OnVisitProfileClicked -> {
                 event.navHostController.navigate(Destination.ProfileDestination.route)
             }
-
             is ViewMoreEstateEvents.OnChangeShowRateScreen -> {
                 state = state.copy(isShowingRateScreen = !state.isShowingRateScreen)
             }
-
             is ViewMoreEstateEvents.OnAddRateEstate -> {
                 addRateEstate(estateId = event.estateId, rate = event.rate, context = event.context)
-
+            }
+            is ViewMoreEstateEvents.OnChattingClicked -> {
+                startChatting(
+                    event.navController, event.receiverId,
+                    event.receiverUsername, event.receiverImageUrl
+                )
             }
         }
     }
@@ -104,10 +106,12 @@ class ViewMoreEstateScreenVM(
                                         baths = estate.baths.toInt(),
                                         garage = estate.garage.toInt(),
                                         levels = estate.level.toInt(),
-                                        //   imagesList = estate.images,
+                                        //  imagesList = estate.images,
                                         name = it.data.owner.name,
                                         number = it.data.owner.phone_number,
-                                        loved = it.data.favourite
+                                        loved = it.data.favourite,
+                                        userId = it.data.owner.id,
+                                        userImageUrl = it.data.owner.image
                                     )
                                     getNumberOfLikesFromServer(context, estateId)
                                     getRateFromServer(context, estateId)
@@ -143,9 +147,6 @@ class ViewMoreEstateScreenVM(
             responseRate.collect {
                 when (it) {
                     is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = it.isLoading
-                        )
                     }
                     is Resource.Success -> {
                         if (it.data?.status == true) {
@@ -174,7 +175,6 @@ class ViewMoreEstateScreenVM(
             )
             responseRate.collect {
                 when (it) {
-
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
@@ -182,19 +182,12 @@ class ViewMoreEstateScreenVM(
                             Toast.makeText(context, "rated Successfully", Toast.LENGTH_SHORT).show()
                             onEvent(ViewMoreEstateEvents.OnChangeShowRateScreen)
                             getRateFromServer(context, estateId)
-
                         }
-
                     }
-
                     is Resource.Error -> {
-
                     }
-
-
                 }
             }
-
         }
     }
 
@@ -202,31 +195,22 @@ class ViewMoreEstateScreenVM(
     private fun getNumberOfLikesFromServer(context: Context, estateId: Int) {
         //GetNumberOfLikesRequest
         viewModelScope.launch {
-
             val idAndType = FavouriteEstates.GetNumberOfLikesRequest(id = estateId, type = "estate")
-
             val responseLikes = estateApiRepo.getNumOfLikesEstate(
                 token = TokenManager.getInstance(context).getToken(),
                 idAndType = idAndType
             )
-
             responseLikes.collect {
                 when (it) {
                     is Resource.Loading -> {
-
                     }
-
                     is Resource.Success -> {
                         if (it.data != null) {
                             state = state.copy(numberOfLikes = it.data.Likes_number)
                         }
                     }
-
                     is Resource.Error -> {
-
                     }
-
-
                 }
             }
         }
@@ -266,6 +250,54 @@ class ViewMoreEstateScreenVM(
             context.startActivity(dialIntent)
         }
     }
+
+    private fun startChatting(
+        navController: NavHostController,
+        receiverId: Int, receiverUsername: String, receiverImageUrl: String?
+    ) {
+        viewModelScope.launch {
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                Destination.MessagesDestination.RECEIVER_ID_KEY, receiverId
+            )
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                Destination.MessagesDestination.USER_NAME_KEY, receiverUsername
+            )
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                Destination.MessagesDestination.IMAGE_URL_KEY, receiverImageUrl
+            )
+            navController.navigate(
+                Destination.MessagesDestination.route
+            )
+        }
+    }
+
+
+    private fun shareEstateData(context: Context) {
+        viewModelScope.launch {
+            val vehicleData = "${context.getString(R.string.estate_details)} \n" +
+                    "${context.getString(R.string.estate_type)} : ${state.estateType}\n" +
+                    "${context.getString(R.string.price)} : ${state.price}\n" +
+                    "${context.getString(R.string.location)} : ${state.address}\n" +
+                    "${context.getString(R.string.space)} : ${state.space}\n" +
+                    "${context.getString(R.string.level)} : ${state.levels}\n" +
+                    "${context.getString(R.string.garage)} : ${state.garage}\n" +
+                    "${context.getString(R.string.baths)} : ${state.baths}\n" +
+                    "${context.getString(R.string.bed)} : ${state.beds}\n" +
+                    "${context.getString(R.string.operation)} : ${state.operationType}\n" +
+                    "${context.getString(R.string.owner)} : ${state.name}\n" +
+                    "${context.getString(R.string.description)} : ${state.description}\n" +
+                    "${context.getString(R.string.phone)} : ${state.number}"
+
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, vehicleData)
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            context.startActivity(shareIntent)
+        }
+    }
+
 
 
 }
