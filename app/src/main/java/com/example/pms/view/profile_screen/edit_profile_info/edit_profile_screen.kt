@@ -84,7 +84,7 @@ fun EditScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
 
-                    if (state.imageReceive == null) {
+                    if (state.imageReceive == "") {
                         Image(
                             painter = painterResource(id = R.drawable.person_profile),
                             contentDescription = "",
@@ -103,7 +103,6 @@ fun EditScreen(
                             contentScale = ContentScale.Crop
                         )
                     }
-
                     Icon(
                         painter = painterResource(id = R.drawable.edit_ic),
                         contentDescription = "",
@@ -117,14 +116,12 @@ fun EditScreen(
                     )
                 }
             }
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .background(color = Color.White)
             ) {
-
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -133,16 +130,13 @@ fun EditScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 10.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
-
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -173,7 +167,6 @@ fun EditScreen(
                                 )
                             }
                         }
-
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()

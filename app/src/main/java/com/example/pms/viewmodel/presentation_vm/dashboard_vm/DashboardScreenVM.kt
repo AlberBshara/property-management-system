@@ -28,9 +28,14 @@ class DashboardScreenVM : ViewModel() {
                 )
             }
             is DashboardEvents.OnAboutUsClicked -> {
+                event.navController.navigate(
+                    Destination.AboutUsScreen.route
+                )
             }
             is DashboardEvents.OnEstateClicked -> {
-                event.nacController.navigate(Destination.EstatesMainDestination.route)
+                event.nacController.navigate(
+                    Destination.EstatesMainDestination.route
+                )
             }
         }
     }

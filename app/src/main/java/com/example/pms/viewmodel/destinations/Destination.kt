@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.pms.view.about_us_screen.AboutUsScreen
 import com.example.pms.view.chatting_screen.ChattingMainScreen
 import com.example.pms.view.chatting_screen.messages_screen.MessagesScreen
 import com.example.pms.view.dasboard_screen.DashboardScreen
@@ -70,7 +71,7 @@ sealed class Destination(
     object EstatesHomeDestination : Destination("estate-home-screen-destination")
     object PublishEstateDestination : Destination("publish-Estate-screen-destination")
     object ViewMoreScreenEstate : Destination("viewMore_screen_estate")
-
+    object AboutUsScreen : Destination("about-us-screen-destination")
 }
 
 
@@ -187,8 +188,9 @@ fun PmsNavHost(
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int>(Destination.ESTATE_ID_KEY)
             ViewMoreScreenEstate(navHostController = navController, estate_id = estateId ?: -1)
         }
-
-
+        composable(Destination.AboutUsScreen.route) {
+            AboutUsScreen(navController)
+        }
     }
 
 }

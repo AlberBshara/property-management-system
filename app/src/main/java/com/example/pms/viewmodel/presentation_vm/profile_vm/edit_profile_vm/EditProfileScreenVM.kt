@@ -151,6 +151,7 @@ class EditProfileScreenVM(
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.M)
     private fun getUserData(
         context: Context
@@ -173,9 +174,7 @@ class EditProfileScreenVM(
                                 val names = fullName.split(" ")
                                 val firstName = names[0]
                                 val secondName = names[1]
-                                it.data.user.image?.let { image ->
-                                    onEvent(EditProfileEvents.ChangeImageReceive(imageReceive = image))
-                                }
+                                    onEvent(EditProfileEvents.ChangeImageReceive(imageReceive = it.data.user.image ?: ""))
                                 onEvent(EditProfileEvents.ChangePhoneNumber(phone = it.data.user.phoneNumber))
                                 onEvent(EditProfileEvents.ChangeFirstName(firstName = firstName))
                                 onEvent(EditProfileEvents.ChangeLastName(lastName = secondName))

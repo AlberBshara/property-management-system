@@ -134,7 +134,7 @@ fun SettingsScreen(
                 ) {
                     Text(
                         text = stringResource(id = R.string.notifications),
-                        color = Color.LightGray,
+                        color = Color.Gray,
                         style = MaterialTheme.typography.caption,
                         modifier = Modifier
                             .padding(10.dp)
@@ -188,7 +188,7 @@ fun SettingsScreen(
                 )
                 Text(
                     text = stringResource(id = R.string.app_version),
-                    color = Color.LightGray,
+                    color = Color.Gray,
                     style = MaterialTheme.typography.caption,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -213,10 +213,11 @@ fun SettingsScreen(
                 )
                 Text(
                     text = stringResource(id = R.string.logout),
-                    color = Color.LightGray,
+                    color = Color.Black,
                     style = MaterialTheme.typography.caption,
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(10.dp),
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -268,7 +269,7 @@ private fun SecondaryItem(
     ) {
         Text(
             text = text,
-            color = Color.LightGray,
+            color = Color.Gray,
             style = MaterialTheme.typography.caption,
             modifier = Modifier
                 .padding(10.dp)

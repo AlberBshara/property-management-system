@@ -86,7 +86,7 @@ class RegisterPage3Vm(
                 phone_number = registerData.phoneNumber
             )
         } else {
-            val file = ImageHelper.uriToMultipart(context, state.image!!, "image")
+            val file = ImageHelper.singleUriToMultipart(context, state.image!!, "image")
 
             user = RegisterUserData(
                 name = "${registerData?.firstname!!} ${registerData.lastname}",
@@ -125,6 +125,7 @@ class RegisterPage3Vm(
                                     )
                                 } else {
                                     //TODO: duplicated email:
+                                    signedUpFailed()
                                 }
                             }
                             is Resource.Error -> {
@@ -159,7 +160,9 @@ class RegisterPage3Vm(
         navController.navigate(Destination.DashboardDestination.route)
     }
 
-    private fun signedUpFailed(jsonResponse: String) {
-
+    private fun signedUpFailed() {
+        state = state.copy(
+            emailDuplicated = true
+        )
     }
 }

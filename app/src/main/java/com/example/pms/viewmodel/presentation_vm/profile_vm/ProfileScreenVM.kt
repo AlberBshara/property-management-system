@@ -103,7 +103,7 @@ class ProfileScreenVM(
                                     name = user.name,
                                     email = user.email,
                                     phone = user.phoneNumber,
-                                    location = "syria, Damascus",
+                                    location = "",
                                     imageUrl = user.profileImage,
                                     faceBookURL = user.facebookLink?:"",
                                     instagramURL = user.instagramLink?:"",

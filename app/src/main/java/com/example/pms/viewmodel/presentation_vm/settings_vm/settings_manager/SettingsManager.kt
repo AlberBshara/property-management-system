@@ -17,6 +17,7 @@ class SettingsManager(
     fun changeLanguage(language: String) {
         sharedPreferences.setData(PMSSharedPreferenceHelper.LANGUAGE, language)
     }
+
     fun currentLanguage(): String =
         sharedPreferences.getData(PMSSharedPreferenceHelper.LANGUAGE)
 

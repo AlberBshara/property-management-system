@@ -460,12 +460,19 @@
     <string name="add_rate">add rate</string>
 
 
+    <string name="about_us">Welcome to PMS, your ultimate solution for seamless property transactions.
+        Whether you are looking to buy your dream home, invest in real estate, or find the perfect car,
+        our platform is designed to empower you with the tools and information you need to make informed decisions.
+    </string>
 
+    <string name="our_mission">Our Mission</string>
+    <string name="mission">At  PMS, our mission is to simplify and enhance the process of buying and selling properties,
+        making it a transparent and enjoyable experience for all parties involved.
+        We believe in harnessing the power of technology to bring efficiency, reliability,
+        and trust to the world of real estate and automotive transactions.
+    </string>
 
-
-
-
-
+    <string name="thanks">Thank you for choosing PMS for your property needs.</string>
 
 
 </resources>

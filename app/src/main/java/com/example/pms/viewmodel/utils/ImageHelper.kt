@@ -34,12 +34,12 @@ object ImageHelper {
         return file
     }
 
-    //   @SuppressLint("Recycle")
-//       fun uriToMultipart(context: Context, uri: Uri, partNameKey: String): MultipartBody.Part {
-//        val inputStream = context.contentResolver.openInputStream(uri)
-//        val requestBody = inputStream?.readBytes()?.toRequestBody(MultipartBody.FORM)
-//        return MultipartBody.Part.createFormData(partNameKey, "image.jpg", requestBody!!)
-//    }
+       @SuppressLint("Recycle")
+       fun singleUriToMultipart(context: Context, uri: Uri, partNameKey: String): MultipartBody.Part {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val requestBody = inputStream?.readBytes()?.toRequestBody(MultipartBody.FORM)
+        return MultipartBody.Part.createFormData(partNameKey, "image.jpg", requestBody!!)
+    }
 
     @SuppressLint("Recycle")
     fun uriToMultipart(context: Context, uri: Uri, partNameKey: String): MultipartBody.Part {

@@ -23,6 +23,12 @@ class ValidatePhoneNumber {
                     errorMessage = context.getString(R.string.invalid_phone_number)
                 )
             }
+            if (lessThanEight(phoneNumber)){
+                return ValidationResult(
+                    success = false,
+                    errorMessage = context.getString(R.string.invalid_phone_number)
+                )
+            }
             if (countryCode.isBlank()) {
                 return ValidationResult(
                     success = false,
@@ -37,6 +43,7 @@ class ValidatePhoneNumber {
         private fun invalidPhoneNumber(phoneNumber: String): Boolean = phoneNumber.any {
             it.isLetter()
         }
-
+        private fun lessThanEight(phoneNumber: String) : Boolean =
+            phoneNumber.length < 8
     }
 }

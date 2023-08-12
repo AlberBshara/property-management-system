@@ -12,11 +12,6 @@ data class ProfileState(
     var twitterURL: String = "",
     var isRefreshing: Boolean = false,
     var timeOut: Boolean = false,
-
-
-
-
-
     val faceBookPress: Boolean = false,
     val instagramPress: Boolean = false,
     val twitterPress: Boolean = false,
