@@ -20,6 +20,7 @@ import com.example.pms.view.login_screen.LoginScreen
 import com.example.pms.view.profile_screen.ProfileScreen
 import com.example.pms.view.profile_screen.edit_profile_info.EditScreen
 import com.example.pms.view.profile_screen.edit_profile_info.edit_password.EditPasswordScreen
+import com.example.pms.view.profile_screen.others_profile.OtherProfileScreen
 import com.example.pms.view.profile_screen.profile_helper_screen.ProfileHelperScreen
 import com.example.pms.view.regisiter_screen.RegisterScreen
 import com.example.pms.view.settings_screen.SettingsScreen
@@ -65,6 +66,7 @@ sealed class Destination(
     companion object {
         const val CAR_ID_KEY: String = "carId"
         const val ESTATE_ID_KEY: String = "estateId"
+        const val USER_ID: String = "userId"
     }
 
     object EstatesMainDestination : Destination("estates-destination")
@@ -72,6 +74,8 @@ sealed class Destination(
     object PublishEstateDestination : Destination("publish-Estate-screen-destination")
     object ViewMoreScreenEstate : Destination("viewMore_screen_estate")
     object AboutUsScreen : Destination("about-us-screen-destination")
+    object OtherProfileScreenDestination : Destination("other_profile_screen_destination")
+
 }
 
 
@@ -190,6 +194,11 @@ fun PmsNavHost(
         }
         composable(Destination.AboutUsScreen.route) {
             AboutUsScreen(navController)
+        }
+        composable(Destination.OtherProfileScreenDestination.route) {
+            val userId =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int>(Destination.USER_ID)
+            OtherProfileScreen(navController = navController, userId = userId ?: -1)
         }
     }
 

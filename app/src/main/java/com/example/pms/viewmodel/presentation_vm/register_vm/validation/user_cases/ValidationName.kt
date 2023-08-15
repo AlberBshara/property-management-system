@@ -21,21 +21,21 @@ class ValidationName {
                     errorMessage = context.getString(R.string.firstname_blank)
                 )
             }
-            if (!validName(name)) {
-                return ValidationResult(
-                    success = false,
-                    errorMessage = context.getString(R.string.invalid_name)
-                )
-            }
+//            if (!validName(name)) {
+//                return ValidationResult(
+//                    success = false,
+//                    errorMessage = context.getString(R.string.invalid_name)
+//                )
+//            }
             return ValidationResult(
                 success = true
             )
         }
 
-        private fun validName(string: String): Boolean {
-            val regex =
-                Regex("[\\u0600-\\u06FF\\u0750-\\u077F\\uFB50-\\uFDFF\\uFE70-\\uFEFFa-zA-Z]+")
-            return string.matches(regex)
-        }
+//        private fun validName(string: String): Boolean {
+//            val regex =
+//                Regex("[\\u0600-\\u06FF\\u0750-\\u077F\\uFB50-\\uFDFF\\uFE70-\\uFEFFa-zA-Z]+")
+//            return string.matches(regex)
+//        }
     }
 }

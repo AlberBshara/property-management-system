@@ -63,4 +63,7 @@ object PusherController {
             e.printStackTrace()
         }
     }
+
+    fun closeChannel() {
+    }
 }

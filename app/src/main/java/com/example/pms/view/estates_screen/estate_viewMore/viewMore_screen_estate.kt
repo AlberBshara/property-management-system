@@ -300,7 +300,8 @@ fun ViewMoreScreenEstate(
                     onVisitProfileListener = {
                         viewModel.onEvent(
                             ViewMoreEstateEvents.OnVisitProfileClicked(
-                                navHostController
+                                navHostController,
+                                state.userId
                             )
                         )
                     },

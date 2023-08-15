@@ -6,12 +6,7 @@ import com.example.pms.viewmodel.api.util.Urls
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
+import retrofit2.http.*
 
 
 interface UserServicesInterface {
@@ -106,4 +101,21 @@ interface UserServicesInterface {
         @Body url: EditSocialMediaRequest
     ): EditSocialMediaRequest.EditSocialMediaResponse
 
+    @GET(Urls.GET_OTHER_ESTATES + "/{${Keys.ID}}")
+    suspend fun getOtherEstates(
+        @Header(Keys.AUTHORIZATION) token : String ,
+        @Path(Keys.ID) userId: Int
+    ):ProfileOtherEstateResponse
+
+    @GET(Urls.GET_OTHER_CARS + "/{${Keys.ID}}")
+    suspend fun getOtherCars(
+        @Header(Keys.AUTHORIZATION) token : String ,
+        @Path(Keys.ID) userId: Int
+    ):ProfileOtherCarResponse
+
+    @GET(Urls.GET_OTHER_PROFILE + "/{${Keys.ID}}")
+    suspend fun getOtherProfile(
+        @Header(Keys.AUTHORIZATION) token : String ,
+        @Path(Keys.ID) userId: Int
+    ):ProfileData
 }

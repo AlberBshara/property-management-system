@@ -354,10 +354,34 @@ class UserServicesRepository(
         url: EditSocialMediaRequest
     ): Flow<Resource<EditSocialMediaRequest.EditSocialMediaResponse>> {
         return flow {
-
             emit(Resource.Loading(true))
             val response = try {
                 userServicesInterface.editSocialMediaUrl(token = token, url = url)
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message.toString()))
+                null
+            } catch (e: Exception) {
+                emit(Resource.Error(e.message.toString()))
+                null
+            }
+            response?.let {
+                emit(Resource.Success(data = response))
+                emit(Resource.Loading(false))
+            }
+            emit((Resource.Loading(false)))
+        }
+    }
+
+
+    suspend fun getOtherEstates(
+        token: String,
+        userId: Int
+    ): Flow<Resource<ProfileOtherEstateResponse>> {
+        return flow {
+
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.getOtherEstates(token = token, userId = userId)
             } catch (e: HttpException) {
                 emit(Resource.Error(e.message.toString()))
                 null
@@ -377,10 +401,50 @@ class UserServicesRepository(
         }
     }
 
+    suspend fun getOtherCars(
+        token: String,
+        userId: Int
+    ): Flow<Resource<ProfileOtherCarResponse>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val response = try {
+                userServicesInterface.getOtherCars(token = token, userId = userId)
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message.toString()))
+                null
+            } catch (e: Exception) {
+                emit(Resource.Error(e.message.toString()))
+                null
+            }
+            response?.let {
+                emit(Resource.Success(data = response))
+                emit(Resource.Loading(false))
+            }
+            emit((Resource.Loading(false)))
+        }
+    }
 
-
+    suspend fun fetchOtherProfileData(
+        token: String,
+        userId:Int
+    ): Flow<Resource<ProfileData>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            userServicesInterface.getOtherProfile(token,userId)
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
 }
-
 
 
 

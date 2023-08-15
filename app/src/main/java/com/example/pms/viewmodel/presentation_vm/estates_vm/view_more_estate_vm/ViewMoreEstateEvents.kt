@@ -29,8 +29,10 @@ sealed class ViewMoreEstateEvents {
     ) : ViewMoreEstateEvents()
 
     data class OnVisitProfileClicked(
-        val navHostController: NavHostController
+        val navHostController: NavHostController,
+        val userId: Int
     ) : ViewMoreEstateEvents()
+
 
     object OnChangeShowRateScreen : ViewMoreEstateEvents()
 
@@ -40,9 +42,9 @@ sealed class ViewMoreEstateEvents {
         ViewMoreEstateEvents()
 
     data class OnChattingClicked(
-        val navController : NavHostController ,
-        val receiverId : Int ,
-        val receiverUsername : String ,
-        val receiverImageUrl : String?
+        val navController: NavHostController,
+        val receiverId: Int,
+        val receiverUsername: String,
+        val receiverImageUrl: String?
     ) : ViewMoreEstateEvents()
 }

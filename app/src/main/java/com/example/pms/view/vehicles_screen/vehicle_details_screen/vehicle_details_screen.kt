@@ -193,7 +193,9 @@ fun VehicleDetailsScreen(
                                 MoreInfo(state)
                                 OwnerCard(state,
                                     onVisitProfileListener = {
-
+                                         viewModel.onEvent(VehicleDetailsEvents.OnVisitProfileClicked(
+                                             navController , state.userId
+                                         ))
                                     },
                                     onChattingListener = { receiverId: Int, receiverUsername: String
                                         , receiverImageUrl : String? ->

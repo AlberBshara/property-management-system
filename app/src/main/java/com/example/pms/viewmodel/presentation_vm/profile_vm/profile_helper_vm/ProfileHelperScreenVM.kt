@@ -119,38 +119,53 @@ class ProfileHelperScreenVM(
                             val gson = Gson()
                             when (type) {
                                 VEHICLE -> {
-                                    val vehiclesPosts = gson.fromJson(
-                                        myPostResult.charStream(),
-                                        MyPostsModels.MyVehiclesPostResponse::class.java
-                                    )
-                                    state = if (vehiclesPosts.success) {
-                                       state.copy(
-                                            estatesPostsList = emptyList(),
-                                            vehiclesPostsList = vehiclesPosts.vehiclesPostsList
-                                        )
-                                    }else{
-                                        state.copy(
-                                            noResult = true
-                                        )
-                                    }
-                                    Log.d(TAG, "fetchMyPosts: VEHICLES ${vehiclesPosts.vehiclesPostsList}")
+                                   try {
+                                       val vehiclesPosts = gson.fromJson(
+                                           myPostResult.charStream(),
+                                           MyPostsModels.MyVehiclesPostResponse::class.java
+                                       )
+                                       state = if (vehiclesPosts.success && vehiclesPosts.vehiclesPostsList.isNotEmpty()) {
+                                           state.copy(
+                                               estatesPostsList = emptyList(),
+                                               vehiclesPostsList = vehiclesPosts.vehiclesPostsList
+                                           )
+                                       }else{
+                                           state.copy(
+                                               estatesPostsList = emptyList(),
+                                               noResult = true
+                                           )
+                                       }
+                                       Log.d(TAG, "fetchMyPosts: VEHICLES ${vehiclesPosts.vehiclesPostsList}")
+                                   }catch (e : Exception){
+                                       state = state.copy(
+                                           needRefresh = true
+                                       )
+                                   }
                                 }
                                 ESTATE -> {
-                                    val estatesPosts = gson.fromJson(
-                                        myPostResult.charStream(),
-                                        MyPostsModels.MyEstatesPostResponse::class.java
-                                    )
-                                    state = if (estatesPosts.success) {
-                                     state.copy(
-                                            vehiclesPostsList = emptyList(),
-                                            estatesPostsList = estatesPosts.estatesPostsList
-                                        )
-                                    }else{
-                                        state.copy(
-                                            noResult = true
-                                        )
-                                    }
-                                    Log.d(TAG, "fetchMyPosts: ESTATES ${estatesPosts.estatesPostsList}")
+                                   try {
+                                       val estatesPosts = gson.fromJson(
+                                           myPostResult.charStream(),
+                                           MyPostsModels.MyEstatesPostResponse::class.java
+                                       )
+
+                                       state = if (estatesPosts.success && estatesPosts.estatesPostsList.isNotEmpty()) {
+                                           state.copy(
+                                               vehiclesPostsList = emptyList(),
+                                               estatesPostsList = estatesPosts.estatesPostsList
+                                           )
+                                       }else{
+                                           state.copy(
+                                               vehiclesPostsList = emptyList(),
+                                               noResult = true
+                                           )
+                                       }
+                                       Log.d(TAG, "fetchMyPosts: ESTATES ${estatesPosts.estatesPostsList}")
+                                   }catch (e : Exception) {
+                                       state = state.copy(
+                                           needRefresh = true
+                                       )
+                                   }
                                 }
                                 else -> {
                                     Log.d(TAG, "fetchMyPosts: something went wrong!")
@@ -202,6 +217,7 @@ class ProfileHelperScreenVM(
                                             )
                                         }else{
                                             state.copy(
+                                                estatesPostsList = emptyList(),
                                                 noResult = true
                                             )
                                         }
@@ -227,6 +243,7 @@ class ProfileHelperScreenVM(
                                             Log.d(TAG, "fetchMyFav: ESTATES $estateFavList")
                                         } else {
                                             state = state.copy(
+                                                vehiclesPostsList = emptyList(),
                                                 noResult = true
                                             )
                                         }

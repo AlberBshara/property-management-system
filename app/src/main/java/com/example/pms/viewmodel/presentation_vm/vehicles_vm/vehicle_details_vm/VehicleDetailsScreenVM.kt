@@ -82,6 +82,9 @@ class VehicleDetailsScreenVM(
                     event.receiverImageUrl
                 )
             }
+            is VehicleDetailsEvents.OnVisitProfileClicked -> {
+                visitProfile(event.navController, event.userId)
+            }
         }
     }
 
@@ -387,7 +390,7 @@ class VehicleDetailsScreenVM(
     private fun startMessaging(
         navController: NavHostController,
         receiverId: Int, receiverUsername: String,
-        receiverImageUrl : String?
+        receiverImageUrl: String?
     ) {
         viewModelScope.launch {
             navController.currentBackStackEntry?.savedStateHandle?.set(
@@ -397,11 +400,21 @@ class VehicleDetailsScreenVM(
                 Destination.MessagesDestination.RECEIVER_ID_KEY, receiverId
             )
             navController.currentBackStackEntry?.savedStateHandle?.set(
-                Destination.MessagesDestination.IMAGE_URL_KEY , receiverImageUrl
+                Destination.MessagesDestination.IMAGE_URL_KEY, receiverImageUrl
             )
             navController.navigate(
                 Destination.MessagesDestination.route
             )
         }
+    }
+
+    private fun visitProfile(
+        navController: NavHostController,
+        userId: Int
+    ) {
+        navController.currentBackStackEntry?.savedStateHandle?.set(
+            Destination.USER_ID, userId
+        )
+        navController.navigate(Destination.OtherProfileScreenDestination.route)
     }
 }

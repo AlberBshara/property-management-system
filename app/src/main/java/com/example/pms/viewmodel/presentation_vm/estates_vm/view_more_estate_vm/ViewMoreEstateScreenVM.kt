@@ -51,9 +51,6 @@ class ViewMoreEstateScreenVM(
             is ViewMoreEstateEvents.OnShareClicked -> {
                 shareEstateData(event.context)
             }
-            is ViewMoreEstateEvents.OnVisitProfileClicked -> {
-                event.navHostController.navigate(Destination.ProfileDestination.route)
-            }
             is ViewMoreEstateEvents.OnChangeShowRateScreen -> {
                 state = state.copy(isShowingRateScreen = !state.isShowingRateScreen)
             }
@@ -65,6 +62,10 @@ class ViewMoreEstateScreenVM(
                     event.navController, event.receiverId,
                     event.receiverUsername, event.receiverImageUrl
                 )
+            }
+            is ViewMoreEstateEvents.OnVisitProfileClicked -> {
+                event.navHostController.currentBackStackEntry?.savedStateHandle?.set(Destination.USER_ID,event.userId)
+                event.navHostController.navigate(Destination.OtherProfileScreenDestination.route)
             }
         }
     }
