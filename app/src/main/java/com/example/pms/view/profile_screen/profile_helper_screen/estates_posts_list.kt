@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.pms.view.estates_screen.estate_home.post_card.EstateCard
+import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.presentation_vm.profile_vm.profile_helper_vm.ProfileHelperScreenVM
 import com.example.pms.viewmodel.presentation_vm.profile_vm.profile_helper_vm.ProfileHelperState
 
@@ -48,7 +49,11 @@ fun ListEstatesContent(
                     idOfEstate = item.estateData.estate_id,
                     images = item.images,
                     loved = item.liked,
-                    context = context
+                    context = context,
+                    enableDeleting = (from == Destination.ProfileHelperScreen.FROM_MY_POST_CLICKED),
+                    onDeletingListener = {
+                        onDeleteClicked(index, item.estateData.estate_id)
+                    }
                 )
             }
         }

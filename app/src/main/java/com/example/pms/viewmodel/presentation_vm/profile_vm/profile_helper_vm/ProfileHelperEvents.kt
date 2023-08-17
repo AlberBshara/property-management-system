@@ -39,6 +39,13 @@ sealed class ProfileHelperEvents {
         val context: Context
     ) : ProfileHelperEvents()
 
+    data class OnDeletingEstate(
+        val from: String,
+        val estateIndex: Int,
+        val estateId: Int,
+        val context: Context
+    ) : ProfileHelperEvents()
+
     data class OnVehiclePostsClicked(
         val context: Context,
         val from: String

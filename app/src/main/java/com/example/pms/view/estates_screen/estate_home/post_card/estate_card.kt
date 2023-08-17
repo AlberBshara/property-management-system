@@ -56,10 +56,13 @@ fun EstateCard(
     idOfEstate: Int,
     images: List<EstateViewMoreData.ListOfImages>,
     loved: Boolean,
-    context: Context
+    context: Context,
+    /**
+     * added the following parameter to enable the deleting functionality for estates.
+     */
+    enableDeleting: Boolean = false,
+    onDeletingListener: () -> Unit = {},
 ) {
-
-
     val pagerState = rememberPagerState(pageCount = lengthOfPagerIndicator, initialPage = 0)
 
     Card(
@@ -73,6 +76,25 @@ fun EstateCard(
             modifier = Modifier
                 .wrapContentSize(),
             ) {
+            if(enableDeleting) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(start = 10.dp, end = 10.dp, top = 2.dp),
+                    contentAlignment = Alignment.BottomEnd
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .clickable {
+                                onDeletingListener()
+                            }
+                    )
+                }
+            }
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier

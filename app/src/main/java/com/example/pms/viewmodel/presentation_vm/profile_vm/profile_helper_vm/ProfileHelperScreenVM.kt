@@ -3,6 +3,7 @@ package com.example.pms.viewmodel.presentation_vm.profile_vm.profile_helper_vm
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,17 +14,20 @@ import com.example.pms.model.LikeData
 import com.example.pms.model.MyFavResponse
 import com.example.pms.model.MyFavResponseEstate
 import com.example.pms.model.MyPostsModels
+import com.example.pms.viewmodel.api.estates_services.EstateServiceImplementation
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.api.vehicels_services.VehicleServicesImplementation
 import com.example.pms.viewmodel.destinations.Destination
 import com.example.pms.viewmodel.utils.TokenManager
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ProfileHelperScreenVM(
     private val userServicesRepository: UserServicesRepository = UserServicesRepository(),
-    private val vehicleUserServicesRepository: VehicleServicesImplementation = VehicleServicesImplementation()
+    private val vehicleUserServicesRepository: VehicleServicesImplementation = VehicleServicesImplementation(),
+    private val estateServiceImplementation: EstateServiceImplementation = EstateServiceImplementation()
 ) : ViewModel() {
 
     companion object {
@@ -60,6 +64,9 @@ class ProfileHelperScreenVM(
             }
             is ProfileHelperEvents.OnEstatePostsClicked -> {
                 estateClicked(event.context, event.from)
+            }
+            is ProfileHelperEvents.OnDeletingEstate -> {
+            deleteEstate(event.from,event.context, event.estateIndex, event.estateId)
             }
         }
     }
@@ -380,6 +387,43 @@ class ProfileHelperScreenVM(
                         }
                         is Resource.Error -> {
                             Log.d(TAG, "deletePost: Error $it")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun deleteEstate(
+        from: String , context: Context,
+        estateIndex: Int , estateId: Int
+    ) {
+        if (from == Destination.ProfileHelperScreen.FROM_MY_POST_CLICKED){
+            viewModelScope.launch {
+                val deletingResponse = estateServiceImplementation
+                    .deleteMyEstate(
+                        TokenManager.getInstance(context).getToken(),
+                        estateId
+                    )
+                deletingResponse.collect {
+                    when(it){
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isDeleting = it.isLoading
+                            )
+                        }
+                        is Resource.Success -> {
+                            it.data?.let { response ->
+                                if (response.success) {
+                                    val updatedList = state.estatesPostsList.toMutableList()
+                                    updatedList.removeAt(estateIndex)
+                                    state = state.copy(
+                                        estatesPostsList = updatedList
+                                    )
+                                }
+                            }
+                        }
+                        is Resource.Error -> {
                         }
                     }
                 }

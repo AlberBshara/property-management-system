@@ -10,6 +10,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
+import java.io.IOException
 
 
 class EstateServiceImplementation(
@@ -279,9 +280,31 @@ class EstateServiceImplementation(
                 emit(Resource.Loading(false))
             }
             emit(Resource.Loading(false))
-
-
         }
+    }
+
+    suspend fun deleteMyEstate(
+        token: String, estateId: Int
+    ): Flow<Resource<DeleteMyVehicle>> = flow {
+        emit(Resource.Loading(true))
+
+        val response = try {
+            estateServiceInterface.deleteMyEstate(
+                token, estateId
+            )
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            null
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+
+        response?.let {
+            emit(Resource.Success(it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
     }
 
 

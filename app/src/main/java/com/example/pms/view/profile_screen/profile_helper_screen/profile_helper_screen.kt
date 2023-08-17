@@ -165,6 +165,9 @@ fun ProfileHelperScreen(
                     context = context,
                     navController = navController,
                     onDeleteClicked = { index: Int, id: Int ->
+                        viewModel.onEvent(ProfileHelperEvents.OnDeletingEstate(
+                            from , index, id , context
+                        ))
                     }
                 )
             }

@@ -91,4 +91,11 @@ interface EstateServicesInterface {
     ): SearchFilterEstate.FilterEstateResponse
 
 
+    @GET(Urls.DELETE_MY_ESTATE+"/{${Keys.ID}}")
+    suspend fun deleteMyEstate(
+        @Header(Keys.AUTHORIZATION) token: String,
+        @Path(Keys.ID) estateId : Int
+    ) : DeleteMyVehicle
+
+
 }
