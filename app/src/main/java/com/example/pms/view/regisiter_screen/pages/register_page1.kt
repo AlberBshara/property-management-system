@@ -22,6 +22,7 @@ import com.example.pms.ui.theme.iconsColor
 import com.example.pms.view.regisiter_screen.InputTextFiled
 import com.example.pms.view.regisiter_screen.InputPhoneWithCCP
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.view.animation.ProgressAnimatedBar
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page1.RegPage1Events
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page1.RegisterPage1Vm
 
@@ -113,18 +114,23 @@ fun RegisterPage1(
             .wrapContentHeight()
             .padding(start = 15.dp, end = 10.dp)
     ) {
-
-        FloatingActionButton(
-            onClick = {
-                viewModel.submitPage1(navController, context)
-            },
-            backgroundColor = iconsColor,
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowForward,
-                contentDescription = "",
-                tint = Color.White
-            )
+        if(!state.isLoading) {
+            FloatingActionButton(
+                onClick = {
+                    viewModel.submitPage1(navController, context)
+                },
+                backgroundColor = iconsColor,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowForward,
+                    contentDescription = "",
+                    tint = Color.White
+                )
+            }
         }
+        ProgressAnimatedBar(
+            isLoading = state.isLoading,
+            modifier = Modifier.size(46.dp)
+        )
     }
 }

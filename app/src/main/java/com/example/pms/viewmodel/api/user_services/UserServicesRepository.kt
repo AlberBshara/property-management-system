@@ -24,10 +24,10 @@ class UserServicesRepository(
             emit(Resource.Loading(true))
             val response = try {
                 userServicesInterface.postRegisterData(
-                    name = user.name.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    name = user.name!!.toRequestBody("text/plain".toMediaTypeOrNull()),
                     email = user.email.toRequestBody("text/pain".toMediaTypeOrNull()),
                     password = user.password.toRequestBody("text/plain".toMediaTypeOrNull()),
-                    phoneNumber = user.phone_number.toRequestBody("text/pain".toMediaTypeOrNull()),
+                    phoneNumber = user.phone_number!!.toRequestBody("text/pain".toMediaTypeOrNull()),
                     image = user.image
                 )
             } catch (e: IOException) {
@@ -49,6 +49,69 @@ class UserServicesRepository(
         }
     }
 
+
+    suspend fun registerEmail(
+        registerEmailRequest: RegisterWithVerification.RegisterEmail
+    ) : Flow<Resource<RegisterEmail.RegisterEmailResponse>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            userServicesInterface.registerEmail(
+                registerEmailRequest
+            )
+        }catch (e : HttpException) {
+            e.printStackTrace()
+            null
+        }catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+        response?.let {
+            emit(Resource.Success(it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
+    suspend fun verifyEmailCheckCode(
+        email:String,
+        code:String
+    ): Flow<Resource<VerifyEmailCheckCodeResponse>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            userServicesInterface.verifyEmailCheckCode(VerifyEmailCheckCodeRequest(email,code))
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
+
+    suspend fun sendCodeToGmailToVerify(
+        email:String
+    ): Flow<Resource<SendCodeTOGmailTResponse>> = flow {
+        emit(Resource.Loading(true))
+        val response = try {
+            userServicesInterface.sendCodeToGmailToVerify(email = SendCodeToGmailRequest(email))
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.toString()))
+            null
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.response().toString()))
+            null
+        }
+        response?.let {
+            emit(Resource.Success(data = it))
+            emit(Resource.Loading(false))
+        }
+        emit(Resource.Loading(false))
+    }
 
     suspend fun postLoginUserData(
         user: LoginUserRequest

@@ -18,6 +18,11 @@ object UserPreferences {
         )
     }
 
+    fun setId(userId: Int, context: Context) {
+        val sharedPreferencesUsage = SharedPreferencesUsage(context)
+        sharedPreferencesUsage.setUserId(userId)
+    }
+
     fun clear(context: Context) {
         val sharedPreferencesUsage = SharedPreferencesUsage(context)
         sharedPreferencesUsage.clearDataOfKey(PMSSharedPreferenceHelper.EMAIL)

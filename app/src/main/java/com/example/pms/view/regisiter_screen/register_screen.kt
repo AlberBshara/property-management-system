@@ -24,6 +24,7 @@ import com.example.pms.viewmodel.destinations.RegisterPages
 import com.example.pms.viewmodel.presentation_vm.register_vm.RegisterScreenVM
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pms.ui.theme.background1
+import com.example.pms.view.regisiter_screen.pages.RegisterPag4
 
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -80,9 +81,10 @@ fun RegisterScreen(
                 )
             ) {
                 when (pageNumber) {
-                    RegisterPages.registerPage1 -> RegisterPage1(navController = navController)
-                    RegisterPages.registerPage2 -> RegisterPage2(navController = navController)
+                    RegisterPages.registerPage1 -> RegisterPage2(navController = navController)
+                    RegisterPages.registerPage2 -> RegisterPage1(navController = navController)
                     RegisterPages.registerPage3 -> RegisterPag3(navController = navController)
+                    RegisterPages.registerPage4 -> RegisterPag4(navController = navController)
                 }
             }
         }

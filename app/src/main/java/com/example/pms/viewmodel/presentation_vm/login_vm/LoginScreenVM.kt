@@ -18,9 +18,11 @@ import com.example.pms.model.LoginUserRequest
 import com.example.pms.viewmodel.api.user_services.UserServicesRepository
 import com.example.pms.viewmodel.api.util.Resource
 import com.example.pms.viewmodel.destinations.Destination
+import com.example.pms.viewmodel.destinations.RegisterPages
 import com.example.pms.viewmodel.preferences.UserPreferences
 import com.example.pms.viewmodel.presentation_vm.login_vm.validation.EmailState
 import com.example.pms.viewmodel.presentation_vm.login_vm.validation.PasswordState
+import com.example.pms.viewmodel.presentation_vm.register_vm.RegisterData
 import com.example.pms.viewmodel.utils.InternetConnection
 import com.example.pms.viewmodel.utils.TokenManager
 import kotlinx.coroutines.launch
@@ -91,6 +93,12 @@ class LoginScreenVM(
                     showInternetAlert = false
                 )
             }
+            is LoginEvents.NeedVerify -> {
+                verifyAccount(event.navController)
+            }
+            is LoginEvents.OnCompleteClicked -> {
+                completeInfo(event.navController)
+            }
         }
     }
 
@@ -160,7 +168,8 @@ class LoginScreenVM(
 
 
     private fun signedUpSuccessed(
-        apiResponse: LoginUserRequest.LoginResponse, navController: NavHostController,
+        apiResponse: LoginUserRequest.LoginResponse,
+        navController: NavHostController,
         context: Context
     ) {
         TokenManager.getInstance(context)
@@ -171,10 +180,76 @@ class LoginScreenVM(
                 email = apiResponse.user.email
             ), context
         )
-        navController.popBackStack()
-        navController.navigate(Destination.DashboardDestination.route)
+        if (apiResponse.user.verified == null) {
+            state = state.copy(
+                needVerify = true
+            )
+            sendCodeTOGmail(state.email, navController)
+        } else if (apiResponse.user.username == null) {
+            state = state.copy(
+                notCompleted = true
+            )
+        } else {
+            TokenManager.getInstance(context).verified(true)
+            TokenManager.getInstance(context).completed(true)
+            navController.popBackStack()
+            navController.navigate(Destination.DashboardDestination.route)
+        }
     }
 
+
+    private fun verifyAccount(
+        navController: NavHostController
+    ) {
+        state = state.copy(
+            needVerify = false
+        )
+    }
+
+
+    private fun completeInfo(
+        navController: NavHostController
+    ) {
+        state = state.copy(
+            notCompleted = false
+        )
+        TokenManager.getInstance(context).verified(true)
+        RegisterPages.moveToNextRegisterPage(
+            navController,
+            RegisterPages.registerPage2,
+            RegisterData()
+        )
+    }
+
+    private fun sendCodeTOGmail(
+        email: String,
+        navController: NavHostController
+    ) {
+        viewModelScope.launch {
+            val response = userApiRepo.sendCodeToGmailToVerify(email)
+            response.collect {
+                when (it) {
+                    is Resource.Loading -> {
+                        state = state.copy(progressBarIndicator = it.isLoading)
+                    }
+                    is Resource.Success -> {
+                        if (it.data?.status == true) {
+                            state = state.copy(
+                                needVerify = false
+                            )
+                            RegisterPages.moveToNextRegisterPage(
+                                navController,
+                                RegisterPages.registerPage4,
+                                RegisterData()
+                            )
+                        }
+                    }
+                    is Resource.Error -> {
+                    }
+                }
+            }
+        }
+    }
 
 }
 

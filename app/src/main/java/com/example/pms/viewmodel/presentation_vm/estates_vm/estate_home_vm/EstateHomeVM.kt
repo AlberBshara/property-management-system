@@ -234,21 +234,15 @@ class EstateHomeVM(
                                     lastPage = it.data.allPosts.lastPage
                                 )
                             }
-
                         }
-
                         is Resource.Error -> {
-
                             state = state.copy(
                                 timeOut = true
                             )
                         }
-
                     }
                 }
-
             }
-
         }
     }
 
@@ -322,7 +316,7 @@ class EstateHomeVM(
         context: Context
     ) {
         this.counter = 0
-        this.pageNumber=DEFAULT_PAGE_NUMBER
+        this.pageNumber = DEFAULT_PAGE_NUMBER
         getAllEstates(context)
         state = state.copy(
             timeOut = false

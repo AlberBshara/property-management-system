@@ -9,13 +9,13 @@ data class RegisterUserData(
     @SerializedName(Keys.ID)
     val user_id: Int = -1,
     @SerializedName(Keys.NAME)
-    val name: String,
+    val name: String? = null,
     @SerializedName(Keys.EMAIL)
     val email: String,
     @SerializedName(Keys.PASSWORD)
     val password: String,
     @SerializedName(Keys.PHONE_NUMBER)
-    val phone_number: String,
+    val phone_number: String? = null,
     @SerializedName(Keys.IMAGE)
     val image: MultipartBody.Part? = null
 ) {
@@ -29,7 +29,29 @@ data class RegisterUserData(
         @SerializedName(Keys.MESSAGE)
         val errorMessage: String? = null,
     )
+}
 
+
+data class RegisterEmail(
+    @SerializedName(Keys.ID)
+    val user_id: Int = -1,
+    @SerializedName(Keys.NAME)
+    val name: String? = null,
+    @SerializedName(Keys.EMAIL)
+    val email: String,
+    @SerializedName(Keys.PASSWORD)
+    val password: String,
+    @SerializedName(Keys.PHONE_NUMBER)
+    val phone_number: String? = null,
+    @SerializedName(Keys.IMAGE)
+    val image: MultipartBody.Part? = null
+) {
+    data class RegisterEmailResponse(
+        @SerializedName(Keys.STATUS)
+        val status: Boolean,
+        @SerializedName(Keys.USER)
+        val user: RegisterUserData
+    )
 }
 
 

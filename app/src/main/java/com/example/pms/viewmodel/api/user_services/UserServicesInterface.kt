@@ -21,6 +21,24 @@ interface UserServicesInterface {
         @Part image: MultipartBody.Part? = null
     ): ResponseBody
 
+
+    @POST(Urls.REGISTER_END_POINT)
+    suspend fun registerEmail(
+        @Body registerEmail : RegisterWithVerification.RegisterEmail
+    ) : RegisterEmail.RegisterEmailResponse
+
+    @POST(Urls.VERIFY_EMAIL_CHECK_CODE)
+    suspend fun verifyEmailCheckCode(
+        @Body checkCode:VerifyEmailCheckCodeRequest
+    ):VerifyEmailCheckCodeResponse
+
+    @POST(Urls.SEND_CODE_TO_GMAIL_TO_VERIFY)
+    suspend fun sendCodeToGmailToVerify(
+        @Body email:SendCodeToGmailRequest
+    ):SendCodeTOGmailTResponse
+
+
+
     @POST(Urls.LOGIN_END_POINT)
     suspend fun postLoginData(
         @Body user: LoginUserRequest

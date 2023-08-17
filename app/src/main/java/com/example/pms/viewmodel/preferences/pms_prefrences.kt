@@ -45,5 +45,7 @@ class PMSSharedPreferenceHelper(context: Context) {
         const val PASSWORD = "password"
         const val TOKEN = "token"
         const val LANGUAGE = "language"
+        const val VERIFY = "verification"
+        const val COMPLETE: String = "complete"
     }
 }

@@ -39,4 +39,22 @@ class TokenManager private constructor() {
     fun getToken(): String =
         "$TOKEN_TYPE ${sharedPreferencesUsage.getToken()}"
 
+    /**
+     * the following code for verification:
+     */
+    fun verified(verification: Boolean) {
+        sharedPreferencesUsage.setVerify(verification)
+    }
+
+    fun isVerified() =
+        sharedPreferencesUsage.isVerified()
+    /**
+     * the following codes for checking the completeness of user's data
+     */
+    fun completed(complete: Boolean){
+        sharedPreferencesUsage.setComplete(complete)
+    }
+    fun isCompleted() : Boolean =
+        sharedPreferencesUsage.isCompleted()
+
 }

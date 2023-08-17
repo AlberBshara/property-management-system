@@ -75,6 +75,8 @@ class SettingsScreenVM(
                             if (it.data.isSuccess) {
                                 TokenManager.getInstance(context).clear()
                                 UserPreferences.clear(context)
+                                TokenManager.getInstance(context).completed(false)
+                                TokenManager.getInstance(context).verified(false)
                                 navController.backQueue.clear()
                                 navController.navigate(Destination.SplashDestination.route)
                             }

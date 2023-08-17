@@ -29,6 +29,7 @@ import com.example.pms.ui.theme.iconsColor
 import com.example.pms.viewmodel.presentation_vm.login_vm.LoginScreenVM
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pms.ui.theme.background1
+import com.example.pms.ui.theme.transparent_p
 import com.example.pms.view.animation.ProgressAnimatedBar
 import com.example.pms.view.utils.InternetAlertDialog
 import com.example.pms.viewmodel.presentation_vm.login_vm.LoginEvents
@@ -115,18 +116,79 @@ fun LoginScreen(
             fontSize = 12.sp
         )
 
-        Button(
-            onClick = {
-                viewModel.onEvent(LoginEvents.Submit(navController))
-            },
-            modifier = Modifier
-                .fillMaxWidth()
+        if (state.needVerify) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .wrapContentHeight()
+                    .background(transparent_p),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    onClick = {
+                        viewModel.onEvent(
+                            LoginEvents.NeedVerify(
+                                navController
+                            )
+                        )
+                    },
+                    colors = ButtonDefaults.buttonColors(iconsColor),
+                    modifier = Modifier.padding(start = 10.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.ok))
+                }
+                Spacer(modifier = Modifier.width(18.dp))
+                Text(
+                    text = stringResource(id = R.string.need_verfication),
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        if (state.notCompleted && !state.needVerify) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .wrapContentHeight()
+                    .background(transparent_p),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    onClick = {
+                              viewModel.onEvent(LoginEvents.OnCompleteClicked(
+                                  navController
+                              ))
+                    },
+                    colors = ButtonDefaults.buttonColors(iconsColor),
+                    modifier = Modifier.padding(start = 10.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.ok))
+                }
+                Spacer(modifier = Modifier.width(18.dp))
+                Text(
+                    text = stringResource(id = R.string.not_completed),
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else {
+            Button(
+                onClick = {
+                    viewModel.onEvent(LoginEvents.Submit(navController))
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
 
-                .padding(start = 30.dp, end = 30.dp, top = 30.dp)
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = iconsColor)
-        ) {
-            Text(stringResource(id = R.string.login))
+                    .padding(start = 30.dp, end = 30.dp, top = 30.dp)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = iconsColor)
+            ) {
+                Text(stringResource(id = R.string.login))
+            }
         }
 
         Text(

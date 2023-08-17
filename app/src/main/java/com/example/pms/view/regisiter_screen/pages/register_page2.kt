@@ -1,13 +1,14 @@
 package com.example.pms.view.regisiter_screen.pages
 
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +23,8 @@ import com.example.pms.ui.theme.iconsColor
 import com.example.pms.view.regisiter_screen.InputPassword
 import com.example.pms.view.regisiter_screen.InputTextFiled
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pms.ui.theme.transparent_p
+import com.example.pms.view.animation.ProgressAnimatedBar
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page2.RegPage2Events
 import com.example.pms.viewmodel.presentation_vm.register_vm.pages.page2.RegisterPage2Vm
 
@@ -46,7 +49,7 @@ fun RegisterPage2(
     if (state.emailError != null) {
         Text(
             text = state.emailError ?: "",
-            color =MaterialTheme.colors.error,
+            color = MaterialTheme.colors.error,
             fontSize = 10.sp,
             textAlign = TextAlign.Start,
             modifier = Modifier
@@ -54,7 +57,6 @@ fun RegisterPage2(
                 .padding(start = 10.dp)
         )
     }
-
     InputPassword(
         title = R.string.password,
         onValueChanged = {
@@ -84,7 +86,7 @@ fun RegisterPage2(
     if (state.confirmPasswordError != null) {
         Text(
             text = state.confirmPasswordError ?: "",
-            color =MaterialTheme.colors.error,
+            color = MaterialTheme.colors.error,
             fontSize = 10.sp,
             textAlign = TextAlign.Start,
             modifier = Modifier
@@ -92,17 +94,57 @@ fun RegisterPage2(
                 .padding(start = 10.dp)
         )
     }
-    FloatingActionButton(
-        onClick = {
-            viewModel.submitPage2(navController, context)
-        },
-        backgroundColor = iconsColor,
-    ) {
-        Icon(
-            imageVector = Icons.Default.ArrowForward,
-            contentDescription = "",
-            tint = Color.White
-        )
+    if (!state.isLoading && !state.duplicatedEmail) {
+        FloatingActionButton(
+            onClick = {
+                viewModel.onEvent(
+                    RegPage2Events.OnSubmitClicked(
+                        navController, context
+                    )
+                )
+            },
+            backgroundColor = iconsColor,
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowForward,
+                contentDescription = "",
+                tint = Color.White
+            )
+        }
     }
-
+    if (state.duplicatedEmail) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+                .wrapContentHeight()
+                .background(transparent_p),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = {
+                    viewModel.onEvent(
+                        RegPage2Events.OnDuplicatedEmailClicked(
+                            navController
+                        )
+                    )
+                },
+                colors = ButtonDefaults.buttonColors(iconsColor),
+                modifier = Modifier.padding(start = 10.dp)
+            ) {
+                Text(text = stringResource(id = R.string.ok))
+            }
+            Spacer(modifier = Modifier.width(18.dp))
+            Text(
+                text = stringResource(id = R.string.need_verfication),
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+    ProgressAnimatedBar(
+        isLoading = state.isLoading,
+        modifier = Modifier.size(46.dp)
+    )
 }

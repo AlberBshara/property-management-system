@@ -8,5 +8,6 @@ data class RegisterPage1State(
     var phoneNumber : String = "",
     var phoneNumber_error: String? = null,
     var countryCode : String = "",
-    var countryCode_error: String? = null
+    var countryCode_error: String? = null,
+    var isLoading: Boolean = false
 )

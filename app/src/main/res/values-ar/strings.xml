@@ -19,6 +19,9 @@
     <string name="go_back">العودة الى الرئيسية</string>
     <string name="copy_paste">انسخ الرابط وضعه في هنا:</string>
 
+    <string name="need_verfication">هذا الحساب موجود مسبقا لكن يجب تحقق من انه حسابك بالفعل.</string>
+    <string name="not_verified">أخر مرة استخدمت تطبيقنا كان مع الحساب التالي لكن لم تقوم بتأكيده!</string>
+
 
 
 
@@ -347,6 +350,13 @@
     </string>
 
     <string name="thanks">شكرا لاختيارك تطبيق PMS.</string>
+
+    <string name="verifyEmail"> تأكيد الحساب !</string>
+    <string name="putTheCode">ضع الكود الذي تم ارساله الى حسابك الجيميل:</string>
+    <string name="enter_valid_code">الرجاء ادخال رمز صالح!</string>
+    <string name="not_completed">هذا الحساب موجود لكن يحتاج لاكمال بعض البيانات.</string>
+
+
 
 
 </resources>

@@ -6,5 +6,7 @@ data class RegisterPage2State(
     var password : String = "",
     var passwordError : String? = null,
     var confirmPassword : String = "",
-    var confirmPasswordError : String? = null
+    var confirmPasswordError : String? = null,
+    var isLoading: Boolean = false,
+    var duplicatedEmail: Boolean = false
 )

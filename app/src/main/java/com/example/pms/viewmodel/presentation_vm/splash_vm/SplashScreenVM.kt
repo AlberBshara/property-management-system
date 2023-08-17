@@ -23,7 +23,10 @@ class SplashScreenVM : ViewModel() {
         context: Context
     ) {
         viewModelScope.launch {
-            if (TokenManager.getInstance(context).exits()) {
+            if (TokenManager.getInstance(context).exits()
+                && TokenManager.getInstance(context).isVerified()
+                && TokenManager.getInstance(context).isCompleted()
+            ) {
                 navController.popBackStack()
                 navController.navigate(Destination.DashboardDestination.route)
             } else {

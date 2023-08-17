@@ -41,4 +41,17 @@ class SharedPreferencesUsage(
     fun clearDataOfKey(key: String) {
         sharedPreferences.editor.remove(key).apply()
     }
+
+    fun setVerify(isVerify: Boolean) {
+        sharedPreferences.setData(PMSSharedPreferenceHelper.VERIFY, isVerify)
+    }
+    fun isVerified() : Boolean =
+        sharedPreferences.getData(PMSSharedPreferenceHelper.VERIFY)
+
+    fun setComplete(complete: Boolean) {
+        sharedPreferences.setData(PMSSharedPreferenceHelper.COMPLETE, complete)
+    }
+    fun isCompleted() : Boolean =
+        sharedPreferences.getData(PMSSharedPreferenceHelper.COMPLETE)
+
 }

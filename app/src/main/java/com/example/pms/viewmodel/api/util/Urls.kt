@@ -17,6 +17,8 @@ object Urls {
     const val MY_FAV_LIST_END_POINT: String = "PMS/Get_All_Favorite"
     const val LIKE_END_POINT: String = "PMS/Add_To_Favorite"
     const val MY_POSTS_END_POINT: String = "PMS/My_posts"
+    const val VERIFY_EMAIL_CHECK_CODE="Register/check_code_email_verify"
+    const val SEND_CODE_TO_GMAIL_TO_VERIFY="Register/send_code"
 
     const val POST_VEHICLE_END_POINT: String = "PMS/Add_Cars"
     const val GET_CAR_BY_ID_END_POINT: String = "PMS/Get_Car"

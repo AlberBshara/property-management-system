@@ -175,6 +175,7 @@
     <string name="logout">LOGOUT</string>
     <string name="app_version">App version 1.0</string>
 
+    <string name="enter_valid_code">please Enter valid code!</string>
 
 
     <string name="estate_caution">we noticed that you provided some images are not estate!</string>
@@ -198,7 +199,10 @@
     <string name="change_language">Change the language:</string>
     <string name="same_language">you are selecting the same language of the app</string>
 
+    <string name="need_verfication">this account already exists but need to verify it</string>
+    <string name="not_verified">the last time you entered with the following account but it was not verified.</string>
 
+    <string name="not_completed">this account not completed you need to fill the rest of info.</string>
     <string name="go_back">Back to Home</string>
 
     <string-array name="cities_array">
@@ -473,6 +477,9 @@
     </string>
 
     <string name="thanks">Thank you for choosing PMS for your property needs.</string>
+
+    <string name="verifyEmail">Verify your email !</string>
+    <string name="putTheCode">put the code that we have sent to your gmail:</string>
 
 
 </resources>

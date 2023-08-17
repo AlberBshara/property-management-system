@@ -9,4 +9,6 @@ data class LoginState(
     var errorMessage: String? =null,
     var showDialog:Boolean=false,
     var showInternetAlert : Boolean = false,
+    var needVerify: Boolean = false,
+    var notCompleted: Boolean = false
 )
